@@ -24,8 +24,8 @@ class SmsGupshupFailure(SmsGupshupError):
 
 class SmsGupshupSender():
     # SMS Gupshup configuration
-    username=settings.YAMMER_USERNAME
-    password=settings.YAMMER_PASSWORD
+    username=settings.SMS_GATEWAY_USERNAME
+    password=settings.SMS_GATEWAY_PASSWORD
     version = '1.0'
     url='http://enterprise.smsgupshup.com/GatewayAPI/rest'
 

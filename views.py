@@ -18,3 +18,8 @@ def sms_messages(request):
             sms.sms_sent=datetime.datetime.now()
             sms.save()
             return HttpResponse("Sms Sent")
+
+def receive_sms(request):
+    return HttpResponse('Done')
+
+
