@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from django.db import models
 from yammer import Yammer 
 from django.conf import settings
@@ -31,12 +33,14 @@ class YUser(models.Model):
         all_messages= yammer.messages.sent(newer_than=self.update_max_message_id)
         self.get_all_messages(all_messages)  
         self.get_max_message_id()
+
     def post_message(self,content):
         yammer = Yammer(consumer_key=settings.YAMMER_CONSUMER_KEY, 
                  consumer_secret=settings.YAMMER_CONSUMER_SECRET,
                  oauth_token=self.oauth_token,
                  oauth_token_secret=self.oauth_token_secret) 
         yammer.messages.post(content)         
+
     def get_all_messages(self,all_messages):
         for message in all_messages:         
             yammer_mes=Message(from_user=self,to_user=None,message=message['body']['parsed'],thread_id=message['thread_id'],message_id=message['id'])
@@ -47,6 +51,8 @@ class YUser(models.Model):
         if q.get('message_id__max', 0):
             self.update_max_message_id = q['message_id__max']
             self.save()    
+
+
 class MessageManager(models.Manager):   
     def delete_messages(self,date):
         del_messages=Message.objects.filter(sms_sent__lt=date).all() 
@@ -64,9 +70,15 @@ class Message(models.Model):
     objects = MessageManager()
     
 class SentMessage(models.Model): 
-    yuser=models.ForeignKey(YUser, null=True, blank=True)
-    message=models.CharField(max_length=140, editable=True)  
-    received_time=models.DateTimeField(null=True,editable=False)
-    sent_time= models.DateTimeField(null=True,editable=False) 
+    yuser=models.ForeignKey(YUser)
+    message=models.CharField(max_length=140, editable=False)  
+    received_time=models.DateTimeField(null=True, blank=True, editable=False)
+    sent_time= models.DateTimeField(null=True, blank=True, editable=False) 
+    
+    def save(self):
+        if not self.received_time:
+            self.received_time = datetime.now()
+        return super(SentMessage, self).save()
+
     def __unicode__(self):
         return self.message 
