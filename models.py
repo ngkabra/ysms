@@ -8,7 +8,7 @@ from django.db.models import Max
 # Create your models here.
 
 class YUserManager(models.Manager):
-    def authenticate_users (self):
+    def get_messages(self):
         for yuser in self.all():
             yuser.update_messages()
     
@@ -16,7 +16,7 @@ class YUserManager(models.Manager):
     
 class YUser(models.Model):
     yammer_user_id=models.BigIntegerField(default=0)
-    update_max_message_id=models.BigIntegerField(default=0)
+    max_message_id=models.BigIntegerField(default=0)
     fullname=models.CharField(max_length=100)
     mobile_no=models.CharField(max_length=13)
     oauth_token=models.CharField(max_length=150)
@@ -32,7 +32,7 @@ class YUser(models.Model):
                  oauth_token_secret=self.oauth_token_secret)    
         all_messages= yammer.messages.sent(newer_than=self.update_max_message_id)
         self.get_all_messages(all_messages)  
-        self.get_max_message_id()
+        self.update_max_message_id()
 
     def post_message(self,content):
         yammer = Yammer(consumer_key=settings.YAMMER_CONSUMER_KEY, 
@@ -42,14 +42,22 @@ class YUser(models.Model):
         yammer.messages.post(content)         
 
     def get_all_messages(self,all_messages):
-        for message in all_messages:         
+        for message in all_messages: 
             yammer_mes=Message(from_user=self,to_user=None,message=message['body']['parsed'],thread_id=message['thread_id'],message_id=message['id'])
             yammer_mes.save() 
-            
-    def get_max_message_id(self):
+        for message in all_messages: 
+            if message['replied_to_id']:
+                try:
+                    replied_to_id=Message.objects.get(message_id=message['replied_to_id'])
+                    sender_id=Message.objects.get(message_id=message['id'])  
+                    sender_id.to_user=replied_to_id.from_user
+                    sender_id.save()      
+                except Message.DoesNotExist:
+                    replied_to_id=None      
+    def update_max_message_id(self):
         q =Message.objects.filter(from_user=self).aggregate(Max('message_id'))
         if q.get('message_id__max', 0):
-            self.update_max_message_id = q['message_id__max']
+            self.max_message_id = q['message_id__max']
             self.save()    
 
 
@@ -57,7 +65,9 @@ class MessageManager(models.Manager):
     def delete_messages(self,date):
         del_messages=Message.objects.filter(sms_sent__lt=date).all() 
         del_messages.delete()
-                       
+        del_sent_messages=SentMessage.objects.filter(sms_sent__lt=date).all() 
+        del_sent_messages.delete()
+               
 class Message(models.Model):
     thread_id=models.BigIntegerField(default=0)
     message_id=models.BigIntegerField(primary_key=True, default=0)
@@ -68,6 +78,14 @@ class Message(models.Model):
     def __unicode__(self):
         return self.message
     objects = MessageManager()
+    
+    def get_access_token(self,request):
+        yammer = Yammer(consumer_key=settings.YAMMER_CONSUMER_SECRET,
+                consumer_secret=settings.YAMMER_CONSUMER_KEY                 
+                )
+        request.session['request_token'] = yammer.request_token['oauth_token']
+        request.session['request_token_secret']=yammer.self.request_token['oauth_token_secret']
+        return yammer
     
 class SentMessage(models.Model): 
     yuser=models.ForeignKey(YUser)

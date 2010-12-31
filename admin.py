@@ -5,7 +5,7 @@ from django.contrib import admin
 class YUserAdmin(admin.ModelAdmin):
     fieldsets = [(None, {'fields': [
         'yammer_user_id',
-        'update_max_message_id',
+        'max_message_id',
         'fullname',
         'mobile_no',
         'oauth_token',
@@ -16,5 +16,5 @@ class YUserAdmin(admin.ModelAdmin):
     
 
 
-admin.site.register(YUser, YUserAdmin)
+admin.site.register(YUser,YUserAdmin)
 
