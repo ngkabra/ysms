@@ -1,5 +1,7 @@
-from django import forms
-class YUserForm(forms.Form):
-    fullname= forms.CharField(max_length=100)
-    Mobile_no=forms.CharField(max_length=13)
+from django.forms import ModelForm
+from models import YUser
+class YUserForm(ModelForm):
+    class Meta:
+        model = YUser
+        fields = ('fullname', 'mobile_no')
   

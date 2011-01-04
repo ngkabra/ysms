@@ -15,12 +15,12 @@ class YUserManager(models.Manager):
     
     
 class YUser(models.Model):
-    yammer_user_id=models.BigIntegerField(default=0)
+    yammer_user_id=models.BigIntegerField(null=True,default=0)
     max_message_id=models.BigIntegerField(default=0)
     fullname=models.CharField(max_length=100)
     mobile_no=models.CharField(max_length=13)
-    oauth_token=models.CharField(max_length=150)
-    oauth_token_secret=models.CharField(max_length=150)
+    oauth_token=models.CharField(null=True,max_length=150)
+    oauth_token_secret=models.CharField(null=True,max_length=150)
     def __unicode__(self):
         return self.fullname
     objects = YUserManager()
@@ -29,8 +29,8 @@ class YUser(models.Model):
         yammer = Yammer(consumer_key=settings.YAMMER_CONSUMER_KEY, 
                  consumer_secret=settings.YAMMER_CONSUMER_SECRET,
                  oauth_token=self.oauth_token,
-                 oauth_token_secret=self.oauth_token_secret)    
-        all_messages= yammer.messages.sent(newer_than=self.update_max_message_id)
+                 oauth_token_secret=self.oauth_token_secret)
+        all_messages= yammer.messages.following(newer_than=self.update_max_message_id)
         self.get_all_messages(all_messages)  
         self.update_max_message_id()
 
@@ -43,30 +43,42 @@ class YUser(models.Model):
 
     def get_all_messages(self,all_messages):
         for message in all_messages: 
-            yammer_mes=Message(from_user=self,to_user=None,message=message['body']['parsed'],thread_id=message['thread_id'],message_id=message['id'])
+            try:
+                sender=YUser.objects.get(yammer_user_id=message['sender_id'])
+            except YUser.DoesNotExist: 
+                sender=None   
+            yammer_mes=Message(from_user=sender,to_user=self,message=message['body']['parsed'],thread_id=message['thread_id'],message_id=message['id'])
             yammer_mes.save() 
-        for message in all_messages: 
-            if message['replied_to_id']:
-                try:
-                    replied_to_id=Message.objects.get(message_id=message['replied_to_id'])
-                    sender_id=Message.objects.get(message_id=message['id'])  
-                    sender_id.to_user=replied_to_id.from_user
-                    sender_id.save()      
-                except Message.DoesNotExist:
-                    replied_to_id=None      
+        
     def update_max_message_id(self):
         q =Message.objects.filter(from_user=self).aggregate(Max('message_id'))
         if q.get('message_id__max', 0):
             self.max_message_id = q['message_id__max']
-            self.save()    
+            self.save()   
+             
+    def to_get_request_token(self,request):
+        yammer = Yammer(consumer_key=settings.YAMMER_CONSUMER_KEY,
+                 consumer_secret=settings.YAMMER_CONSUMER_SECRET                 
+                 )
+        request.session['request_token'] = yammer.request_token['oauth_token']
+        request.session['request_token_secret']=yammer.request_token['oauth_token_secret']
+        return yammer
 
+    def to_get_access_token(self,request):
+        yammer = Yammer(consumer_key=settings.YAMMER_CONSUMER_KEY, 
+                 consumer_secret=settings.YAMMER_CONSUMER_SECRET, )
+        yammer.request_token = dict(request_token=request.session['request_token'] , request_token_secret=request.session['request_token'] )       
+        access_token=yammer.get_access_token(request.REQUEST.get('oauth_verifier'))
+        yammer = Yammer(consumer_key=settings.YAMMER_CONSUMER_KEY, 
+                consumer_secret=settings.YAMMER_CONSUMER_SECRET,                 
+                oauth_token=access_token['oauth_token'],
+                oauth_token_secret=access_token['oauth_token_secret'])  
 
 class MessageManager(models.Manager):   
     def delete_messages(self,date):
         del_messages=Message.objects.filter(sms_sent__lt=date).all() 
         del_messages.delete()
-        del_sent_messages=SentMessage.objects.filter(sms_sent__lt=date).all() 
-        del_sent_messages.delete()
+        
                
 class Message(models.Model):
     thread_id=models.BigIntegerField(default=0)
@@ -78,21 +90,18 @@ class Message(models.Model):
     def __unicode__(self):
         return self.message
     objects = MessageManager()
-    
-    def get_access_token(self,request):
-        yammer = Yammer(consumer_key=settings.YAMMER_CONSUMER_SECRET,
-                consumer_secret=settings.YAMMER_CONSUMER_KEY                 
-                )
-        request.session['request_token'] = yammer.request_token['oauth_token']
-        request.session['request_token_secret']=yammer.self.request_token['oauth_token_secret']
-        return yammer
-    
+                
+class SentMessageManager(models.Manager):   
+    def delete_messages(self,date):
+        del_sent_messages=SentMessage.objects.filter(sms_sent__lt=date).all() 
+        del_sent_messages.delete()
+          
 class SentMessage(models.Model): 
     yuser=models.ForeignKey(YUser)
     message=models.CharField(max_length=140, editable=False)  
     received_time=models.DateTimeField(null=True, blank=True, editable=False)
     sent_time= models.DateTimeField(null=True, blank=True, editable=False) 
-    
+    objects =SentMessageManager()
     def save(self):
         if not self.received_time:
             self.received_time = datetime.now()
