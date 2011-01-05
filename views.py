@@ -63,24 +63,29 @@ def receive_sms(request):
     return HttpResponse('Done')
 
 def add_user(request):
-    if request.method == 'POST': # If the form has been submitted...
-        yuser=YUser()
-        form = YUserForm(request.POST,instance=yuser) # A form bound to the POST data
-        if form.is_valid(): # All validation rules pass
-            # Process the data in form.cleaned_data
-            form.save()
-            print yuser.fullname
+    if request.method == 'POST':
+        form = YUserForm(request.POST) 
+        if form.is_valid(): 
+            yuser = form.save()
+            request.session['yuser_pk'] = yuser.pk
             yammer=yuser.to_get_request_token(request)
             yammer_redirect=yammer.get_authorize_url()
-            return HttpResponseRedirect('%s' % yammer_redirect) # Redirect after POST
+            return HttpResponseRedirect(yammer_redirect)
     else:
-        form = YUserForm() # An unbound form
+        form = YUserForm() 
     return render_to_response('ysms/add_user.html', {
         'form': form,
     })
 
 def yammer_callback(request):
-   yuser=YUser()
-   yammer=yuser.to_get_acces_token(request)    
+    yuserpk = request.session.get('yuser_pk')
+    req_token = request.session.get('request_token')
+    req_secret = request.session.get('request_token_secret')
+    if not yuserid or not req_token or not req_secret:
+        return HttpResponse('Error')
+
+    yuser = YUser.objects.get(pk=yuserpk)
+    yammer=yuser.to_get_access_token(request)
+    
  
 
