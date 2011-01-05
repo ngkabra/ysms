@@ -2,7 +2,7 @@
 from django.shortcuts import render_to_response, get_object_or_404
 from models import YUser,Message,SentMessage
 from sms import SmsGupshupSender 
-from yammer import Yammer
+import yammer
 from django.http import HttpResponseRedirect, HttpResponse
 import datetime
 from datetime import timedelta, datetime
@@ -18,7 +18,7 @@ def sms_messages(request):
         for sms in sms_to_send:
             if sms.sms_sent==None:
                 s = SmsGupshupSender()   
-                s.send(9922900383,sms.message)
+                s.send(sms.to_user.mobile_no,sms.message)
                 sms.sms_sent=datetime.datetime.now()
                 sms.save()
         return HttpResponse("Sms Sent")
@@ -29,6 +29,7 @@ def clear_messages(request):
     week = timedelta(7)
     date = now - week
     Message.objects.delete_messages(date)
+    SentMessage.objects.delete_messages(date)
     return HttpResponse("Sms Deleted")
 
 def receive_sms(request):
@@ -40,7 +41,7 @@ def receive_sms(request):
 
     # the first word in a question is the keyword.
     # get rid of that
-    #question = re.sub('^\w+\s+', '', question)
+    content = re.sub('^\w+\s+', '', content)
     
     print 'phoneno=%s, content=%s' % (phoneno, content)
     if phoneno and content:
@@ -60,20 +61,31 @@ def receive_sms(request):
         return HttpResponse('Thank you, your message has been posted')
 
     return HttpResponse('Done')
+
 def add_user(request):
-    if request.method == 'POST': # If the form has been submitted...
-        form = YUserForm(request.POST) # A form bound to the POST data
-        if form.is_valid(): # All validation rules pass
-            # Process the data in form.cleaned_data
-            message=Message()
-            yammer=message.get_access_token(request)
+    if request.method == 'POST':
+        form = YUserForm(request.POST) 
+        if form.is_valid(): 
+            yuser = form.save()
+            request.session['yuser_pk'] = yuser.pk
+            yammer=yuser.to_get_request_token(request)
             yammer_redirect=yammer.get_authorize_url()
-            return HttpResponseRedirect(yammer_redirect) # Redirect after POST
+            return HttpResponseRedirect(yammer_redirect)
     else:
-        form = YUserForm() # An unbound form
+        form = YUserForm() 
     return render_to_response('ysms/add_user.html', {
         'form': form,
     })
 
+def yammer_callback(request):
+    yuserpk = request.session.get('yuser_pk')
+    req_token = request.session.get('request_token')
+    req_secret = request.session.get('request_token_secret')
+    if not yuserpk or not req_token or not req_secret:
+        return HttpResponse('Error')
 
+    yuser = YUser.objects.get(pk=yuserpk)
+    yammer=yuser.to_get_access_token(request)
+    return HttpResponse('Done')
+ 
 
