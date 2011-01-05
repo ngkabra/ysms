@@ -81,11 +81,11 @@ def yammer_callback(request):
     yuserpk = request.session.get('yuser_pk')
     req_token = request.session.get('request_token')
     req_secret = request.session.get('request_token_secret')
-    if not yuserid or not req_token or not req_secret:
+    if not yuserpk or not req_token or not req_secret:
         return HttpResponse('Error')
 
     yuser = YUser.objects.get(pk=yuserpk)
     yammer=yuser.to_get_access_token(request)
-    
+    return HttpResponse('Done')
  
 

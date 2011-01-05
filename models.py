@@ -69,11 +69,15 @@ class YUser(models.Model):
                  consumer_secret=settings.YAMMER_CONSUMER_SECRET, )
         yammer.request_token = dict(request_token=request.session['request_token'] , request_token_secret=request.session['request_token'] )       
         access_token=yammer.get_access_token(request.REQUEST.get('oauth_verifier'))
+        self.oauth_token=access_token['oauth_token']
+        self.oauth_token_secret=access_token['oauth_token_secret']
+        self.save()
         yammer = Yammer(consumer_key=settings.YAMMER_CONSUMER_KEY, 
                 consumer_secret=settings.YAMMER_CONSUMER_SECRET,                 
                 oauth_token=access_token['oauth_token'],
                 oauth_token_secret=access_token['oauth_token_secret'])  
-
+        return yammer
+      
 class MessageManager(models.Manager):   
     def delete_messages(self,date):
         del_messages=Message.objects.filter(sms_sent__lt=date).all() 
@@ -82,11 +86,12 @@ class MessageManager(models.Manager):
                
 class Message(models.Model):
     thread_id=models.BigIntegerField(default=0)
-    message_id=models.BigIntegerField(primary_key=True, default=0)
+    message_id=models.BigIntegerField(default=0)
     from_user=models.ForeignKey(YUser, null=True, blank=True)
     to_user=models.ForeignKey(YUser,related_name='to_user_set', null=True, blank=True)
     message=models.CharField(max_length=140, editable=True)
     sms_sent=models.DateTimeField(null=True,editable=False)
+    unique_together = ("message_id", "from_user","to_user")
     def __unicode__(self):
         return self.message
     objects = MessageManager()
