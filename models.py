@@ -30,7 +30,7 @@ class YUser(models.Model):
                  consumer_secret=settings.YAMMER_CONSUMER_SECRET,
                  oauth_token=self.oauth_token,
                  oauth_token_secret=self.oauth_token_secret)
-        all_messages= yammer.messages.following(newer_than=self.update_max_message_id)
+        all_messages= yammer.messages.following(newer_than=self.max_message_id)
         self.get_all_messages(all_messages)  
         self.update_max_message_id()
 
@@ -53,7 +53,6 @@ class YUser(models.Model):
         
     def update_max_message_id(self):
         q =Message.objects.filter(from_user=self).aggregate(Max('message_id'))
-        print q['message_id__max']
         if q.get('message_id__max', 0):
             self.max_message_id = q['message_id__max']
             self.save()   
