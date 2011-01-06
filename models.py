@@ -30,7 +30,7 @@ class YUser(models.Model):
                  consumer_secret=settings.YAMMER_CONSUMER_SECRET,
                  oauth_token=self.oauth_token,
                  oauth_token_secret=self.oauth_token_secret)
-        all_messages= yammer.messages.following(newer_than=self.update_max_message_id)
+        all_messages= yammer.messages.following(newer_than=self.max_message_id)
         self.get_all_messages(all_messages)  
         self.update_max_message_id()
 
@@ -65,11 +65,11 @@ class YUser(models.Model):
         request.session['request_token_secret']=yammer.request_token['oauth_token_secret']
         return yammer
 
-    def to_get_access_token(self,request):
+    def to_get_access_token(self,request,oauth_verifier):
         yammer = Yammer(consumer_key=settings.YAMMER_CONSUMER_KEY, 
                  consumer_secret=settings.YAMMER_CONSUMER_SECRET, )
-        yammer.request_token = dict(request_token=request.session['request_token'] , request_token_secret=request.session['request_token'] )       
-        access_token=yammer.get_access_token(request.REQUEST.get('oauth_verifier'))
+        yammer._request_token = dict(request_token=request.session['request_token'] , request_token_secret=request.session['request_token'] )       
+        access_token=yammer.get_access_token(oauth_verifier)
         user_id=yammer.users.current()
         self.yammer_user_id=user_id['id'] 
         self.oauth_token=access_token['oauth_token']
@@ -94,7 +94,7 @@ class Message(models.Model):
     to_user=models.ForeignKey(YUser,related_name='to_user_set', null=True, blank=True)
     message=models.CharField(max_length=140, editable=True)
     sms_sent=models.DateTimeField(null=True,editable=False)
-    unique_together = ("message_id", "from_user","to_user")
+    unique_together = ("message_id","to_user")
     def __unicode__(self):
         return self.message
     objects = MessageManager()
