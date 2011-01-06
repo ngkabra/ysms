@@ -43,12 +43,13 @@ class YUser(models.Model):
 
     def get_all_messages(self,all_messages):
         for message in all_messages: 
-            try:
-                sender=YUser.objects.get(yammer_user_id=message['sender_id'])
-            except YUser.DoesNotExist: 
-                sender=None   
-            yammer_mes=Message(from_user=sender,to_user=self,message=message['body']['parsed'],thread_id=message['thread_id'],message_id=message['id'])
-            yammer_mes.save() 
+            if self.yammer_user_id!= message['sender_id']:
+                try:
+                    sender=YUser.objects.get(yammer_user_id=message['sender_id'])
+                except YUser.DoesNotExist: 
+                    sender=None   
+                yammer_mes=Message(from_user=sender,to_user=self,message=message['body']['parsed'],thread_id=message['thread_id'],message_id=message['id'])
+                yammer_mes.save() 
         
     def update_max_message_id(self):
         q =Message.objects.filter(from_user=self).aggregate(Max('message_id'))
@@ -69,6 +70,8 @@ class YUser(models.Model):
                  consumer_secret=settings.YAMMER_CONSUMER_SECRET, )
         yammer.request_token = dict(request_token=request.session['request_token'] , request_token_secret=request.session['request_token'] )       
         access_token=yammer.get_access_token(request.REQUEST.get('oauth_verifier'))
+        user_id=yammer.users.current()
+        self.yammer_user_id=user_id['id'] 
         self.oauth_token=access_token['oauth_token']
         self.oauth_token_secret=access_token['oauth_token_secret']
         self.save()

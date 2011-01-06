@@ -1,5 +1,17 @@
-from models import YUser
+from models import YUser,Message
 from django.contrib import admin
+
+class MessageAdmin(admin.ModelAdmin):
+    fieldsets = [(None, {'fields': [
+        'message_id',
+        'from_user',
+        'to_user',
+        'message',
+        ]}),]
+    list_display = ('message_id', 'message')
+    search_fields = ['to_user']
+
+admin.site.register(Message,MessageAdmin)
 
 
 class YUserAdmin(admin.ModelAdmin):
