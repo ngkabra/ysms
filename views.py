@@ -9,6 +9,8 @@ from datetime import timedelta, datetime
 import re
 from forms import YUserForm
 from django.views.decorators.csrf import csrf_protect
+from django.template import RequestContext
+
 
 def get_messages(request):
     YUser.objects.get_messages()
@@ -78,7 +80,7 @@ def add_user(request):
         form = YUserForm() 
     return render_to_response('ysms/add_user.html', {
         'form': form,
-    })
+    }, context_instance=RequestContext(request))
 
 @csrf_protect
 def yammer_callback(request):
