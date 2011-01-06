@@ -89,9 +89,12 @@ def yammer_callback(request):
     req_secret = request.session.get('request_token_secret')
     if not yuserpk or not req_token or not req_secret:
         return HttpResponse('Error')
-
-    yuser = YUser.objects.get(pk=yuserpk)
-    yammer=yuser.to_get_access_token(request)
-    return HttpResponse('Done')
+    if request.method == 'POST':
+        oauth_verifier=request.POST['oauth_verifier']
+        yuser = YUser.objects.get(pk=yuserpk)
+        yammer=yuser.to_get_access_token(request,oauth_verifier)         
+        return HttpResponse('Done')
+    return render_to_response('ysms/callback_yammer.html', context_instance=RequestContext(request))
+    
  
 

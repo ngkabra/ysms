@@ -66,11 +66,14 @@ class YUser(models.Model):
         request.session['request_token_secret']=yammer.request_token['oauth_token_secret']
         return yammer
 
-    def to_get_access_token(self,request):
+    def to_get_access_token(self,request,oauth_verifier):
         yammer = Yammer(consumer_key=settings.YAMMER_CONSUMER_KEY, 
                  consumer_secret=settings.YAMMER_CONSUMER_SECRET, )
         yammer._request_token = dict(request_token=request.session['request_token'] , request_token_secret=request.session['request_token_secret'] )       
         access_token=yammer.get_access_token(request.REQUEST.get('oauth_verifier'))
+
+        yammer._request_token = dict(request_token=request.session['request_token'] , request_token_secret=request.session['request_token'] )       
+        access_token=yammer.get_access_token(oauth_verifier)
         user_id=yammer.users.current()
         self.yammer_user_id=user_id['id'] 
         self.oauth_token=access_token['oauth_token']
