@@ -8,6 +8,8 @@ import datetime
 from datetime import timedelta, datetime
 import re
 from forms import YUserForm
+from django.views.decorators.csrf import csrf_protect
+
 def get_messages(request):
     YUser.objects.get_messages()
     return HttpResponse("Messages Updated")
@@ -62,6 +64,7 @@ def receive_sms(request):
 
     return HttpResponse('Done')
 
+@csrf_protect
 def add_user(request):
     if request.method == 'POST':
         form = YUserForm(request.POST) 
@@ -77,6 +80,7 @@ def add_user(request):
         'form': form,
     })
 
+@csrf_protect
 def yammer_callback(request):
     yuserpk = request.session.get('yuser_pk')
     req_token = request.session.get('request_token')
