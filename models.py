@@ -53,6 +53,7 @@ class YUser(models.Model):
         
     def update_max_message_id(self):
         q =Message.objects.filter(from_user=self).aggregate(Max('message_id'))
+        print q['message_id__max']
         if q.get('message_id__max', 0):
             self.max_message_id = q['message_id__max']
             self.save()   
@@ -61,6 +62,7 @@ class YUser(models.Model):
         yammer = Yammer(consumer_key=settings.YAMMER_CONSUMER_KEY,
                  consumer_secret=settings.YAMMER_CONSUMER_SECRET                 
                  )
+        print yammer.request_token['outh_token']  
         request.session['request_token'] = yammer.request_token['oauth_token']
         request.session['request_token_secret']=yammer.request_token['oauth_token_secret']
         return yammer
@@ -94,7 +96,7 @@ class Message(models.Model):
     to_user=models.ForeignKey(YUser,related_name='to_user_set', null=True, blank=True)
     message=models.CharField(max_length=140, editable=True)
     sms_sent=models.DateTimeField(null=True,editable=False)
-    unique_together = ("message_id", "from_user","to_user")
+    unique_together = ("message_id","to_user")
     def __unicode__(self):
         return self.message
     objects = MessageManager()
