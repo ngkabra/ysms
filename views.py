@@ -5,7 +5,7 @@ from sms import SmsGupshupSender
 import yammer
 from django.http import HttpResponseRedirect, HttpResponse
 import datetime
-from datetime import timedelta, datetime
+from datetime import timedelta
 import re
 from forms import YUserForm
 from django.views.decorators.csrf import csrf_protect
@@ -82,7 +82,7 @@ def add_user(request):
         'form': form,
     }, context_instance=RequestContext(request))
 
-@csrf_protect
+
 def yammer_callback(request):
     yuserpk = request.session.get('yuser_pk')
     req_token = request.session.get('request_token')
