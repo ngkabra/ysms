@@ -93,8 +93,8 @@ def yammer_callback(request):
         oauth_verifier=request.POST['oauth_verifier']
         yuser = YUser.objects.get(pk=yuserpk)
         yammer=yuser.to_get_access_token(request,oauth_verifier)         
-        return HttpResponse('Done')
-    return render_to_response('ysms/callback_yammer.html', context_instance=RequestContext(request))
+        return HttpResponse("Done")
+    return render_to_response('ysms/yammer_callback.html', context_instance=RequestContext(request))
     
  
 
