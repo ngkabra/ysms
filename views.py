@@ -12,6 +12,13 @@ from django.views.decorators.csrf import csrf_protect
 from django.template import RequestContext
 
 
+def index(request):
+    yusers = YUser.objects.all()
+    return render_to_response('ysms/index.html', 
+                              dict(yusers=yusers),
+                              context_instance=RequestContext(request))
+
+
 def get_messages(request):
     YUser.objects.get_messages()
     return HttpResponse("Messages Updated")
@@ -82,7 +89,12 @@ def add_user(request):
         'form': form,
     }, context_instance=RequestContext(request))
 
+def authorize_user(request, yuserpk):
+    yuser = get_object_or_404(YUser, pk=yuserpk)
+    yammer=yuser.to_get_request_token(request)
+    return HttpResponseRedirect(yammer.get_authorize_url())
 
+@csrf_protect
 def yammer_callback(request):
     yuserpk = request.session.get('yuser_pk')
     req_token = request.session.get('request_token')

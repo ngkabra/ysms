@@ -22,7 +22,13 @@ class YUser(models.Model):
     oauth_token=models.CharField(null=True,max_length=150)
     oauth_token_secret=models.CharField(null=True,max_length=150)
     def __unicode__(self):
-        return self.fullname
+        s = "%s (%s)" % (self.fullname, self.mobile_no)
+        if self.oauth_token:
+            s += ' authorized'
+        else:
+            s += ' not yet authorized'
+        return s
+
     objects = YUserManager()
     
     def update_messages(self):
