@@ -1,5 +1,3 @@
-{% extends "base.html" %}
-{% block content %}
   {% if user_msg %}
     <p class="message">Message: {{user_msg}}</p>
   {% endif %}
@@ -9,5 +7,4 @@
       <li>{{yuser}}. <a href="{% url authorize_user yuserpk=yuser.pk %}">(Re-)authorize</a></li>
     {% endfor %}
   </ul>
-{% endblock %}
 
