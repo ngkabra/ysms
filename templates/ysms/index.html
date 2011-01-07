@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block content %}
+  {% if user_msg %}
+    <p class="message">Message: {{user_msg}}</p>
+  {% endif %}
+  <p><a href="{% url add_user %}">Add User</a></p>
+  <ul>
+    {% for yuser in yusers %}
+      <li>{{yuser}}. <a href="{% url authorize_user yuserpk=yuser.pk %}">(Re-)authorize</a></li>
+    {% endfor %}
+  </ul>
+{% endblock %}
+
