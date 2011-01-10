@@ -1,0 +1,10 @@
+  {% if user_msg %}
+    <p class="message">Message: {{user_msg}}</p>
+  {% endif %}
+  <ul>
+    {% for yuser in yusers %}
+      <li>{{yuser}}. <a href="{% url authorize_user yuserpk=yuser.pk %}">(Re-)authorize</a></li>
+    {% endfor %}
+  </ul>
+  <p><a href="{% url add_user %}">Add Another User</a></p>
+

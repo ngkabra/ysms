@@ -1,4 +1,5 @@
-<form action="/ysms/add_user/" method="post">{% csrf_token %}
-{{ form.as_p }}
-<input type="submit" value="Submit" />
-</form>
+  Please enter details for user to be added
+  <form action="/ysms/add_user/" method="post">{% csrf_token %}
+    {{ form.as_p }}
+  <input type="submit" value="Submit" />
+  </form>
