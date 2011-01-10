@@ -10,7 +10,7 @@ import re
 from forms import YUserForm
 from django.views.decorators.csrf import csrf_protect
 from django.template import RequestContext
-
+from django.core.urlresolvers import reverse
 
 def index(request):
     yusers = YUser.objects.all()
@@ -105,7 +105,7 @@ def yammer_callback(request):
         oauth_verifier=request.POST['oauth_verifier']
         yuser = YUser.objects.get(pk=yuserpk)
         yammer=yuser.to_get_access_token(request,oauth_verifier)         
-        return HttpResponse("Done")
+        return HttpResponseRedirect(reverse('ysms-index'))
     return render_to_response('ysms/yammer_callback.html', context_instance=RequestContext(request))
     
  
