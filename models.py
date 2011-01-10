@@ -12,8 +12,12 @@ class YUserManager(models.Manager):
         for yuser in self.all():
             yuser.update_messages()
     
-    def delete_yuser(self, yuserpk):
+    def delete_user(self, yuserpk):
+        Message.objects.filter(from_user__pk=yuserpk).delete()
+        Message.objects.filter(to_user__pk=yuserpk).delete()
+        SentMessage.objects.filter(yuser__pk=yuserpk).delete()
         self.get(pk=yuserpk).delete()
+
 
 class YUser(models.Model):
     yammer_user_id=models.BigIntegerField(null=True,default=0)

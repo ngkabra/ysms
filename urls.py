@@ -9,4 +9,5 @@ urlpatterns = patterns('',
                        url(r'^add_user', add_user, name='add_user'),
                        url(r'^authorize_user/(?P<yuserpk>\d+)/', authorize_user, name='authorize_user'),
                        url(r'^yammer_callback', yammer_callback, name='yammer_callback'),
+                       url(r'^delete_user/(?P<yuserpk>\d+)/', delete_user, name='delete_user'),
                        )

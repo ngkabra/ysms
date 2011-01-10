@@ -108,5 +108,7 @@ def yammer_callback(request):
         return HttpResponseRedirect(reverse('ysms-index'))
     return render_to_response('ysms/yammer_callback.html', context_instance=RequestContext(request))
     
- 
 
+def delete_user(request, yuserpk):
+    YUser.objects.delete_user(yuserpk)
+    return HttpResponseRedirect(reverse('ysms-index'))
