@@ -75,35 +75,23 @@ class YUser(models.Model):
         self.save()             # max_message_id might have been updated
         return cnt
         
-    def to_get_request_token(self,request):
-        yammer = Yammer(consumer_key=settings.YAMMER_CONSUMER_KEY,
-                 consumer_secret=settings.YAMMER_CONSUMER_SECRET                 
-                 )
-        request.session['request_token'] = yammer.request_token['oauth_token']
-        request.session['request_token_secret'] = yammer.request_token['oauth_token_secret']
-        return yammer
-
-    def to_get_access_token(self,request,oauth_verifier):
-        yammer = Yammer(consumer_key=settings.YAMMER_CONSUMER_KEY, 
-                 consumer_secret=settings.YAMMER_CONSUMER_SECRET, )
-        yammer._request_token = dict(oauth_token=request.session['request_token'] , oauth_token_secret=request.session['request_token_secret'] )       
-        access_token=yammer.get_access_token(oauth_verifier)
-        self.oauth_token=access_token['oauth_token']
-        self.oauth_token_secret=access_token['oauth_token_secret']
-        self.save()
-
-        # Unfortunately, yammer.py does not update itself with the
-        # access_token, so we need to recreate it
-        yammer = self.yammer_api()
-        user_id=yammer.users.current()
-        self.yammer_user_id=user_id['id'] 
-        self.save()
-        return yammer
-      
+          
 class MessageManager(models.Manager):   
     def delete_messages(self,date):
         del_messages=Message.objects.filter(sms_sent__lt=date).all() 
         del_messages.delete()
+
+    def to_send_sms(self,cnt):
+        cnt=0 
+        for sms in self.all():
+            if sms.sms_sent==None:
+                s = SmsGupshupSender()   
+                s.send(sms.to_user.mobile_no,sms.message)
+                sms.sms_sent=datetime.datetime.now()
+                sms.save()
+                cnt += 1
+        return cnt 
+
         
                
 class Message(models.Model):
