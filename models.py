@@ -53,8 +53,7 @@ class YUser(models.Model):
         return cnt
 
     def post_message(self, content):
-        yammer = self.yammer_api()
-        yammer.messages.post(content)         
+        self.yammer_api().messages.post(content)
 
     def get_all_messages(self, all_messages):
         cnt = 0
@@ -70,7 +69,7 @@ class YUser(models.Model):
         return cnt
         
     def update_max_message_id(self):
-        q =Message.objects.filter(from_user=self).aggregate(Max('message_id'))
+        q = Message.objects.filter(from_user=self).aggregate(Max('message_id'))
         if q.get('message_id__max', 0):
             self.max_message_id = q['message_id__max']
             self.save()   
@@ -79,9 +78,14 @@ class YUser(models.Model):
         yammer = Yammer(consumer_key=settings.YAMMER_CONSUMER_KEY,
                  consumer_secret=settings.YAMMER_CONSUMER_SECRET                 
                  )
+<<<<<<< Updated upstream
         print yammer.request_token['oauth_token']  
         request.session['request_token'] = yammer._request_token['oauth_token']
         request.session['request_token_secret']=yammer._request_token['oauth_token_secret']
+=======
+        request.session['request_token'] = yammer.request_token['oauth_token']
+        request.session['request_token_secret'] = yammer.request_token['oauth_token_secret']
+>>>>>>> Stashed changes
         return yammer
 
     def to_get_access_token(self,request,oauth_verifier):
@@ -116,8 +120,9 @@ class Message(models.Model):
     sms_sent=models.DateTimeField(null=True,editable=False)
     unique_together = ("message_id","to_user")
     def __unicode__(self):
-        m = 'self.message ::from=%s, to=%s' % (self.from_user.fullname,
-                                               self.to_user.fullname)
+        m = '%s ::from=%s, to=%s' % (self.message,
+                                     self.from_user.fullname,
+                                     self.to_user.fullname)
         if self.sms_sent:
             m += " (sms sent)"
         else:
@@ -155,7 +160,8 @@ class SentMessage(models.Model):
         self.save()
 
     def __unicode__(self):
-        m = 'self.message ::from=%s' % self.yuser.fullname
+        m = '%s ::from=%s' % (self.message,
+                              self.yuser.fullname)
         if self.sent_time:
             m += " (sent)"
         else:
