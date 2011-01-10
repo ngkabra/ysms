@@ -14,26 +14,32 @@ from django.core.urlresolvers import reverse
 
 def index(request):
     yusers = YUser.objects.all()
+    post_pending = SentMessage.objects.filter(sent_time__isnull=True).count()
+    sms_pending = Message.objects.filter(sms_sent_isnull=True).count()
     return render_to_response('ysms/index.html', 
-                              dict(yusers=yusers),
+                              dict(yusers=yusers,
+                                   post_pending=post_pending,
+                                   sms_pending=sms_pending),
                               context_instance=RequestContext(request))
 
 
-def get_messages(request):
-    cnt = YUser.objects.get_messages()
+def fetch_yammer_msgs(request):
+    cnt = YUser.objects.fetch_yammer_msgs()
     return HttpResponse("%d Messages Fetched" % cnt)
 
-def sms_messages(request):  
-    sms_to_send= Message.objects.all()  
+def send_sms_msgs(request):  
+    sms_to_send = Message.objects.all()  
     if sms_to_send:
+        cnt = 0
         for sms in sms_to_send:
             if sms.sms_sent==None:
                 s = SmsGupshupSender()   
                 s.send(sms.to_user.mobile_no,sms.message)
                 sms.sms_sent=datetime.datetime.now()
                 sms.save()
-        return HttpResponse("Sms Sent")
-    return HttpResponse("There is no Sms to Send")
+                cnt += 1
+        return HttpResponse("%d Sms Sent" % cnt)
+    return HttpResponse("There is no sms to Send")
 
 def clear_messages(request):
     now = datetime.now()
@@ -66,12 +72,14 @@ def receive_sms(request):
             return HttpResponse('There was some error')
         # send this message to yammer
         # using auth_token of yuser
-        yuser.post_message(content)
-        sent_message.sent_time=datetime.now()
-        sent_message.save() 
+        sent_message.post_message()
         return HttpResponse('Thank you, your message has been posted')
 
     return HttpResponse('Done')
+
+def post_msgs_to_yammer(request):
+    cnt = SentMessage.objects.post_pending()
+    return HttpResponse('%d msgs posted' % cnt)
 
 @csrf_protect
 def add_user(request):
