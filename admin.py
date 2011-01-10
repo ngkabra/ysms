@@ -1,4 +1,4 @@
-from models import YUser,Message
+from models import YUser,Message,SentMessage
 from django.contrib import admin
 
 class MessageAdmin(admin.ModelAdmin):
@@ -29,4 +29,6 @@ class YUserAdmin(admin.ModelAdmin):
 
 
 admin.site.register(YUser,YUserAdmin)
+
+admin.site.register(SentMessage)
 
