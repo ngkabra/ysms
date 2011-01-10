@@ -49,7 +49,6 @@ class YUser(models.Model):
         yammer = self.yammer_api()
         all_messages = yammer.messages.following(newer_than=self.max_message_id)
         cnt = self.get_all_messages(all_messages)  
-        self.update_max_message_id()
         return cnt
 
     def post_message(self, content):
@@ -58,22 +57,24 @@ class YUser(models.Model):
     def get_all_messages(self, all_messages):
         cnt = 0
         for message in all_messages: 
+            msg_id = message['id']
+            if self.max_message_id <= msg_id:
+                self.max_message_id = msg_id
             if self.yammer_user_id != message['sender_id']:
                 try:
                     sender=YUser.objects.get(yammer_user_id=message['sender_id'])
                 except YUser.DoesNotExist: 
                     sender=None   
-                yammer_mes=Message(from_user=sender,to_user=self,message=message['body']['parsed'],thread_id=message['thread_id'],message_id=message['id'])
+                yammer_mes=Message(from_user=sender,
+                                   to_user=self,
+                                   message=message['body']['parsed'],
+                                   thread_id=message['thread_id'],
+                                   message_id=msg_id)
                 yammer_mes.save() 
                 cnt += 1
+        self.save()             # max_message_id might have been updated
         return cnt
         
-    def update_max_message_id(self):
-        q = Message.objects.filter(from_user=self).aggregate(Max('message_id'))
-        if q.get('message_id__max', 0):
-            self.max_message_id = q['message_id__max']
-            self.save()   
-             
     def to_get_request_token(self,request):
         yammer = Yammer(consumer_key=settings.YAMMER_CONSUMER_KEY,
                  consumer_secret=settings.YAMMER_CONSUMER_SECRET                 
