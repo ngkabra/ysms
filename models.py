@@ -39,27 +39,21 @@ class YUser(models.Model):
 
     objects = YUserManager()
     
-    def fetch_yammer_msgs(self):
-        yammer = Yammer(consumer_key=settings.YAMMER_CONSUMER_KEY, 
-                 consumer_secret=settings.YAMMER_CONSUMER_SECRET,
-                 oauth_token=self.oauth_token,
-                 oauth_token_secret=self.oauth_token_secret)
-        all_messages = yammer.messages.following(newer_than=self.max_message_id)
-        cnt = self.get_all_messages(all_messages)  
-        self.update_max_message_id()
-        return cnt
-
     def yammer_api(self):
         return Yammer(consumer_key=settings.YAMMER_CONSUMER_KEY, 
                       consumer_secret=settings.YAMMER_CONSUMER_SECRET,
                       oauth_token=self.oauth_token,
                       oauth_token_secret=self.oauth_token_secret) 
 
+    def fetch_yammer_msgs(self):
+        yammer = self.yammer_api()
+        all_messages = yammer.messages.following(newer_than=self.max_message_id)
+        cnt = self.get_all_messages(all_messages)  
+        self.update_max_message_id()
+        return cnt
+
     def post_message(self, content):
-        yammer = Yammer(consumer_key=settings.YAMMER_CONSUMER_KEY, 
-                 consumer_secret=settings.YAMMER_CONSUMER_SECRET,
-                 oauth_token=self.oauth_token,
-                 oauth_token_secret=self.oauth_token_secret) 
+        yammer = self.yammer_api()
         yammer.messages.post(content)         
 
     def get_all_messages(self, all_messages):
@@ -99,10 +93,7 @@ class YUser(models.Model):
         self.oauth_token=access_token['oauth_token']
         self.oauth_token_secret=access_token['oauth_token_secret']
         self.save()
-        yammer = Yammer(consumer_key=settings.YAMMER_CONSUMER_KEY, 
-                consumer_secret=settings.YAMMER_CONSUMER_SECRET,                 
-                oauth_token=access_token['oauth_token'],
-                oauth_token_secret=access_token['oauth_token_secret'])  
+        yammer = self.yammer_api()
         return yammer
       
 class MessageManager(models.Manager):   
@@ -120,7 +111,8 @@ class Message(models.Model):
     sms_sent=models.DateTimeField(null=True,editable=False)
     unique_together = ("message_id","to_user")
     def __unicode__(self):
-        m = self.message
+        m = 'self.message ::from=%s, to=%s' % (self.from_user.fullname,
+                                               self.to_user.fullname)
         if self.sms_sent:
             m += " (sms sent)"
         else:
@@ -158,7 +150,7 @@ class SentMessage(models.Model):
         self.save()
 
     def __unicode__(self):
-        m = self.message 
+        m = 'self.message ::from=%s' % self.yuser.fullname
         if self.sent_time:
             m += " (sent)"
         else:
