@@ -91,6 +91,7 @@ def add_user(request):
 
 def authorize_user(request, yuserpk):
     yuser = get_object_or_404(YUser, pk=yuserpk)
+    request.session['yuser_pk'] = yuser.pk
     yammer=yuser.to_get_request_token(request)
     return HttpResponseRedirect(yammer.get_authorize_url())
 
