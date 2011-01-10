@@ -63,15 +63,22 @@ class YUser(models.Model):
             if self.yammer_user_id != message['sender_id']:
                 try:
                     sender=YUser.objects.get(yammer_user_id=message['sender_id'])
+                    yammer_mes=Message(from_user=sender,
+                                       to_user=self,
+                                       message=message['body']['parsed'],
+                                       thread_id=message['thread_id'],
+                                       message_id=msg_id)
+                    try:
+                        yammer_mes.save() 
+                        cnt += 1
+                    except:
+                        pass    # probably a unique-together violation
                 except YUser.DoesNotExist: 
-                    sender=None   
-                yammer_mes=Message(from_user=sender,
-                                   to_user=self,
-                                   message=message['body']['parsed'],
-                                   thread_id=message['thread_id'],
-                                   message_id=msg_id)
-                yammer_mes.save() 
-                cnt += 1
+                    pass
+                    # Error?!
+                    # Probably a user that has been added to
+                    # yammer but not added to this gateway.
+                    # for now, ignore...
         self.save()             # max_message_id might have been updated
         return cnt
         
@@ -101,7 +108,8 @@ class Message(models.Model):
     to_user=models.ForeignKey(YUser,related_name='to_user_set', null=True, blank=True)
     message=models.CharField(max_length=140)
     sms_sent=models.DateTimeField(null=True,editable=False)
-    unique_together = ("message_id","to_user")
+    class Meta:
+        unique_together = ("message_id", "to_user")
     def __unicode__(self):
         m = '%s ::from=%s, to=%s' % (self.message,
                                      self.from_user.fullname,
