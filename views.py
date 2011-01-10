@@ -15,7 +15,7 @@ from django.core.urlresolvers import reverse
 def index(request):
     yusers = YUser.objects.all()
     post_pending = SentMessage.objects.filter(sent_time__isnull=True).count()
-    sms_pending = Message.objects.filter(sms_sent_isnull=True).count()
+    sms_pending = Message.objects.filter(sms_sent__isnull=True).count()
     return render_to_response('ysms/index.html', 
                               dict(yusers=yusers,
                                    post_pending=post_pending,
