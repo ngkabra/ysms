@@ -12,13 +12,19 @@ class YUserManager(models.Manager):
         for yuser in self.all():
             yuser.update_messages()
     
-    
-    
+    def delete_user(self, yuserpk):
+        Message.objects.filter(from_user__pk=yuserpk).delete()
+        Message.objects.filter(to_user__pk=yuserpk).delete()
+        SentMessage.objects.filter(yuser__pk=yuserpk).delete()
+        self.get(pk=yuserpk).delete()
+
+
 class YUser(models.Model):
     yammer_user_id=models.BigIntegerField(null=True,default=0)
     max_message_id=models.BigIntegerField(default=0)
     fullname=models.CharField(max_length=100)
     mobile_no=models.CharField(max_length=13)
+    disable_receives=models.BooleanField(default=False)
     oauth_token=models.CharField(null=True,max_length=150)
     oauth_token_secret=models.CharField(null=True,max_length=150)
     def __unicode__(self):
