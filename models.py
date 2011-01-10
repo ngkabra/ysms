@@ -118,7 +118,7 @@ class SentMessageManager(models.Manager):
           
 class SentMessage(models.Model): 
     yuser=models.ForeignKey(YUser)
-    message=models.CharField(max_length=140, editable=False)  
+    message=models.CharField(max_length=140)  
     received_time=models.DateTimeField(null=True, blank=True, editable=False)
     sent_time= models.DateTimeField(null=True, blank=True, editable=False) 
     objects =SentMessageManager()
