@@ -10,7 +10,7 @@ from django.db.models import Max
 class YUserManager(models.Manager):
     def fetch_yammer_msgs(self):
         cnt = 0
-        for yuser in self.filter(disable_receives=False):
+        for yuser in self.exclude(disable_receives=True):
             cnt += yuser.fetch_yammer_msgs()
         return cnt
     
