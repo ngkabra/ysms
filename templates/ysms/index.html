@@ -1,0 +1,20 @@
+  {% if user_msg %}
+    <p class="message">Message: {{user_msg}}</p>
+  {% endif %}
+  <ul>
+    {% for yuser in yusers %}
+      <li>{{yuser}}. <a href="{% url ysms-authorize-user yuserpk=yuser.pk %}">(Re-)authorize</a>, <a href="{% url ysms-delete-user yuserpk=yuser.pk %}">Delete</a> </li>
+    {% endfor %}
+  </ul>
+  <h3>Admin Tasks</h3>
+  <ul>
+  <li><a href="{% url ysms-add-user %}">Add Another User</a></li>
+  <li><a href="{% url ysms-fetch-yammer-msgs %}">Fetch latest messages from yammer</a></li>
+  {% if sms_pending %}
+    <li><a href="{% url ysms-send-sms-msgs %}">Send unsent sms</a> ({{sms_pending}} are pending)</li>
+  {% endif %}
+  {% if post_pending %}
+    <li><a href="{% url ysms-post-msgs-to-yammer %}">Post pending messages to Yammer</a> ({{post_pending}} are pending)</li>
+  {% endif %}
+  </ul>
+

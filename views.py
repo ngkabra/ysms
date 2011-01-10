@@ -5,28 +5,41 @@ from sms import SmsGupshupSender
 import yammer
 from django.http import HttpResponseRedirect, HttpResponse
 import datetime
-from datetime import timedelta, datetime
+from datetime import timedelta
 import re
 from forms import YUserForm
 from django.views.decorators.csrf import csrf_protect
 from django.template import RequestContext
+from django.core.urlresolvers import reverse
+
+def index(request):
+    yusers = YUser.objects.all()
+    post_pending = SentMessage.objects.filter(sent_time__isnull=True).count()
+    sms_pending = Message.objects.filter(sms_sent__isnull=True).count()
+    return render_to_response('ysms/index.html', 
+                              dict(yusers=yusers,
+                                   post_pending=post_pending,
+                                   sms_pending=sms_pending),
+                              context_instance=RequestContext(request))
 
 
-def get_messages(request):
-    YUser.objects.get_messages()
-    return HttpResponse("Messages Updated")
+def fetch_yammer_msgs(request):
+    cnt = YUser.objects.fetch_yammer_msgs()
+    return HttpResponse("%d Messages Fetched" % cnt)
 
-def sms_messages(request):  
-    sms_to_send= Message.objects.all()  
+def send_sms_msgs(request):  
+    sms_to_send = Message.objects.all()  
     if sms_to_send:
+        cnt = 0
         for sms in sms_to_send:
             if sms.sms_sent==None:
                 s = SmsGupshupSender()   
                 s.send(sms.to_user.mobile_no,sms.message)
                 sms.sms_sent=datetime.datetime.now()
                 sms.save()
-        return HttpResponse("Sms Sent")
-    return HttpResponse("There is no Sms to Send")
+                cnt += 1
+        return HttpResponse("%d Sms Sent" % cnt)
+    return HttpResponse("There is no sms to Send")
 
 def clear_messages(request):
     now = datetime.now()
@@ -59,12 +72,14 @@ def receive_sms(request):
             return HttpResponse('There was some error')
         # send this message to yammer
         # using auth_token of yuser
-        yuser.post_message(content)
-        sent_message.sent_time=datetime.now()
-        sent_message.save() 
+        sent_message.post_message()
         return HttpResponse('Thank you, your message has been posted')
 
     return HttpResponse('Done')
+
+def post_msgs_to_yammer(request):
+    cnt = SentMessage.objects.post_pending()
+    return HttpResponse('%d msgs posted' % cnt)
 
 @csrf_protect
 def add_user(request):
@@ -82,6 +97,12 @@ def add_user(request):
         'form': form,
     }, context_instance=RequestContext(request))
 
+def authorize_user(request, yuserpk):
+    yuser = get_object_or_404(YUser, pk=yuserpk)
+    request.session['yuser_pk'] = yuser.pk
+    yammer=yuser.to_get_request_token(request)
+    return HttpResponseRedirect(yammer.get_authorize_url())
+
 @csrf_protect
 def yammer_callback(request):
     yuserpk = request.session.get('yuser_pk')
@@ -93,8 +114,10 @@ def yammer_callback(request):
         oauth_verifier=request.POST['oauth_verifier']
         yuser = YUser.objects.get(pk=yuserpk)
         yammer=yuser.to_get_access_token(request,oauth_verifier)         
-        return HttpResponse("Done")
+        return HttpResponseRedirect(reverse('ysms-index'))
     return render_to_response('ysms/yammer_callback.html', context_instance=RequestContext(request))
     
- 
 
+def delete_user(request, yuserpk):
+    YUser.objects.delete_user(yuserpk)
+    return HttpResponseRedirect(reverse('ysms-index'))

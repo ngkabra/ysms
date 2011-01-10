@@ -1,11 +1,14 @@
 from django.conf.urls.defaults import *
-from views import get_messages,sms_messages,receive_sms,clear_messages,add_user,yammer_callback
-urlpatterns = patterns('', 
-                       url(r'^$', get_messages, name='get_messages'),
-                       url(r'^sms_messages', sms_messages, name='sms_messages'),
-                       url(r'^receive_sms', receive_sms, name='receive_sms'),
-                       url(r'^clear_messages', clear_messages, name='clear_messages'),
-                       url(r'^add_user', add_user, name='add_user'),
-                       url(r'^yammer_callback', yammer_callback, name='yammer_callback'),
- 
+urlpatterns = patterns('ysms.views', 
+                       url(r'^$', 'index', name='ysms-index'),
+                       url(r'^fetch-yammer-msgs/', 'fetch_yammer_msgs', name='ysms-fetch-yammer-msgs'),
+                       url(r'^send-sms-msgs/', 'send_sms_msgs', name='ysms-send-sms-msgs'),
+                       url(r'^receive_sms/', 'receive_sms', name='ysms-receive-sms'),
+                       url(r'^post-msgs-to-yammer/', 'post_msgs_to_yammer', name='ysms-post-msgs-to-yammer'),
+                       url(r'^clear-messages/', 'clear_messages', name='ysms-clear-messages'),
+                       url(r'^add-user/', 'add_user', name='ysms-add-user'),
+                       url(r'^authorize-user/(?P<yuserpk>\d+)/', 'authorize_user', name='ysms-authorize-user'),
+                       url(r'^yammer-callback/', 'yammer_callback', name='ysms-yammer-callback'),
+                       url(r'^delete-user/(?P<yuserpk>\d+)/', 'delete_user', name='ysms-delete-user'),
                        )
+

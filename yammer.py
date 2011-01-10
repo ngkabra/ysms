@@ -43,7 +43,10 @@ except ImportError:
     import simplejson as json
 import time
 import urllib
-import urlparse
+try:
+    from urlparse import parse_qsl
+except ImportError:
+    from cgi import parse_qsl
 import oauth2 as oauth
 
 class Endpoint(object):
@@ -189,7 +192,7 @@ class Yammer(object):
             if resp['status'] != '200':
                 raise Exception("Invalid response %s." % resp['status'])
 
-            self._request_token = dict(urlparse.parse_qsl(content))
+            self._request_token = dict(parse_qsl(content))
         return self._request_token
 
     def get_authorize_url(self):
@@ -204,7 +207,7 @@ class Yammer(object):
 
         # parse response
         resp, content = self.client.request(self.access_token_url, "POST")
-        access_token = dict(urlparse.parse_qsl(content))
+        access_token = dict(parse_qsl(content))
         return access_token
 
     # requests
@@ -223,7 +226,11 @@ class Yammer(object):
                 url = '%s?%s' % (url, body)
                 body = None
 
+        print 'body=', body, 'url=', url, 'method=', method
+
         resp, content = self.client.request(url, method=method, body=body)
+
+        print 'resp=', resp, 'content=', content
         try:
             json_obj = json.loads(content)
             if 'response' in json_obj and json_obj['response'].get('stat', None) == 'fail':
