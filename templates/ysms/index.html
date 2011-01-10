@@ -9,7 +9,7 @@
   <h3>Admin Tasks</h3>
   <ul>
   <li><a href="{% url ysms-add-user %}">Add Another User</a></li>
-  <li><a href="{% url ysms-fetch-yammer-msgs %}">Fetch latest messages from yammer & send sms</a></li>
+  <li><a href="{% url ysms-fetch-yammer-msgs %}">Fetch latest messages from yammer</a></li>
   {% if sms_pending %}
     <li><a href="{% url ysms-send-sms-msgs %}">Send unsent sms</a> ({{sms_pending}} are pending)</li>
   {% endif %}

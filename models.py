@@ -152,7 +152,7 @@ class SentMessage(models.Model):
         return super(SentMessage, self).save()
 
     def post_message(self):
-        yuser.post_message(self.message)
+        self.yuser.post_message(self.message)
         self.sent_time = datetime.now()
         self.save()
 
