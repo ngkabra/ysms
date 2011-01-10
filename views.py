@@ -110,7 +110,7 @@ def yammer_callback(request):
     if request.method == 'POST':
         oauth_verifier=request.POST['oauth_verifier']
         yuser = YUser.objects.get(pk=yuserpk)
-        yammer = self.yammer_api()
+        yammer = yuser.yammer_api()
         yammer._request_token = dict(oauth_token=req_token , oauth_token_secret=req_secret)       
         access_token=yammer.get_access_token(oauth_verifier)
         yuser.oauth_token=access_token['oauth_token']

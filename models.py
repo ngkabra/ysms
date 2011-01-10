@@ -1,5 +1,5 @@
-from datetime import datetime
-
+from datetime import *
+from sms import SmsGupshupSender
 from django.db import models
 from yammer import Yammer 
 from django.conf import settings
@@ -88,13 +88,13 @@ class MessageManager(models.Manager):
         del_messages=Message.objects.filter(sms_sent__lt=date).all() 
         del_messages.delete()
 
-    def to_send_sms(self,cnt):
+    def to_send_sms(self):
         cnt=0 
         for sms in self.all():
             if sms.sms_sent==None:
                 s = SmsGupshupSender()   
                 s.send(sms.to_user.mobile_no,sms.message)
-                sms.sms_sent=datetime.datetime.now()
+                sms.sms_sent=datetime.now()
                 sms.save()
                 cnt += 1
         return cnt 
