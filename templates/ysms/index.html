@@ -10,7 +10,11 @@
   <ul>
   <li><a href="{% url ysms-add-user %}">Add Another User</a></li>
   <li><a href="{% url ysms-fetch-yammer-msgs %}">Fetch latest messages from yammer & send sms</a></li>
-  <li><a href="{% url ysms-send-sms-msgs %}">Send unsent sms if any</a></li>
-  <li><a href="{% url ysms-post-msgs-to-yammer %}">Post pending messages to Yammer</a></li>
+  {% if sms_pending %}
+    <li><a href="{% url ysms-send-sms-msgs %}">Send unsent sms</a> ({{sms_pending}} are pending)</li>
+  {% endif %}
+  {% if post_pending %}
+    <li><a href="{% url ysms-post-msgs-to-yammer %}">Post pending messages to Yammer</a> ({{post_pending}} are pending)</li>
+  {% endif %}
   </ul>
 
