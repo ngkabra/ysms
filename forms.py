@@ -2,7 +2,8 @@ import re
 
 from django import forms
 from models import YUser
-class YUserForm(froms.ModelForm):
+
+class YUserForm(forms.ModelForm):
     def clean_mobile_no(self):
         mno = self.cleaned_data['mobile_no']
         mno = mno.replace(' ', '') # remove spaces
