@@ -44,10 +44,16 @@ class YUser(models.Model):
                  consumer_secret=settings.YAMMER_CONSUMER_SECRET,
                  oauth_token=self.oauth_token,
                  oauth_token_secret=self.oauth_token_secret)
-        all_messages= yammer.messages.following(newer_than=self.max_message_id)
+        all_messages = yammer.messages.following(newer_than=self.max_message_id)
         cnt = self.get_all_messages(all_messages)  
         self.update_max_message_id()
         return cnt
+
+    def yammer_api(self):
+        return Yammer(consumer_key=settings.YAMMER_CONSUMER_KEY, 
+                      consumer_secret=settings.YAMMER_CONSUMER_SECRET,
+                      oauth_token=self.oauth_token,
+                      oauth_token_secret=self.oauth_token_secret) 
 
     def post_message(self, content):
         yammer = Yammer(consumer_key=settings.YAMMER_CONSUMER_KEY, 
