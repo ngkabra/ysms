@@ -20,8 +20,8 @@ def index(request):
 
 
 def get_messages(request):
-    YUser.objects.get_messages()
-    return HttpResponse("Messages Updated")
+    cnt = YUser.objects.get_messages()
+    return HttpResponse("%d Messages Fetched" % cnt)
 
 def sms_messages(request):  
     sms_to_send= Message.objects.all()  
