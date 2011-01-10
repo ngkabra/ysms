@@ -8,10 +8,10 @@ from django.db.models import Max
 # Create your models here.
 
 class YUserManager(models.Manager):
-    def get_messages(self):
+    def fetch_yammer_msgs(self):
         cnt = 0
         for yuser in self.filter(disable_receives=False):
-            cnt += yuser.update_messages()
+            cnt += yuser.fetch_yammer_msgs()
         return cnt
     
     def delete_user(self, yuserpk):
@@ -39,7 +39,7 @@ class YUser(models.Model):
 
     objects = YUserManager()
     
-    def update_messages(self):
+    def fetch_yammer_msgs(self):
         yammer = Yammer(consumer_key=settings.YAMMER_CONSUMER_KEY, 
                  consumer_secret=settings.YAMMER_CONSUMER_SECRET,
                  oauth_token=self.oauth_token,
@@ -49,17 +49,17 @@ class YUser(models.Model):
         self.update_max_message_id()
         return cnt
 
-    def post_message(self,content):
+    def post_message(self, content):
         yammer = Yammer(consumer_key=settings.YAMMER_CONSUMER_KEY, 
                  consumer_secret=settings.YAMMER_CONSUMER_SECRET,
                  oauth_token=self.oauth_token,
                  oauth_token_secret=self.oauth_token_secret) 
         yammer.messages.post(content)         
 
-    def get_all_messages(self,all_messages):
+    def get_all_messages(self, all_messages):
         cnt = 0
         for message in all_messages: 
-            if self.yammer_user_id!= message['sender_id']:
+            if self.yammer_user_id != message['sender_id']:
                 try:
                     sender=YUser.objects.get(yammer_user_id=message['sender_id'])
                 except YUser.DoesNotExist: 
@@ -127,6 +127,13 @@ class SentMessageManager(models.Manager):
     def delete_messages(self,date):
         del_sent_messages=SentMessage.objects.filter(sms_sent__lt=date).all() 
         del_sent_messages.delete()
+
+    def post_pending(self):
+        cnt = 0
+        for msg in self.filter(sent_time__isnull=True):
+            msg.post_message()
+            cnt += 1
+        return cnt
           
 class SentMessage(models.Model): 
     yuser=models.ForeignKey(YUser)
@@ -138,6 +145,11 @@ class SentMessage(models.Model):
         if not self.received_time:
             self.received_time = datetime.now()
         return super(SentMessage, self).save()
+
+    def post_message(self):
+        yuser.post_message(self.message)
+        self.sent_time = datetime.now()
+        self.save()
 
     def __unicode__(self):
         m = self.message 

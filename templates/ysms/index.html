@@ -3,8 +3,14 @@
   {% endif %}
   <ul>
     {% for yuser in yusers %}
-      <li>{{yuser}}. <a href="{% url authorize_user yuserpk=yuser.pk %}">(Re-)authorize</a>, <a href="{% url delete_user yuserpk=yuser.pk %}">Delete</a> </li>
+      <li>{{yuser}}. <a href="{% url ysms-authorize-user yuserpk=yuser.pk %}">(Re-)authorize</a>, <a href="{% url ysms-delete-user yuserpk=yuser.pk %}">Delete</a> </li>
     {% endfor %}
   </ul>
-  <p><a href="{% url add_user %}">Add Another User</a></p>
+  <h3>Admin Tasks</h3>
+  <ul>
+  <li><a href="{% url ysms-add-user %}">Add Another User</a></li>
+  <li><a href="{% url ysms-fetch-yammer-msgs %}">Fetch latest messages from yammer & send sms</a></li>
+  <li><a href="{% url ysms-send-sms-msgs %}">Send unsent sms if any</a></li>
+  <li><a href="{% url ysms-post-msgs-to-yammer %}">Post pending messages to Yammer</a></li>
+  </ul>
 
