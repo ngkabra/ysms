@@ -9,7 +9,7 @@ from django.db.models import Max
 
 class YUserManager(models.Manager):
     def get_messages(self):
-        for yuser in self.all():
+        for yuser in self.filter(disable_receives=False):
             yuser.update_messages()
     
     def delete_user(self, yuserpk):
