@@ -9,8 +9,10 @@ from django.db.models import Max
 
 class YUserManager(models.Manager):
     def get_messages(self):
+        cnt = 0
         for yuser in self.filter(disable_receives=False):
-            yuser.update_messages()
+            cnt += yuser.update_messages()
+        return cnt
     
     def delete_user(self, yuserpk):
         Message.objects.filter(from_user__pk=yuserpk).delete()
@@ -43,8 +45,9 @@ class YUser(models.Model):
                  oauth_token=self.oauth_token,
                  oauth_token_secret=self.oauth_token_secret)
         all_messages= yammer.messages.following(newer_than=self.max_message_id)
-        self.get_all_messages(all_messages)  
+        cnt = self.get_all_messages(all_messages)  
         self.update_max_message_id()
+        return cnt
 
     def post_message(self,content):
         yammer = Yammer(consumer_key=settings.YAMMER_CONSUMER_KEY, 
@@ -54,6 +57,7 @@ class YUser(models.Model):
         yammer.messages.post(content)         
 
     def get_all_messages(self,all_messages):
+        cnt = 0
         for message in all_messages: 
             if self.yammer_user_id!= message['sender_id']:
                 try:
@@ -62,6 +66,8 @@ class YUser(models.Model):
                     sender=None   
                 yammer_mes=Message(from_user=sender,to_user=self,message=message['body']['parsed'],thread_id=message['thread_id'],message_id=message['id'])
                 yammer_mes.save() 
+                cnt += 1
+        return cnt
         
     def update_max_message_id(self):
         q =Message.objects.filter(from_user=self).aggregate(Max('message_id'))
@@ -109,11 +115,17 @@ class Message(models.Model):
     message_id=models.BigIntegerField(default=0)
     from_user=models.ForeignKey(YUser, null=True, blank=True)
     to_user=models.ForeignKey(YUser,related_name='to_user_set', null=True, blank=True)
-    message=models.CharField(max_length=140, editable=True)
+    message=models.CharField(max_length=140)
     sms_sent=models.DateTimeField(null=True,editable=False)
     unique_together = ("message_id","to_user")
     def __unicode__(self):
-        return self.message
+        m = self.message
+        if self.sms_sent:
+            m += " (sms sent)"
+        else:
+            m += " (sms not sent)"
+        return m
+
     objects = MessageManager()
                 
 class SentMessageManager(models.Manager):   
@@ -133,4 +145,10 @@ class SentMessage(models.Model):
         return super(SentMessage, self).save()
 
     def __unicode__(self):
-        return self.message 
+        m = self.message 
+        if self.sent_time:
+            m += " (sent)"
+        else:
+            m += " (not sent)"
+        return m
+
