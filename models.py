@@ -78,14 +78,8 @@ class YUser(models.Model):
         yammer = Yammer(consumer_key=settings.YAMMER_CONSUMER_KEY,
                  consumer_secret=settings.YAMMER_CONSUMER_SECRET                 
                  )
-<<<<<<< Updated upstream
-        print yammer.request_token['oauth_token']  
-        request.session['request_token'] = yammer._request_token['oauth_token']
-        request.session['request_token_secret']=yammer._request_token['oauth_token_secret']
-=======
         request.session['request_token'] = yammer.request_token['oauth_token']
         request.session['request_token_secret'] = yammer.request_token['oauth_token_secret']
->>>>>>> Stashed changes
         return yammer
 
     def to_get_access_token(self,request,oauth_verifier):
@@ -167,4 +161,3 @@ class SentMessage(models.Model):
         else:
             m += " (not sent)"
         return m
-
