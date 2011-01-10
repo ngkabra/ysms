@@ -87,8 +87,8 @@ def yammer_callback(request):
     yuserpk = request.session.get('yuser_pk')
     req_token = request.session.get('request_token')
     req_secret = request.session.get('request_token_secret')
-    if not yuserpk or not req_token or not req_secret:
-        return HttpResponse('Error')
+    '''if not yuserpk or not req_token or not req_secret:
+        return HttpResponse('Error')'''
     if request.method == 'POST':
         oauth_verifier=request.POST['oauth_verifier']
         yuser = YUser.objects.get(pk=yuserpk)
