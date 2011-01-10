@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from django.db import models
+from django.db import models, IntegrityError
 from yammer import Yammer 
 from django.conf import settings
 from django.db.models import Max
@@ -71,7 +71,7 @@ class YUser(models.Model):
                     try:
                         yammer_mes.save() 
                         cnt += 1
-                    except:
+                    except IntegrityError:
                         pass    # probably a unique-together violation
                 except YUser.DoesNotExist: 
                     pass
@@ -83,16 +83,13 @@ class YUser(models.Model):
         return cnt
         
     def to_get_request_token(self,request):
-        yammer = Yammer(consumer_key=settings.YAMMER_CONSUMER_KEY,
-                 consumer_secret=settings.YAMMER_CONSUMER_SECRET                 
-                 )
+        yammer = self.yammer_api()
         request.session['request_token'] = yammer.request_token['oauth_token']
         request.session['request_token_secret'] = yammer.request_token['oauth_token_secret']
         return yammer
 
     def to_get_access_token(self,request,oauth_verifier):
-        yammer = Yammer(consumer_key=settings.YAMMER_CONSUMER_KEY, 
-                 consumer_secret=settings.YAMMER_CONSUMER_SECRET, )
+        yammer = self.yammer_api()
         yammer._request_token = dict(oauth_token=request.session['request_token'] , oauth_token_secret=request.session['request_token_secret'] )       
         access_token=yammer.get_access_token(oauth_verifier)
         self.oauth_token=access_token['oauth_token']
@@ -106,6 +103,11 @@ class YUser(models.Model):
         self.yammer_user_id=user_id['id'] 
         self.save()
         return yammer
+    
+    def unauthorize(self):
+        self.oauth_token = None
+        self.oauth_token_secret = None
+        self.save()
       
 class MessageManager(models.Manager):   
     def delete_messages(self,date):
