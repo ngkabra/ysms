@@ -45,6 +45,11 @@ class YUser(models.Model):
                       oauth_token=self.oauth_token,
                       oauth_token_secret=self.oauth_token_secret) 
 
+    def unauthorize(self):
+        self.oauth_token = None
+        self.oauth_token_secret = None
+        self.save()
+
     def fetch_yammer_msgs(self):
         yammer = self.yammer_api()
         all_messages = yammer.messages.following(newer_than=self.max_message_id)
