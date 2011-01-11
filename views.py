@@ -30,14 +30,9 @@ def fetch_yammer_msgs(request):
 def send_sms_msgs(request):  
     sms_to_send = Message.objects.all()  
     if sms_to_send:
-        cnt = 0
-        for sms in sms_to_send:
-            if sms.sms_sent==None:
-                s = SmsGupshupSender()   
-                s.send(sms.to_user.mobile_no,sms.message)
-                sms.sms_sent=datetime.datetime.now()
-                sms.save()
-                cnt += 1
+        cnt=Message.objects.to_send_sms()  
+        if cnt==0:
+            return HttpResponse("No new sms to send")
         return HttpResponse("%d Sms Sent" % cnt)
     return HttpResponse("There is no sms to Send")
 
@@ -87,9 +82,11 @@ def add_user(request):
         form = YUserForm(request.POST) 
         if form.is_valid(): 
             yuser = form.save()
+            yammer = yuser.yammer_api()
             request.session['yuser_pk'] = yuser.pk
-            yammer=yuser.to_get_request_token(request)
-            yammer_redirect=yammer.get_authorize_url()
+            request.session['request_token'] = yammer.request_token['oauth_token']
+            request.session['request_token_secret'] = yammer.request_token['oauth_token_secret']
+            yammer_redirect = yammer.get_authorize_url()
             return HttpResponseRedirect(yammer_redirect)
     else:
         form = YUserForm() 
@@ -100,8 +97,10 @@ def add_user(request):
 def authorize_user(request, yuserpk):
     yuser = get_object_or_404(YUser, pk=yuserpk)
     yuser.unauthorize()
+    yammer = yuser.yammer_api()
     request.session['yuser_pk'] = yuser.pk
-    yammer=yuser.to_get_request_token(request)
+    request.session['request_token'] = yammer.request_token['oauth_token']
+    request.session['request_token_secret'] = yammer.request_token['oauth_token_secret']
     return HttpResponseRedirect(yammer.get_authorize_url())
 
 @csrf_protect
@@ -114,7 +113,19 @@ def yammer_callback(request):
     if request.method == 'POST':
         oauth_verifier=request.POST['oauth_verifier']
         yuser = YUser.objects.get(pk=yuserpk)
-        yammer=yuser.to_get_access_token(request,oauth_verifier)         
+        yammer = yuser.yammer_api()
+        yammer._request_token = dict(oauth_token=req_token , oauth_token_secret=req_secret)       
+        access_token = yammer.get_access_token(oauth_verifier)
+        yuser.oauth_token = access_token['oauth_token']
+        yuser.oauth_token_secret = access_token['oauth_token_secret']
+        yuser.save()
+
+        # Unfortunately, yammer.py does not update itself with the
+        # access_token, so we need to recreate it
+        yammer = yuser.yammer_api()
+        user_id=yammer.users.current()
+        yuser.yammer_user_id=user_id['id'] 
+        yuser.save()
         return HttpResponseRedirect(reverse('ysms-index'))
     return render_to_response('ysms/yammer_callback.html', context_instance=RequestContext(request))
     

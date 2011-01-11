@@ -1,5 +1,5 @@
-from datetime import datetime
-
+from datetime import *
+from sms import SmsGupshupSender
 from django.db import models, IntegrityError
 from yammer import Yammer 
 from django.conf import settings
@@ -82,37 +82,23 @@ class YUser(models.Model):
         self.save()             # max_message_id might have been updated
         return cnt
         
-    def to_get_request_token(self,request):
-        yammer = self.yammer_api()
-        request.session['request_token'] = yammer.request_token['oauth_token']
-        request.session['request_token_secret'] = yammer.request_token['oauth_token_secret']
-        return yammer
-
-    def to_get_access_token(self,request,oauth_verifier):
-        yammer = self.yammer_api()
-        yammer._request_token = dict(oauth_token=request.session['request_token'] , oauth_token_secret=request.session['request_token_secret'] )       
-        access_token=yammer.get_access_token(oauth_verifier)
-        self.oauth_token=access_token['oauth_token']
-        self.oauth_token_secret=access_token['oauth_token_secret']
-        self.save()
-
-        # Unfortunately, yammer.py does not update itself with the
-        # access_token, so we need to recreate it
-        yammer = self.yammer_api()
-        user_id=yammer.users.current()
-        self.yammer_user_id=user_id['id'] 
-        self.save()
-        return yammer
-    
-    def unauthorize(self):
-        self.oauth_token = None
-        self.oauth_token_secret = None
-        self.save()
-      
+          
 class MessageManager(models.Manager):   
     def delete_messages(self,date):
         del_messages=Message.objects.filter(sms_sent__lt=date).all() 
         del_messages.delete()
+
+    def to_send_sms(self):
+        cnt=0 
+        for sms in self.all():
+            if sms.sms_sent==None:
+                s = SmsGupshupSender()   
+                s.send(sms.to_user.mobile_no,sms.message)
+                sms.sms_sent=datetime.now()
+                sms.save()
+                cnt += 1
+        return cnt 
+
         
                
 class Message(models.Model):
