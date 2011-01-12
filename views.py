@@ -36,13 +36,21 @@ def send_sms_msgs(request):
         return HttpResponse("%d Sms Sent" % cnt)
     return HttpResponse("There is no sms to Send")
 
-def clear_messages(request):
+def clear_msgs():
+    '''Clear Message and SentMessage instances older than a week
+
+    We have separated this out from the clear_messages view because
+    we want to be able to call this from a management command
+    '''
     now = datetime.now()
     week = timedelta(7)
     date = now - week
     Message.objects.delete_messages(date)
     SentMessage.objects.delete_messages(date)
-    return HttpResponse("Sms Deleted")
+
+def clear_messages(request):
+    clear_msgs()
+    return HttpResponse("Messages older than one week have been deleted")
 
 def receive_sms(request):
     phonecode = request.REQUEST.get('phonecode', '')
