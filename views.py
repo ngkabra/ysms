@@ -4,13 +4,15 @@ from models import YUser,Message,SentMessage
 from sms import SmsGupshupSender 
 import yammer
 from django.http import HttpResponseRedirect, HttpResponse
-import datetime
-from datetime import timedelta
+from datetime import *
 import re
 from forms import YUserForm
 from django.views.decorators.csrf import csrf_protect
 from django.template import RequestContext
 from django.core.urlresolvers import reverse
+
+sms_commands =[(re.compile(r'(samvad staff) (.*)'), 'staff'),]
+
 
 def index(request):
     yusers = YUser.objects.all()
@@ -53,7 +55,11 @@ def receive_sms(request):
 
     # the first word in a question is the keyword.
     # get rid of that
-    content = re.sub('^\w+\s+', '', content)
+    for (cmd_re, cmd_func) in sms_commands:
+        raw_query= cmd_re.match(content)
+        if raw_query:  
+            content = raw_query.group(1)
+    #content = re.sub('^\w+\s+', '', content)
     
     print 'phoneno=%s, content=%s' % (phoneno, content)
     if phoneno and content:

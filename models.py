@@ -99,13 +99,19 @@ class MessageManager(models.Manager):
                 cnt += 1
         return cnt 
 
-        
+class Groups(models.Model):
+    group_id=models.BigIntegerField(default=0)
+    keyword=models.CharField(max_length=15) 
+    name= models.CharField(max_length=15) 
+    def __unicode__(self):
+        return "%s%s" %(self.keyword,self.name)    
                
 class Message(models.Model):
     thread_id=models.BigIntegerField(default=0)
     message_id=models.BigIntegerField(default=0)
     from_user=models.ForeignKey(YUser, null=True, blank=True)
-    to_user=models.ForeignKey(YUser,related_name='to_user_set', null=True, blank=True)
+    to_user=models.ForeignKey(YUser,related_name='to_user_set', blank=True)
+    group=models.ForeignKey(Groups,blank=True)
     message=models.CharField(max_length=140)
     sms_sent=models.DateTimeField(null=True,editable=False)
     class Meta:
@@ -133,9 +139,11 @@ class SentMessageManager(models.Manager):
             msg.post_message()
             cnt += 1
         return cnt
-          
+
+           
 class SentMessage(models.Model): 
     yuser=models.ForeignKey(YUser)
+    group=models.ForeignKey(Groups,blank=True)
     message=models.CharField(max_length=140)  
     received_time=models.DateTimeField(null=True, blank=True, editable=False)
     sent_time= models.DateTimeField(null=True, blank=True, editable=False) 
@@ -158,3 +166,11 @@ class SentMessage(models.Model):
         else:
             m += " (not sent)"
         return m
+    
+class Statastics(models.Model):  
+    date=models.DateTimeField(blank=True, editable=False)
+    sms_sent=models.IntegerField(default=0)
+    sms_received=models.IntegerField(default=0)
+        
+
+    
