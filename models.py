@@ -1,6 +1,6 @@
 from datetime import *
 from sms import SmsGupshupSender
-from django.db import models
+from django.db import models, IntegrityError
 from yammer import Yammer 
 from django.conf import settings
 from django.db.models import Max
@@ -45,6 +45,11 @@ class YUser(models.Model):
                       oauth_token=self.oauth_token,
                       oauth_token_secret=self.oauth_token_secret) 
 
+    def unauthorize(self):
+        self.oauth_token = None
+        self.oauth_token_secret = None
+        self.save()
+
     def fetch_yammer_msgs(self):
         yammer = self.yammer_api()
         all_messages = yammer.messages.following(newer_than=self.max_message_id)
@@ -71,7 +76,7 @@ class YUser(models.Model):
                     try:
                         yammer_mes.save() 
                         cnt += 1
-                    except:
+                    except IntegrityError:
                         pass    # probably a unique-together violation
                 except YUser.DoesNotExist: 
                     pass

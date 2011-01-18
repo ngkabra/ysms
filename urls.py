@@ -8,7 +8,7 @@ urlpatterns = patterns('ysms.views',
                        url(r'^clear-messages/', 'clear_messages', name='ysms-clear-messages'),
                        url(r'^add-user/', 'add_user', name='ysms-add-user'),
                        url(r'^authorize-user/(?P<yuserpk>\d+)/', 'authorize_user', name='ysms-authorize-user'),
-                       url(r'^yammer-callback/', 'yammer_callback', name='ysms-yammer-callback'),
+                       url(r'^yammer_callback/', 'yammer_callback', name='ysms-yammer-callback'),
                        url(r'^delete-user/(?P<yuserpk>\d+)/', 'delete_user', name='ysms-delete-user'),
                        )
 

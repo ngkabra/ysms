@@ -38,13 +38,21 @@ def send_sms_msgs(request):
         return HttpResponse("%d Sms Sent" % cnt)
     return HttpResponse("There is no sms to Send")
 
-def clear_messages(request):
+def clear_msgs():
+    '''Clear Message and SentMessage instances older than a week
+
+    We have separated this out from the clear_messages view because
+    we want to be able to call this from a management command
+    '''
     now = datetime.now()
     week = timedelta(7)
     date = now - week
     Message.objects.delete_messages(date)
     SentMessage.objects.delete_messages(date)
-    return HttpResponse("Sms Deleted")
+
+def clear_messages(request):
+    clear_msgs()
+    return HttpResponse("Messages older than one week have been deleted")
 
 def receive_sms(request):
     phonecode = request.REQUEST.get('phonecode', '')
@@ -88,11 +96,11 @@ def add_user(request):
         form = YUserForm(request.POST) 
         if form.is_valid(): 
             yuser = form.save()
+            yammer = yuser.yammer_api()
             request.session['yuser_pk'] = yuser.pk
-            yammer=yuser.yammer_api()
             request.session['request_token'] = yammer.request_token['oauth_token']
             request.session['request_token_secret'] = yammer.request_token['oauth_token_secret']
-            yammer_redirect=yammer.get_authorize_url()
+            yammer_redirect = yammer.get_authorize_url()
             return HttpResponseRedirect(yammer_redirect)
     else:
         form = YUserForm() 
@@ -102,8 +110,11 @@ def add_user(request):
 
 def authorize_user(request, yuserpk):
     yuser = get_object_or_404(YUser, pk=yuserpk)
+    yuser.unauthorize()
+    yammer = yuser.yammer_api()
     request.session['yuser_pk'] = yuser.pk
-    yammer=yuser.to_get_request_token(request)
+    request.session['request_token'] = yammer.request_token['oauth_token']
+    request.session['request_token_secret'] = yammer.request_token['oauth_token_secret']
     return HttpResponseRedirect(yammer.get_authorize_url())
 
 @csrf_protect
@@ -118,9 +129,9 @@ def yammer_callback(request):
         yuser = YUser.objects.get(pk=yuserpk)
         yammer = yuser.yammer_api()
         yammer._request_token = dict(oauth_token=req_token , oauth_token_secret=req_secret)       
-        access_token=yammer.get_access_token(oauth_verifier)
-        yuser.oauth_token=access_token['oauth_token']
-        yuser.oauth_token_secret=access_token['oauth_token_secret']
+        access_token = yammer.get_access_token(oauth_verifier)
+        yuser.oauth_token = access_token['oauth_token']
+        yuser.oauth_token_secret = access_token['oauth_token_secret']
         yuser.save()
 
         # Unfortunately, yammer.py does not update itself with the
