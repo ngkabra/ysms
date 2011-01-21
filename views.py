@@ -1,6 +1,6 @@
 # Create your views here.
 from django.shortcuts import render_to_response, get_object_or_404
-from models import YUser,Message,SentMessage,Groups
+from models import YUser,Message,SentMessage,Groups,Statastics,Company
 from sms import SmsGupshupSender 
 import yammer
 from django.http import HttpResponseRedirect, HttpResponse
@@ -10,23 +10,29 @@ from forms import YUserForm
 from django.views.decorators.csrf import csrf_protect
 from django.template import RequestContext
 from django.core.urlresolvers import reverse
+from django.contrib.auth.decorators import login_required
+from django.http import Http404
+
 
 sms_commands =[(re.compile(r'samvad staff (.*$)'), 'staff'),]
 
 
 def index(request):
-    yusers = YUser.objects.all()
-    post_pending = SentMessage.objects.filter(sent_time__isnull=True).count()
-    sms_pending = Message.objects.filter(sms_sent__isnull=True).count()
-    return render_to_response('ysms/index.html', 
-                              dict(yusers=yusers,
+    if request.user.is_authenticated():
+        yusers = YUser.objects.filter(company=request.user)
+        post_pending = SentMessage.objects.filter(sent_time__isnull=True).count()
+        sms_pending = Message.objects.filter(sms_sent__isnull=True).count()
+        return render_to_response('ysms/index.html', 
+                                   dict(yusers=yusers,
                                    post_pending=post_pending,
                                    sms_pending=sms_pending),
                               context_instance=RequestContext(request))
-
+    else:
+        raise Http404    
 
 def fetch_yammer_msgs(request):
     cnt = YUser.objects.fetch_yammer_msgs()
+    Message.objects.sms_update_statastics(cnt,request,'received') 
     return HttpResponse("%d Messages Fetched" % cnt)
 
 def send_sms_msgs(request):  
@@ -35,6 +41,7 @@ def send_sms_msgs(request):
         cnt=Message.objects.to_send_sms()  
         if cnt==0:
             return HttpResponse("No new sms to send")
+        Message.objects.sms_update_statastics(cnt,request,'sent')  
         return HttpResponse("%d Sms Sent" % cnt)
     return HttpResponse("There is no sms to Send")
 
@@ -55,6 +62,7 @@ def clear_messages(request):
     return HttpResponse("Messages older than one week have been deleted")
 
 def receive_sms(request):
+    cnt=1
     phoneno = request.REQUEST.get('msisdn', '')
     content = request.REQUEST.get('content', '')
     # the first word in a question is the keyword.
@@ -72,6 +80,8 @@ def receive_sms(request):
             yuser = YUser.objects.get(mobile_no=phoneno)
             sent_message=SentMessage(yuser=yuser,message=content,group=group)
             sent_message.save()
+            Message.objects.sms_update_statastics(cnt,request,'sent') 
+        
         except YUser.DoesNotExist:
             return HttpResponse('There was some error')
         # send this message to yammer
@@ -85,34 +95,41 @@ def post_msgs_to_yammer(request):
     cnt = SentMessage.objects.post_pending()
     return HttpResponse('%d msgs posted' % cnt)
 
+
 @csrf_protect
 def add_user(request):
-    if request.method == 'POST':
-        form = YUserForm(request.POST) 
-        if form.is_valid(): 
-            form.company = request.user
-            yuser = form.save()
-            yammer = yuser.yammer_api()
-            request.session['yuser_pk'] = yuser.pk
-            request.session['request_token'] = yammer.request_token['oauth_token']
-            request.session['request_token_secret'] = yammer.request_token['oauth_token_secret']
-            yammer_redirect = yammer.get_authorize_url()
-            return HttpResponseRedirect(yammer_redirect)
-    else:
-        form = YUserForm() 
-    return render_to_response('ysms/add_user.html', {
+    if request.user.is_authenticated():
+        if request.method == 'POST':
+            form = YUserForm(request.POST) 
+            if form.is_valid(): 
+                form.company = request.user
+                yuser = form.save()
+                yammer = yuser.yammer_api()
+                request.session['yuser_pk'] = yuser.pk
+                request.session['request_token'] = yammer.request_token['oauth_token']
+                request.session['request_token_secret'] = yammer.request_token['oauth_token_secret']
+                yammer_redirect = yammer.get_authorize_url()
+                return HttpResponseRedirect(yammer_redirect)
+        else:
+            form = YUserForm() 
+        return render_to_response('ysms/add_user.html', {
         'form': form,
-    }, context_instance=RequestContext(request))
+        }, context_instance=RequestContext(request))
+    else:
+        raise Http404
 
 def authorize_user(request, yuserpk):
-    yuser = get_object_or_404(YUser, pk=yuserpk)
-    yuser.unauthorize()
-    yammer = yuser.yammer_api()
-    request.session['yuser_pk'] = yuser.pk
-    request.session['request_token'] = yammer.request_token['oauth_token']
-    request.session['request_token_secret'] = yammer.request_token['oauth_token_secret']
-    return HttpResponseRedirect(yammer.get_authorize_url())
-
+    if request.user.is_authenticated():
+        yuser = get_object_or_404(YUser, pk=yuserpk)
+        yuser.unauthorize()
+        yammer = yuser.yammer_api()
+        request.session['yuser_pk'] = yuser.pk
+        request.session['request_token'] = yammer.request_token['oauth_token']
+        request.session['request_token_secret'] = yammer.request_token['oauth_token_secret']
+        return HttpResponseRedirect(yammer.get_authorize_url())
+    else:
+        raise Http404
+    
 @csrf_protect
 def yammer_callback(request):
     yuserpk = request.session.get('yuser_pk')
@@ -134,12 +151,15 @@ def yammer_callback(request):
         # access_token, so we need to recreate it
         yammer = yuser.yammer_api()
         user_id=yammer.users.current()
+        yuser.company=request.user 
         yuser.yammer_user_id=user_id['id'] 
         yuser.save()
         return HttpResponseRedirect(reverse('ysms-index'))
     return render_to_response('ysms/yammer_callback.html', context_instance=RequestContext(request))
-    
 
 def delete_user(request, yuserpk):
-    YUser.objects.delete_user(yuserpk)
-    return HttpResponseRedirect(reverse('ysms-index'))
+    if request.user.is_authenticated():
+        YUser.objects.delete_user(yuserpk)
+        return HttpResponseRedirect(reverse('ysms-index'))
+    else:
+        raise Http404

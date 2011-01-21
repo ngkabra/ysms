@@ -97,7 +97,7 @@ class YUser(models.Model):
                                 group=Groups.objects.get(group_id=message['group_id'])
                                 yammer_mes.group=group
                                 yammer_mes.save()
-                            except Message.DoesNotExist :
+                            except Groups.DoesNotExist :
                                 pass 
                         cnt += 1
                     except IntegrityError:
@@ -128,8 +128,28 @@ class MessageManager(models.Manager):
                 sms.save()
                 cnt += 1
         return cnt 
-
-               
+    
+    def sms_update_statastics(self,cnt,request,update):
+        company=Company.objects.get(admins=request.user)
+        try:
+                stats=Statastics.objects.get(date=date.today())
+                stats.company=company
+                if update=='received':
+                    stats.sms_received=stats.sms_sent + cnt
+                else:
+                    stats.sms_sent=stats.sms_sent + cnt    
+                stats.save()
+        except Statastics.DoesNotExist:
+                stats=Statastics()
+                stats.company=company
+                stats.date=date.today()
+                if update=='received':
+                    stats.sms_received= cnt
+                else:
+                    stats.sms_sent= cnt    
+                stats.save()     
+                
+                             
 class Message(models.Model):
     thread_id= models.BigIntegerField(default=0)
     message_id= models.BigIntegerField(default=0)
@@ -195,6 +215,6 @@ class SentMessage(models.Model):
 
 class Statastics(models.Model):  
     company=models.ForeignKey(Company,blank=True) 
-    date= models.DateTimeField(blank=True, editable=False)
+    date= models.DateField(blank=True, editable=False)
     sms_sent= models.IntegerField(default=0)
     sms_received= models.IntegerField(default=0)         
