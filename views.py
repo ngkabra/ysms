@@ -1,6 +1,6 @@
 # Create your views here.
 from django.shortcuts import render_to_response, get_object_or_404
-from models import YUser,Message,SentMessage
+from models import YUser,Message,SentMessage,Groups
 from sms import SmsGupshupSender 
 import yammer
 from django.http import HttpResponseRedirect, HttpResponse
@@ -11,7 +11,7 @@ from django.views.decorators.csrf import csrf_protect
 from django.template import RequestContext
 from django.core.urlresolvers import reverse
 
-sms_commands =[(re.compile(r'(samvad staff) (.*)'), 'staff'),]
+sms_commands =[(re.compile(r'samvad staff (.*$)'), 'staff'),]
 
 
 def index(request):
@@ -55,33 +55,28 @@ def clear_messages(request):
     return HttpResponse("Messages older than one week have been deleted")
 
 def receive_sms(request):
-    phonecode = request.REQUEST.get('phonecode', '')
-    keyword = request.REQUEST.get('keyword', '')
     phoneno = request.REQUEST.get('msisdn', '')
     content = request.REQUEST.get('content', '')
-    
-
     # the first word in a question is the keyword.
     # get rid of that
-    for (cmd_re, cmd_func) in sms_commands:
-        raw_query= cmd_re.match(content)
-        if raw_query:  
-            content = raw_query.group(1)
-    #content = re.sub('^\w+\s+', '', content)
-    
+    for (cmd_re, group_name) in sms_commands:
+        sms= cmd_re.match(content)
+        group=Groups.objects.get(name=group_name)
+        if sms:  
+            content = sms.group(1)
     print 'phoneno=%s, content=%s' % (phoneno, content)
     if phoneno and content:
         if not phoneno.startswith('91'):
             phoneno = '91' + phoneno
         try:
             yuser = YUser.objects.get(mobile_no=phoneno)
-            sent_message=SentMessage(yuser=yuser,message=content)
+            sent_message=SentMessage(yuser=yuser,message=content,group=group)
             sent_message.save()
         except YUser.DoesNotExist:
             return HttpResponse('There was some error')
         # send this message to yammer
         # using auth_token of yuser
-        sent_message.post_message()
+        sent_message.post_message(group.group_id)
         return HttpResponse('Thank you, your message has been posted')
 
     return HttpResponse('Done')
@@ -95,6 +90,7 @@ def add_user(request):
     if request.method == 'POST':
         form = YUserForm(request.POST) 
         if form.is_valid(): 
+            form.company = request.user
             yuser = form.save()
             yammer = yuser.yammer_api()
             request.session['yuser_pk'] = yuser.pk

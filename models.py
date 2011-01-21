@@ -3,15 +3,30 @@ from sms import SmsGupshupSender
 from django.db import models, IntegrityError
 from yammer import Yammer 
 from django.conf import settings
-from django.db.models import Max
+from django.contrib.auth.models import User
 
 # Create your models here.
+class Company(models.Model):  
+    name= models.CharField(max_length=140)        
+    admins= models.ManyToManyField(User,blank=True) 
+    gupshup_user= models.CharField(max_length=140)  
+    gupsup_password= models.CharField(max_length=140)  
+    def __unicode__(self):
+        return "%s%s%s" %(self.gupshup_user,self.name,self.gupsup_password)
+    
+    
+class Groups(models.Model):
+    group_id= models.IntegerField(default=0)
+    keyword= models.CharField(max_length=15) 
+    name= models.CharField(max_length=15) 
+    def __unicode__(self):
+        return "%s%s" %(self.keyword,self.name)    
+
 
 class YUserManager(models.Manager):
     def fetch_yammer_msgs(self):
-        cnt = 0
         for yuser in self.exclude(disable_receives=True):
-            cnt += yuser.fetch_yammer_msgs()
+            cnt = yuser.fetch_yammer_msgs()
         return cnt
     
     def delete_user(self, yuserpk):
@@ -22,13 +37,14 @@ class YUserManager(models.Manager):
 
 
 class YUser(models.Model):
-    yammer_user_id=models.BigIntegerField(null=True,default=0)
-    max_message_id=models.BigIntegerField(default=0)
-    fullname=models.CharField(max_length=100)
-    mobile_no=models.CharField(max_length=13)
-    disable_receives=models.BooleanField(default=False)
-    oauth_token=models.CharField(null=True,max_length=150)
-    oauth_token_secret=models.CharField(null=True,max_length=150)
+    yammer_user_id= models.BigIntegerField(null=True,default=0)
+    max_message_id= models.BigIntegerField(default=0)
+    company= models.ForeignKey(User,null=True,blank=True) 
+    fullname= models.CharField(max_length=100)
+    mobile_no= models.CharField(max_length=13)
+    disable_receives= models.BooleanField(default=False)
+    oauth_token= models.CharField(null=True,max_length=150)
+    oauth_token_secret= models.CharField(null=True,max_length=150)
     def __unicode__(self):
         s = "%s (%s)" % (self.fullname, self.mobile_no)
         if self.oauth_token:
@@ -65,6 +81,7 @@ class YUser(models.Model):
             msg_id = message['id']
             if self.max_message_id <= msg_id:
                 self.max_message_id = msg_id
+                print message['sender_id']
             if self.yammer_user_id != message['sender_id']:
                 try:
                     sender=YUser.objects.get(yammer_user_id=message['sender_id'])
@@ -73,18 +90,26 @@ class YUser(models.Model):
                                        message=message['body']['parsed'],
                                        thread_id=message['thread_id'],
                                        message_id=msg_id)
-                    try:
-                        yammer_mes.save() 
+                    try: 
+                        yammer_mes.save()
+                        if message.get('group_id',None):
+                            try:
+                                group=Groups.objects.get(group_id=message['group_id'])
+                                yammer_mes.group=group
+                                yammer_mes.save()
+                            except Message.DoesNotExist :
+                                pass 
                         cnt += 1
                     except IntegrityError:
-                        pass    # probably a unique-together violation
+                        pass    # probably a unique-together violation    
+                
                 except YUser.DoesNotExist: 
                     pass
-                    # Error?!
-                    # Probably a user that has been added to
-                    # yammer but not added to this gateway.
-                    # for now, ignore...
-        self.save()             # max_message_id might have been updated
+                        # Error?!
+                        # Probably a user that has been added to
+                        # yammer but not added to this gateway.
+                        # for now, ignore...
+        self.save() 
         return cnt
         
           
@@ -104,21 +129,15 @@ class MessageManager(models.Manager):
                 cnt += 1
         return cnt 
 
-class Groups(models.Model):
-    group_id=models.BigIntegerField(default=0)
-    keyword=models.CharField(max_length=15) 
-    name= models.CharField(max_length=15) 
-    def __unicode__(self):
-        return "%s%s" %(self.keyword,self.name)    
                
 class Message(models.Model):
-    thread_id=models.BigIntegerField(default=0)
-    message_id=models.BigIntegerField(default=0)
-    from_user=models.ForeignKey(YUser, null=True, blank=True)
-    to_user=models.ForeignKey(YUser,related_name='to_user_set', blank=True)
-    group=models.ForeignKey(Groups,blank=True)
-    message=models.CharField(max_length=140)
-    sms_sent=models.DateTimeField(null=True,editable=False)
+    thread_id= models.BigIntegerField(default=0)
+    message_id= models.BigIntegerField(default=0)
+    from_user= models.ForeignKey(YUser, null=True, blank=True)
+    to_user= models.ForeignKey(YUser,related_name='to_user_set', blank=True)
+    group= models.ForeignKey(Groups,null=True,blank=True)
+    message= models.CharField(max_length=140)
+    sms_sent= models.DateTimeField(null=True,editable=False)
     class Meta:
         unique_together = ("message_id", "to_user")
     def __unicode__(self):
@@ -147,12 +166,12 @@ class SentMessageManager(models.Manager):
 
            
 class SentMessage(models.Model): 
-    yuser=models.ForeignKey(YUser)
-    group=models.ForeignKey(Groups,blank=True)
-    message=models.CharField(max_length=140)  
-    received_time=models.DateTimeField(null=True, blank=True, editable=False)
+    yuser= models.ForeignKey(YUser)
+    group= models.ForeignKey(Groups,blank=True)
+    message= models.CharField(max_length=140)  
+    received_time= models.DateTimeField(null=True, blank=True, editable=False)
     sent_time= models.DateTimeField(null=True, blank=True, editable=False) 
-    objects =SentMessageManager()
+    objects= SentMessageManager()
     def save(self):
         if not self.received_time:
             self.received_time = datetime.now()
@@ -172,10 +191,10 @@ class SentMessage(models.Model):
             m += " (not sent)"
         return m
     
-class Statastics(models.Model):  
-    date=models.DateTimeField(blank=True, editable=False)
-    sms_sent=models.IntegerField(default=0)
-    sms_received=models.IntegerField(default=0)
-        
 
-    
+
+class Statastics(models.Model):  
+    company=models.ForeignKey(Company,blank=True) 
+    date= models.DateTimeField(blank=True, editable=False)
+    sms_sent= models.IntegerField(default=0)
+    sms_received= models.IntegerField(default=0)         

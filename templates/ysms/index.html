@@ -1,3 +1,9 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<meta  http-equiv="Content-type" content="text/html; charset=utf-8" />
+<body>
+
   {% if user_msg %}
     <p class="message">Message: {{user_msg}}</p>
   {% endif %}
@@ -17,4 +23,5 @@
     <li><a href="{% url ysms-post-msgs-to-yammer %}">Post pending messages to Yammer</a> ({{post_pending}} are pending)</li>
   {% endif %}
   </ul>
-
+</body>
+</html>
