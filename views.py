@@ -67,12 +67,14 @@ def receive_sms(request):
     content = request.REQUEST.get('content', '')
     # the first word in a question is the keyword.
     # get rid of that
+    content=re.sub("\s+" , " ", content.lower().strip())
     for (cmd_re, group_name) in sms_commands:
         sms= cmd_re.match(content)
         group=Groups.objects.get(name=group_name)
         if sms:  
             content = sms.group(1)
-    print 'phoneno=%s, content=%s' % (phoneno, content)
+            print content
+   
     if phoneno and content:
         if not phoneno.startswith('91'):
             phoneno = '91' + phoneno
@@ -86,9 +88,8 @@ def receive_sms(request):
             return HttpResponse('There was some error')
         # send this message to yammer
         # using auth_token of yuser
-        sent_message.post_message(group.group_id)
+        sent_message.post_message(content)
         return HttpResponse('Thank you, your message has been posted')
-
     return HttpResponse('Done')
 
 def post_msgs_to_yammer(request):

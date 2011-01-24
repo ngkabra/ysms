@@ -72,8 +72,8 @@ class YUser(models.Model):
         cnt = self.get_all_messages(all_messages)  
         return cnt
 
-    def post_message(self, content):
-        self.yammer_api().messages.post(content)
+    def post_message(self,content,group_id):
+        self.yammer_api().messages.post(content,group_id)
 
     def get_all_messages(self, all_messages):
         cnt = 0
@@ -197,8 +197,8 @@ class SentMessage(models.Model):
             self.received_time = datetime.now()
         return super(SentMessage, self).save()
 
-    def post_message(self):
-        self.yuser.post_message(self.message)
+    def post_message(self,message):
+        self.yuser.post_message(message,self.group.group_id)
         self.sent_time = datetime.now()
         self.save()
 
