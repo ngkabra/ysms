@@ -77,6 +77,7 @@ class YUser(models.Model):
 
     def get_all_messages(self, all_messages):
         cnt = 0
+        statastics={}
         for message in all_messages: 
             msg_id = message['id']
             if self.max_message_id <= msg_id:
@@ -100,6 +101,7 @@ class YUser(models.Model):
                             except Groups.DoesNotExist :
                                 pass 
                         cnt += 1
+                        statastics[self.company]=cnt
                     except IntegrityError:
                         pass    # probably a unique-together violation    
                 
@@ -110,7 +112,7 @@ class YUser(models.Model):
                         # yammer but not added to this gateway.
                         # for now, ignore...
         self.save() 
-        return cnt
+        return statastics
         
           
 class MessageManager(models.Manager):   
@@ -120,6 +122,7 @@ class MessageManager(models.Manager):
 
     def to_send_sms(self):
         cnt=0 
+        statastics={}
         for sms in self.all():
             if sms.sms_sent==None:
                 s = SmsGupshupSender()   
@@ -127,11 +130,13 @@ class MessageManager(models.Manager):
                 sms.sms_sent=datetime.now()
                 sms.save()
                 cnt += 1
-        return cnt 
+                statastics[self.company]=cnt
+        return statastics 
     
-    def sms_update_statastics(self,cnt,request,update):
-        company=Company.objects.get(admins=request.user)
-        try:
+    def sms_update_statastics(self,statastics,update):
+        for user,cnt in statastics.iteritems():
+            company=Company.objects.get(admins=user)
+            try:
                 stats=Statastics.objects.get(date=date.today())
                 stats.company=company
                 if update=='received':
@@ -139,7 +144,7 @@ class MessageManager(models.Manager):
                 else:
                     stats.sms_sent=stats.sms_sent + cnt    
                 stats.save()
-        except Statastics.DoesNotExist:
+            except Statastics.DoesNotExist:
                 stats=Statastics()
                 stats.company=company
                 stats.date=date.today()
@@ -148,7 +153,7 @@ class MessageManager(models.Manager):
                 else:
                     stats.sms_sent= cnt    
                 stats.save()     
-                
+               
                              
 class Message(models.Model):
     thread_id= models.BigIntegerField(default=0)

@@ -31,18 +31,18 @@ def index(request):
         raise Http404    
 
 def fetch_yammer_msgs(request):
-    cnt = YUser.objects.fetch_yammer_msgs()
-    Message.objects.sms_update_statastics(cnt,request,'received') 
-    return HttpResponse("%d Messages Fetched" % cnt)
+    statastics = YUser.objects.fetch_yammer_msgs()
+    Message.objects.sms_update_statastics(statastics,'received') 
+    return HttpResponse("%d Messages Fetched" % statastics[request.user])
 
 def send_sms_msgs(request):  
     sms_to_send = Message.objects.all()  
     if sms_to_send:
-        cnt=Message.objects.to_send_sms()  
-        if cnt==0:
+        statastics=Message.objects.to_send_sms()  
+        if statastics[request.user]==0:
             return HttpResponse("No new sms to send")
-        Message.objects.sms_update_statastics(cnt,request,'sent')  
-        return HttpResponse("%d Sms Sent" % cnt)
+        Message.objects.sms_update_statastics(statastics,'sent')  
+        return HttpResponse("%d Sms Sent" % statastics[request.user])
     return HttpResponse("There is no sms to Send")
 
 def clear_msgs():
