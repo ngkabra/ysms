@@ -1,6 +1,6 @@
 # Create your views here.
 from django.shortcuts import render_to_response, get_object_or_404
-from models import YUser,Message,SentMessage,Groups,Statastics,Company
+from models import YUser,Message,SentMessage,Group,Statistics,Company
 from sms import SmsGupshupSender 
 import yammer
 from django.http import HttpResponseRedirect, HttpResponse
@@ -19,7 +19,8 @@ sms_commands =[(re.compile(r'samvad staff (.*$)'), 'staff'),]
 
 def index(request):
     if request.user.is_authenticated():
-        yusers = YUser.objects.filter(company=request.user)
+        company=Company.objects.get_company(request.user)
+        yusers = YUser.objects.filter(company=company)
         post_pending = SentMessage.objects.filter(sent_time__isnull=True).count()
         sms_pending = Message.objects.filter(sms_sent__isnull=True).count()
         return render_to_response('ysms/index.html', 
@@ -31,18 +32,16 @@ def index(request):
         raise Http404    
 
 def fetch_yammer_msgs(request):
-    statastics = YUser.objects.fetch_yammer_msgs()
-    Message.objects.sms_update_statastics(statastics,'received') 
-    return HttpResponse("%d Messages Fetched" % statastics[request.user])
+    cnt= YUser.objects.fetch_yammer_msgs()
+    return HttpResponse("%d Messages Fetched" % cnt)
 
 def send_sms_msgs(request):  
     sms_to_send = Message.objects.all()  
     if sms_to_send:
-        statastics=Message.objects.to_send_sms()  
-        if statastics[request.user]==0:
+        cnt = Message.objects.to_send_sms()  
+        if cnt == 0:
             return HttpResponse("No new sms to send")
-        Message.objects.sms_update_statastics(statastics,'sent')  
-        return HttpResponse("%d Sms Sent" % statastics[request.user])
+        return HttpResponse("%d Sms Sent" % cnt)
     return HttpResponse("There is no sms to Send")
 
 def clear_msgs():
@@ -70,7 +69,7 @@ def receive_sms(request):
     content=re.sub("\s+" , " ", content.lower().strip())
     for (cmd_re, group_name) in sms_commands:
         sms= cmd_re.match(content)
-        group=Groups.objects.get(name=group_name)
+        group=Group.objects.get(name=group_name)
         if sms:  
             content = sms.group(1)
             print content
@@ -82,7 +81,7 @@ def receive_sms(request):
             yuser = YUser.objects.get(mobile_no=phoneno)
             sent_message=SentMessage(yuser=yuser,message=content,group=group)
             sent_message.save()
-            Message.objects.sms_update_statastics(cnt,request,'sent') 
+            Statistics.objects.update_sms_received(cnt,yuser.company) 
         
         except YUser.DoesNotExist:
             return HttpResponse('There was some error')
@@ -103,7 +102,6 @@ def add_user(request):
         if request.method == 'POST':
             form = YUserForm(request.POST) 
             if form.is_valid(): 
-                form.company = request.user
                 yuser = form.save()
                 yammer = yuser.yammer_api()
                 request.session['yuser_pk'] = yuser.pk
@@ -147,12 +145,12 @@ def yammer_callback(request):
         yuser.oauth_token = access_token['oauth_token']
         yuser.oauth_token_secret = access_token['oauth_token_secret']
         yuser.save()
-
         # Unfortunately, yammer.py does not update itself with the
         # access_token, so we need to recreate it
         yammer = yuser.yammer_api()
-        user_id=yammer.users.current()
-        yuser.company=request.user 
+        user_id = yammer.users.current()
+        company = Company.objects.get_company(request.user)
+        yuser.company=company 
         yuser.yammer_user_id=user_id['id'] 
         yuser.save()
         return HttpResponseRedirect(reverse('ysms-index'))

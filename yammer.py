@@ -225,12 +225,7 @@ class Yammer(object):
             if method == 'GET':
                 url = '%s?%s' % (url, body)
                 body = None
-
-        print 'body=', body, 'url=', url, 'method=', method
-
         resp, content = self.client.request(url, method=method, body=body)
-
-        print 'resp=', resp, 'content=', content
         try:
             json_obj = json.loads(content)
             if 'response' in json_obj and json_obj['response'].get('stat', None) == 'fail':

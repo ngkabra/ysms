@@ -24,8 +24,8 @@ class SmsGupshupFailure(SmsGupshupError):
 
 class SmsGupshupSender():
     # SMS Gupshup configuration
-    username=settings.SMS_GATEWAY_USERNAME
-    password=settings.SMS_GATEWAY_PASSWORD
+    username=None
+    password=None
     version = '1.0'
     url='http://enterprise.smsgupshup.com/GatewayAPI/rest'
 
