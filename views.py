@@ -16,20 +16,19 @@ from django.http import Http404
 
 sms_commands =[(re.compile(r'samvad staff (.*$)'), 'staff'),]
 
-
+@login_required
 def index(request):
-    if request.user.is_authenticated():
-        company=Company.objects.get_company(request.user)
-        yusers = YUser.objects.filter(company=company)
-        post_pending = SentMessage.objects.filter(sent_time__isnull=True).count()
-        sms_pending = Message.objects.filter(sms_sent__isnull=True).count()
-        return render_to_response('ysms/index.html', 
+    company=Company.objects.get_company(request.user)
+    yusers = YUser.objects.filter(company=company)
+    post_pending = SentMessage.objects.filter(sent_time__isnull=True).count()
+    sms_pending = Message.objects.filter(sms_sent__isnull=True).count()
+    return render_to_response('ysms/index.html', 
                                    dict(yusers=yusers,
                                    post_pending=post_pending,
                                    sms_pending=sms_pending),
                               context_instance=RequestContext(request))
-    else:
-        raise Http404    
+    
+        
 
 def fetch_yammer_msgs(request):
     cnt= YUser.objects.fetch_yammer_msgs()
@@ -95,31 +94,30 @@ def post_msgs_to_yammer(request):
     cnt = SentMessage.objects.post_pending()
     return HttpResponse('%d msgs posted' % cnt)
 
-
+@login_required
 @csrf_protect
 def add_user(request):
-    if request.user.is_authenticated():
-        if request.method == 'POST':
-            form = YUserForm(request.POST) 
-            if form.is_valid(): 
-                yuser = form.save()
-                yammer = yuser.yammer_api()
-                request.session['yuser_pk'] = yuser.pk
-                request.session['request_token'] = yammer.request_token['oauth_token']
-                request.session['request_token_secret'] = yammer.request_token['oauth_token_secret']
-                yammer_redirect = yammer.get_authorize_url()
-                return HttpResponseRedirect(yammer_redirect)
-        else:
-            form = YUserForm() 
-        return render_to_response('ysms/add_user.html', {
+     if request.method == 'POST':
+         form = YUserForm(request.POST) 
+         if form.is_valid(): 
+             yuser = form.save()
+             yammer = yuser.yammer_api()
+             request.session['yuser_pk'] = yuser.pk
+             request.session['request_token'] = yammer.request_token['oauth_token']
+             request.session['request_token_secret'] = yammer.request_token['oauth_token_secret']
+             yammer_redirect = yammer.get_authorize_url()
+             return HttpResponseRedirect(yammer_redirect)
+     else:
+        form = YUserForm() 
+     return render_to_response('ysms/add_user.html', {
         'form': form,
         }, context_instance=RequestContext(request))
-    else:
-        raise Http404
 
+@login_required
 def authorize_user(request, yuserpk):
-    if request.user.is_authenticated():
-        yuser = get_object_or_404(YUser, pk=yuserpk)
+    yuser = get_object_or_404(YUser, pk=yuserpk)
+    company=Company.objects.get_company(request.user)
+    if yuser.company.name == company.name: 
         yuser.unauthorize()
         yammer = yuser.yammer_api()
         request.session['yuser_pk'] = yuser.pk
@@ -127,8 +125,8 @@ def authorize_user(request, yuserpk):
         request.session['request_token_secret'] = yammer.request_token['oauth_token_secret']
         return HttpResponseRedirect(yammer.get_authorize_url())
     else:
-        raise Http404
-    
+        return HttpResponseRedirect(reverse('ysms-index'))
+        
 @csrf_protect
 def yammer_callback(request):
     yuserpk = request.session.get('yuser_pk')
@@ -156,9 +154,11 @@ def yammer_callback(request):
         return HttpResponseRedirect(reverse('ysms-index'))
     return render_to_response('ysms/yammer_callback.html', context_instance=RequestContext(request))
 
+@login_required
 def delete_user(request, yuserpk):
-    if request.user.is_authenticated():
+    yuser = get_object_or_404(YUser, pk=yuserpk)
+    company=Company.objects.get_company(request.user)
+    if yuser.company.name == company.name: 
         YUser.objects.delete_user(yuserpk)
         return HttpResponseRedirect(reverse('ysms-index'))
-    else:
-        raise Http404
+    
