@@ -31,7 +31,7 @@ def index(request):
         
 
 def fetch_yammer_msgs(request):
-    cnt= YUser.objects.fetch_yammer_msgs()
+    cnt = YUser.objects.fetch_yammer_msgs()
     return HttpResponse("%d Messages Fetched" % cnt)
 
 def send_sms_msgs(request):  
@@ -60,15 +60,14 @@ def clear_messages(request):
     return HttpResponse("Messages older than one week have been deleted")
 
 def receive_sms(request):
-    cnt=1
     phoneno = request.REQUEST.get('msisdn', '')
     content = request.REQUEST.get('content', '')
     # the first word in a question is the keyword.
     # get rid of that
     content=re.sub("\s+" , " ", content.lower().strip())
     for (cmd_re, group_name) in sms_commands:
-        sms= cmd_re.match(content)
-        group=Group.objects.get(name=group_name)
+        sms = cmd_re.match(content)
+        group = Group.objects.get(name=group_name)
         if sms:  
             content = sms.group(1)
             print content
@@ -80,7 +79,7 @@ def receive_sms(request):
             yuser = YUser.objects.get(mobile_no=phoneno)
             sent_message=SentMessage(yuser=yuser,message=content,group=group)
             sent_message.save()
-            Statistics.objects.update_sms_received(cnt,yuser.company) 
+            Statistics.objects.update_sms_received(cnt=1,yuser.company) 
         
         except YUser.DoesNotExist:
             return HttpResponse('There was some error')
@@ -116,7 +115,7 @@ def add_user(request):
 @login_required
 def authorize_user(request, yuserpk):
     yuser = get_object_or_404(YUser, pk=yuserpk)
-    company=Company.objects.get_company(request.user)
+    company = Company.objects.get_company(request.user)
     if yuser.company.name == company.name: 
         yuser.unauthorize()
         yammer = yuser.yammer_api()
@@ -157,7 +156,7 @@ def yammer_callback(request):
 @login_required
 def delete_user(request, yuserpk):
     yuser = get_object_or_404(YUser, pk=yuserpk)
-    company=Company.objects.get_company(request.user)
+    company = Company.objects.get_company(request.user)
     if yuser.company.name == company.name: 
         YUser.objects.delete_user(yuserpk)
         return HttpResponseRedirect(reverse('ysms-index'))
