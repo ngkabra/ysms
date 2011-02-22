@@ -18,7 +18,7 @@ sms_commands =[(re.compile(r'samvad staff (.*$)'), 'staff'),]
 
 @login_required
 def index(request):
-    company=Company.objects.get_company(request.user)
+    company = Company.objects.get_company(request.user)
     yusers = YUser.objects.filter(company=company)
     post_pending = SentMessage.objects.filter(sent_time__isnull=True).count()
     sms_pending = Message.objects.filter(sms_sent__isnull=True).count()
