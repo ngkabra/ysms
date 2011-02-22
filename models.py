@@ -232,11 +232,11 @@ class SentMessage(models.Model):
 
 class StatisticsManager(models.Manager):
 
-    def update_sms_received(self, cnt, company):
+    def update_sms_received(self,company):
+        cnt=1
         try:
-            stats = Statistics.objects.get(date=date.today())
-            stats.company = company
-            stats.sms_received = stats.sms_sent + cnt
+            stats = Statistics.objects.get(date=date.today(),company=company)
+            stats.sms_received = stats.sms_received + cnt
             stats.save()
         except Statistics.DoesNotExist:
             stats = Statistics()
@@ -247,8 +247,7 @@ class StatisticsManager(models.Manager):
 
     def update_sms_sent(self, cnt, company):
         try:
-            stats = Statistics.objects.get(date=date.today())
-            stats.company = company
+            stats = Statistics.objects.get(date=date.today(),company=company)
             stats.sms_sent = stats.sms_sent + cnt
             stats.save()
         except Statistics.DoesNotExist:

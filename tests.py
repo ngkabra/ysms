@@ -4,20 +4,23 @@ unittest). These will both pass when you run "manage.py test".
 
 Replace these with more appropriate tests for your application.
 """
-
+import unittest
 from django.test import TestCase
 
-class SimpleTest(TestCase):
-    def test_basic_addition(self):
-        """
-        Tests that 1 + 1 always equals 2.
-        """
-        self.failUnlessEqual(1 + 1, 2)
+class TestBasic(TestCase):
+    fixtures = ['ysms.json',]
+    def test_basic(self):
+        a = 1
+        self.assertEqual(1, a)
+        
+'''class TestBasic(unittest.TestCase):
+    "Basic tests"
+    fixtures = ['/ysms/fixtures/sam.json']
+    def test_basic(self):
+        a = 1
+        self.assertEqual(1, a)
 
-__test__ = {"doctest": """
-Another way to test that 1 + 1 is equal to 2.
-
->>> 1 + 1 == 2
-True
-"""}
+    def test_basic_2(self):
+        a = 1
+        assert a == 1'''
 
