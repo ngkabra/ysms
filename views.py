@@ -14,7 +14,9 @@ from django.contrib.auth.decorators import login_required
 from django.http import Http404
 
 
-sms_commands =[(re.compile(r'samvad staff (.*$)'), 'staff'),]
+sms_commands =[(re.compile(r'samvad staff (.*$)'), 'staff'),
+               (re.compile(r'samvad Bakwaas movies (.*$)'), 'Bakwaas movies')
+               ]
 
 @login_required
 def index(request):
@@ -69,19 +71,22 @@ def receive_sms(request):
     content=re.sub("\s+" , " ", content.lower().strip())
     for (cmd_re, group_name) in sms_commands:
         sms = cmd_re.match(content)
-        group = Group.objects.get(name=group_name)
+        try:
+            group = Group.objects.get(name=group_name)
+            print group.company.name
+        except Group.DoesNotExist:
+            pass
         if sms:  
             content = sms.group(1)
-            print content
-   
+            print content   
     if phoneno and content:
         if not phoneno.startswith('91'):
             phoneno = '91' + phoneno
         try:
-            yuser = YUser.objects.get(mobile_no=phoneno)
+            yuser = YUser.objects.get(mobile_no=phoneno,company=group.company)
             sent_message=SentMessage(yuser=yuser,message=content,group=group)
             sent_message.save()
-            Statistics.objects.update_sms_received(cnt,yuser.company) 
+            Statistics.objects.update_sms_received(yuser.company) 
         
         except YUser.DoesNotExist:
             return HttpResponse('There was some error')
@@ -102,6 +107,9 @@ def add_user(request):
          form = YUserForm(request.POST) 
          if form.is_valid(): 
              yuser = form.save()
+             company = Company.objects.get_company(request.user)
+             yuser.company=company
+             yuser.save()
              yammer = yuser.yammer_api()
              request.session['yuser_pk'] = yuser.pk
              request.session['request_token'] = yammer.request_token['oauth_token']
@@ -151,8 +159,6 @@ def yammer_callback(request):
         # access_token, so we need to recreate it
         yammer = yuser.yammer_api()
         user_id = yammer.users.current()
-        company = Company.objects.get_company(request.user)
-        yuser.company=company 
         yuser.yammer_user_id=user_id['id'] 
         yuser.save()
         return HttpResponseRedirect(reverse('ysms-index'))
