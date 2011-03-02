@@ -134,11 +134,27 @@
         }
     }, 
     {
-        "pk": "ff076da185e4c4d7e1018b32707524ae", 
+        "pk": "4888dd78f66e3de3b8ffafc5db87f4da", 
         "model": "sessions.session", 
         "fields": {
-            "expire_date": "2011-03-15 13:54:20", 
-            "session_data": "gAJ9cQEoVRJfYXV0aF91c2VyX2JhY2tlbmRxAlUpZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5k\ncy5Nb2RlbEJhY2tlbmRxA1UNX2F1dGhfdXNlcl9pZHEEigECdS5jYWJhZDg1MzU3Y2FhNDg0Yjky\nYjEzOTM3MWFmNjRhZA==\n"
+            "expire_date": "2011-03-16 12:06:07", 
+            "session_data": "gAJ9cQFVCnRlc3Rjb29raWVxAlUGd29ya2VkcQNzLjhiMjgwN2I1ODAzYmQ1NTU4OWVjYmUzNzhk\nOTZiNzcz\n"
+        }
+    }, 
+    {
+        "pk": "6fa129cc087bf685b70863fda4790f57", 
+        "model": "sessions.session", 
+        "fields": {
+            "expire_date": "2011-03-16 11:57:20", 
+            "session_data": "gAJ9cQEoVRJfYXV0aF91c2VyX2JhY2tlbmRxAlUpZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5k\ncy5Nb2RlbEJhY2tlbmRxA1UNX2F1dGhfdXNlcl9pZHEEigEDdS5iOTJlN2Y4NDJhODEzNzgzM2Qz\nNzQ4OTVkMjdmNTVmOA==\n"
+        }
+    }, 
+    {
+        "pk": "85bb27587cd559715fb282547356cd8b", 
+        "model": "sessions.session", 
+        "fields": {
+            "expire_date": "2011-03-16 13:39:58", 
+            "session_data": "gAJ9cQEoVRJfYXV0aF91c2VyX2JhY2tlbmRxAlUpZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5k\ncy5Nb2RlbEJhY2tlbmRxA1UNX2F1dGhfdXNlcl9pZHEEigEBdS42YjI1NDc3MjAxZGYwYTQ2MTgw\nMmY1NWNmNjNhNmEwZQ==\n"
         }
     }, 
     {
@@ -147,6 +163,19 @@
         "fields": {
             "domain": "example.com", 
             "name": "example.com"
+        }
+    }, 
+    {
+        "pk": 132, 
+        "model": "admin.logentry", 
+        "fields": {
+            "action_flag": 2, 
+            "action_time": "2011-03-02 13:40:21", 
+            "object_repr": "samvad bakwaas moviesbakwaas movies", 
+            "object_id": "2", 
+            "change_message": "Changed keyword and name.", 
+            "user": 1, 
+            "content_type": 10
         }
     }, 
     {
@@ -1534,8 +1563,8 @@
         "fields": {
             "company": 4, 
             "group_id": 127086, 
-            "name": "Bakwaas movies", 
-            "keyword": "samvad Bakwaas movies"
+            "name": "bakwaas movies", 
+            "keyword": "samvad bakwaas movies"
         }
     }, 
     {
@@ -2307,7 +2336,7 @@
             "is_active": true, 
             "is_superuser": true, 
             "is_staff": true, 
-            "last_login": "2011-03-01 13:53:46", 
+            "last_login": "2011-03-02 13:39:58", 
             "groups": [], 
             "user_permissions": [], 
             "password": "sha1$aa5bc$6abe66dbf7d63b9a6c887ed4e3109a46eaf8f3a4", 
@@ -2325,7 +2354,7 @@
             "is_active": true, 
             "is_superuser": false, 
             "is_staff": true, 
-            "last_login": "2011-03-01 13:54:20", 
+            "last_login": "2011-03-02 12:04:37", 
             "groups": [], 
             "user_permissions": [], 
             "password": "sha1$a4a38$d663621c54e78cde9d4fd5c16a3abd42cd346344", 
@@ -2343,7 +2372,7 @@
             "is_active": true, 
             "is_superuser": false, 
             "is_staff": true, 
-            "last_login": "2011-02-28 17:48:46", 
+            "last_login": "2011-03-02 12:05:21", 
             "groups": [], 
             "user_permissions": [], 
             "password": "sha1$bce16$f85d23d70d576d0121326d16f54f24ae8cffbb92", 

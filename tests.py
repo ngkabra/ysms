@@ -46,7 +46,13 @@ class TestBasic(TestCase):
          SentMessage.objects.delete_messages(date)
          print "Sms Deleted"    
          
-    def test_login(self):
-         #self.client.login(username='samrudha', password='samrudha') 
+    def test_receive_sms(self):
          response=self.client.get('/ysms/receive_sms/?msisdn=917588234173&content=samvad staff 7 khoon maff theatre me patta saaf')
-         print response  
+         response1=self.client.get('/ysms/receive_sms/?msisdn=917588234173&content=samvad Bakwaas movies Patiala House kali ko boli pasand nah')
+         print response,response1  
+    
+    '''def test_delete_user(self):
+         self.client.login(username='samrudhasmriti', password='samrudha')
+         response=self.client.get('/ysms/delete-user/130/')  
+         print response
+         self.client.logout()'''     

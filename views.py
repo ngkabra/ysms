@@ -15,7 +15,7 @@ from django.http import Http404
 
 
 sms_commands =[(re.compile(r'samvad staff (.*$)'), 'staff'),
-               (re.compile(r'samvad Bakwaas movies (.*$)'), 'Bakwaas movies')
+               (re.compile(r'samvad bakwaas movies (.*$)'), 'bakwaas movies'),
                ]
 
 @login_required
@@ -71,14 +71,16 @@ def receive_sms(request):
     content=re.sub("\s+" , " ", content.lower().strip())
     for (cmd_re, group_name) in sms_commands:
         sms = cmd_re.match(content)
+        print group_name,content,sms
         try:
-            group = Group.objects.get(name=group_name)
-            print group.company.name
+            if sms:  
+                content = sms.group(1)
+                print content   
+                group = Group.objects.get(name=group_name)
+                print group.company.name
         except Group.DoesNotExist:
             pass
-        if sms:  
-            content = sms.group(1)
-            print content   
+        
     if phoneno and content:
         if not phoneno.startswith('91'):
             phoneno = '91' + phoneno
