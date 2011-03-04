@@ -3,25 +3,10 @@ from smsyammer.ysms.models import YUser,Message,SentMessage
 from optparse import OptionParser, make_option
 from datetime import *
 
-option_list = BaseCommand.option_list + (make_option('--ysms_cron',
-            dest='ysms_cron'), make_option('--fetch_msgs', action='store_true',dest='fetch_msgs'),
-            make_option('--sms_msgs', dest='sms_msgs'),make_option('--post_msgs', dest='post_msgs'),make_option('--clean_msgs', dest='clean_msgs'))
 
 class Command(BaseCommand):
      def handle(self,**options):
          command=Command()
-         if options.get('ysms_cron',0):
-            command.ysms_cron() 
-         if options.get('fetch_msgs',0):
-            command.fetch_msgs() 
-         if options.get('sms_msgs',0):
-            command.sms_msgs() 
-         if options.get('post_msgs',0):
-            command.post_msgs() 
-         if options.get('clean_msgs',0):
-            command.clean_msgs() 
-         
-     def ysms_cron(self):
          self.fetch_msgs()
          self.sms_msgs()
          self. post_msgs() 

@@ -71,8 +71,8 @@ class MessageEndpoint(Endpoint):
         if raw:
             return msgs
         else:
-            if 'messages' not in msgs:
-                print msgs
+            '''if 'messages' not in msgs:
+                print msgs'''
             return msgs['messages']
 
     def all(self, raw=False, older_than=None, newer_than=None, threaded=None):
@@ -232,6 +232,5 @@ class Yammer(object):
                 raise Exception(json_obj['response']['message'])
             return json_obj
         except ValueError:
-            print resp, content
-
+            pass
 

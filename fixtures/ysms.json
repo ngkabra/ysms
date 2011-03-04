@@ -166,6 +166,331 @@
         }
     }, 
     {
+        "pk": 133, 
+        "model": "admin.logentry", 
+        "fields": {
+            "action_flag": 3, 
+            "action_time": "2011-03-03 21:43:17", 
+            "object_repr": "(editor in chief) has [[tag:686038]] the wogma.com network. ::from=samrudha, to=babdu reviewwala (sms not sent)", 
+            "object_id": "25", 
+            "change_message": "", 
+            "user": 1, 
+            "content_type": 12
+        }
+    }, 
+    {
+        "pk": 134, 
+        "model": "admin.logentry", 
+        "fields": {
+            "action_flag": 3, 
+            "action_time": "2011-03-03 21:43:17", 
+            "object_repr": "has created the [[group:127086]] group: This group is for those people who can insult  anybody without any reason. ::from=samrudha, to=babdu reviewwala (sms not sent)", 
+            "object_id": "24", 
+            "change_message": "", 
+            "user": 1, 
+            "content_type": 12
+        }
+    }, 
+    {
+        "pk": 135, 
+        "model": "admin.logentry", 
+        "fields": {
+            "action_flag": 3, 
+            "action_time": "2011-03-03 21:43:17", 
+            "object_repr": "Howdy babdu? ::from=samrudha, to=babdu reviewwala (sms not sent)", 
+            "object_id": "23", 
+            "change_message": "", 
+            "user": 1, 
+            "content_type": 12
+        }
+    }, 
+    {
+        "pk": 136, 
+        "model": "admin.logentry", 
+        "fields": {
+            "action_flag": 3, 
+            "action_time": "2011-03-03 21:43:17", 
+            "object_repr": "(Sr.Reviewer) has [[tag:686038]] the wogma.com network. ::from=babdu reviewwala, to=samrudha (sms not sent)", 
+            "object_id": "22", 
+            "change_message": "", 
+            "user": 1, 
+            "content_type": 12
+        }
+    }, 
+    {
+        "pk": 137, 
+        "model": "admin.logentry", 
+        "fields": {
+            "action_flag": 3, 
+            "action_time": "2011-03-03 21:43:17", 
+            "object_repr": "Do listen \"ye jo halka halka surur hai\" ::from=babdu reviewwala, to=samrudha (sms not sent)", 
+            "object_id": "21", 
+            "change_message": "", 
+            "user": 1, 
+            "content_type": 12
+        }
+    }, 
+    {
+        "pk": 138, 
+        "model": "admin.logentry", 
+        "fields": {
+            "action_flag": 3, 
+            "action_time": "2011-03-03 21:43:17", 
+            "object_repr": "Hi ardhi chaddi. chaddi pe gaddi mili ki nahi ::from=babdu reviewwala, to=samrudha (sms not sent)", 
+            "object_id": "20", 
+            "change_message": "", 
+            "user": 1, 
+            "content_type": 12
+        }
+    }, 
+    {
+        "pk": 139, 
+        "model": "admin.logentry", 
+        "fields": {
+            "action_flag": 3, 
+            "action_time": "2011-03-03 21:43:17", 
+            "object_repr": "hi cheap editor ::from=babdu reviewwala, to=samrudha (sms not sent)", 
+            "object_id": "19", 
+            "change_message": "", 
+            "user": 1, 
+            "content_type": 12
+        }
+    }, 
+    {
+        "pk": 140, 
+        "model": "admin.logentry", 
+        "fields": {
+            "action_flag": 3, 
+            "action_time": "2011-03-03 21:43:17", 
+            "object_repr": "Hello Hi ::from=samrudha, to=dhabbimirichi (sms not sent)", 
+            "object_id": "18", 
+            "change_message": "", 
+            "user": 1, 
+            "content_type": 12
+        }
+    }, 
+    {
+        "pk": 141, 
+        "model": "admin.logentry", 
+        "fields": {
+            "action_flag": 3, 
+            "action_time": "2011-03-03 21:43:17", 
+            "object_repr": "todays our turnover  is 27 corer ::from=samrudha, to=dhabbimirichi (sms not sent)", 
+            "object_id": "17", 
+            "change_message": "", 
+            "user": 1, 
+            "content_type": 12
+        }
+    }, 
+    {
+        "pk": 142, 
+        "model": "admin.logentry", 
+        "fields": {
+            "action_flag": 3, 
+            "action_time": "2011-03-03 21:43:17", 
+            "object_repr": "oh sorry crore thanks dhabby.I would like  to give you 3 crore for a  valuable correction. ::from=samrudha, to=dhabbimirichi (sms not sent)", 
+            "object_id": "16", 
+            "change_message": "", 
+            "user": 1, 
+            "content_type": 12
+        }
+    }, 
+    {
+        "pk": 143, 
+        "model": "admin.logentry", 
+        "fields": {
+            "action_flag": 3, 
+            "action_time": "2011-03-03 21:43:17", 
+            "object_repr": "has created the [[group:115047]] group: for All workaholic people ::from=samrudha, to=dhabbimirichi (sms not sent)", 
+            "object_id": "15", 
+            "change_message": "", 
+            "user": 1, 
+            "content_type": 12
+        }
+    }, 
+    {
+        "pk": 144, 
+        "model": "admin.logentry", 
+        "fields": {
+            "action_flag": 3, 
+            "action_time": "2011-03-03 21:43:17", 
+            "object_repr": "Is it a workaholic or alcoholic ? ::from=samrudha, to=dhabbimirichi (sms not sent)", 
+            "object_id": "14", 
+            "change_message": "", 
+            "user": 1, 
+            "content_type": 12
+        }
+    }, 
+    {
+        "pk": 145, 
+        "model": "admin.logentry", 
+        "fields": {
+            "action_flag": 3, 
+            "action_time": "2011-03-03 21:43:17", 
+            "object_repr": "Mind your language .I am not going to give you this months salary. ::from=samrudha, to=dhabbimirichi (sms not sent)", 
+            "object_id": "13", 
+            "change_message": "", 
+            "user": 1, 
+            "content_type": 12
+        }
+    }, 
+    {
+        "pk": 146, 
+        "model": "admin.logentry", 
+        "fields": {
+            "action_flag": 3, 
+            "action_time": "2011-03-03 21:43:17", 
+            "object_repr": "samvad  staff bakwass ::from=samrudha, to=dhabbimirichi (sms not sent)", 
+            "object_id": "12", 
+            "change_message": "", 
+            "user": 1, 
+            "content_type": 12
+        }
+    }, 
+    {
+        "pk": 147, 
+        "model": "admin.logentry", 
+        "fields": {
+            "action_flag": 3, 
+            "action_time": "2011-03-03 21:43:17", 
+            "object_repr": "samvad  staff bakwass ::from=samrudha, to=dhabbimirichi (sms not sent)", 
+            "object_id": "11", 
+            "change_message": "", 
+            "user": 1, 
+            "content_type": 12
+        }
+    }, 
+    {
+        "pk": 148, 
+        "model": "admin.logentry", 
+        "fields": {
+            "action_flag": 3, 
+            "action_time": "2011-03-03 21:43:17", 
+            "object_repr": "samvad  staff bakwass ::from=samrudha, to=dhabbimirichi (sms not sent)", 
+            "object_id": "10", 
+            "change_message": "", 
+            "user": 1, 
+            "content_type": 12
+        }
+    }, 
+    {
+        "pk": 149, 
+        "model": "admin.logentry", 
+        "fields": {
+            "action_flag": 3, 
+            "action_time": "2011-03-03 21:43:17", 
+            "object_repr": "samvad  staff bakwass ::from=samrudha, to=dhabbimirichi (sms not sent)", 
+            "object_id": "9", 
+            "change_message": "", 
+            "user": 1, 
+            "content_type": 12
+        }
+    }, 
+    {
+        "pk": 150, 
+        "model": "admin.logentry", 
+        "fields": {
+            "action_flag": 3, 
+            "action_time": "2011-03-03 21:43:17", 
+            "object_repr": "samvad  staff bakwass ::from=samrudha, to=dhabbimirichi (sms not sent)", 
+            "object_id": "8", 
+            "change_message": "", 
+            "user": 1, 
+            "content_type": 12
+        }
+    }, 
+    {
+        "pk": 151, 
+        "model": "admin.logentry", 
+        "fields": {
+            "action_flag": 3, 
+            "action_time": "2011-03-03 21:43:17", 
+            "object_repr": "samvad  staff nachooooooooooooooooooooooooooooooooooo ::from=samrudha, to=dhabbimirichi (sms not sent)", 
+            "object_id": "7", 
+            "change_message": "", 
+            "user": 1, 
+            "content_type": 12
+        }
+    }, 
+    {
+        "pk": 152, 
+        "model": "admin.logentry", 
+        "fields": {
+            "action_flag": 3, 
+            "action_time": "2011-03-03 21:43:17", 
+            "object_repr": "samvad  staff ye dil mange more ::from=samrudha, to=dhabbimirichi (sms not sent)", 
+            "object_id": "6", 
+            "change_message": "", 
+            "user": 1, 
+            "content_type": 12
+        }
+    }, 
+    {
+        "pk": 153, 
+        "model": "admin.logentry", 
+        "fields": {
+            "action_flag": 3, 
+            "action_time": "2011-03-03 21:43:17", 
+            "object_repr": "yo alllazy people ::from=samrudha, to=dhabbimirichi (sms not sent)", 
+            "object_id": "5", 
+            "change_message": "", 
+            "user": 1, 
+            "content_type": 12
+        }
+    }, 
+    {
+        "pk": 154, 
+        "model": "admin.logentry", 
+        "fields": {
+            "action_flag": 3, 
+            "action_time": "2011-03-03 21:43:17", 
+            "object_repr": "are bangdu ::from=samrudha, to=dhabbimirichi (sms not sent)", 
+            "object_id": "4", 
+            "change_message": "", 
+            "user": 1, 
+            "content_type": 12
+        }
+    }, 
+    {
+        "pk": 155, 
+        "model": "admin.logentry", 
+        "fields": {
+            "action_flag": 3, 
+            "action_time": "2011-03-03 21:43:17", 
+            "object_repr": "bindu re ::from=samrudha, to=dhabbimirichi (sms not sent)", 
+            "object_id": "3", 
+            "change_message": "", 
+            "user": 1, 
+            "content_type": 12
+        }
+    }, 
+    {
+        "pk": 156, 
+        "model": "admin.logentry", 
+        "fields": {
+            "action_flag": 3, 
+            "action_time": "2011-03-03 21:43:17", 
+            "object_repr": "oh you mean crore ::from=dhabbimirichi, to=samrudha (sms not sent)", 
+            "object_id": "2", 
+            "change_message": "", 
+            "user": 1, 
+            "content_type": 12
+        }
+    }, 
+    {
+        "pk": 157, 
+        "model": "admin.logentry", 
+        "fields": {
+            "action_flag": 3, 
+            "action_time": "2011-03-03 21:43:17", 
+            "object_repr": "hehehehe ph you are so generous ::from=dhabbimirichi, to=samrudha (sms not sent)", 
+            "object_id": "1", 
+            "change_message": "", 
+            "user": 1, 
+            "content_type": 12
+        }
+    }, 
+    {
         "pk": 132, 
         "model": "admin.logentry", 
         "fields": {
@@ -1621,331 +1946,6 @@
             "mobile_no": "917588234173", 
             "max_message_id": 80521006, 
             "fullname": "babdu reviewwala"
-        }
-    }, 
-    {
-        "pk": 1, 
-        "model": "ysms.message", 
-        "fields": {
-            "group": null, 
-            "sms_sent": null, 
-            "to_user": 1, 
-            "thread_id": 73728705, 
-            "from_user": 2, 
-            "message": "hehehehe ph you are so generous", 
-            "message_id": 73728705
-        }
-    }, 
-    {
-        "pk": 2, 
-        "model": "ysms.message", 
-        "fields": {
-            "group": null, 
-            "sms_sent": null, 
-            "to_user": 1, 
-            "thread_id": 73728288, 
-            "from_user": 2, 
-            "message": "oh you mean crore", 
-            "message_id": 73728288
-        }
-    }, 
-    {
-        "pk": 3, 
-        "model": "ysms.message", 
-        "fields": {
-            "group": 1, 
-            "sms_sent": null, 
-            "to_user": 2, 
-            "thread_id": 77586941, 
-            "from_user": 1, 
-            "message": "bindu re", 
-            "message_id": 77586941
-        }
-    }, 
-    {
-        "pk": 4, 
-        "model": "ysms.message", 
-        "fields": {
-            "group": 1, 
-            "sms_sent": null, 
-            "to_user": 2, 
-            "thread_id": 77586829, 
-            "from_user": 1, 
-            "message": "are bangdu", 
-            "message_id": 77586829
-        }
-    }, 
-    {
-        "pk": 5, 
-        "model": "ysms.message", 
-        "fields": {
-            "group": 1, 
-            "sms_sent": null, 
-            "to_user": 2, 
-            "thread_id": 76291656, 
-            "from_user": 1, 
-            "message": "yo alllazy people", 
-            "message_id": 76291656
-        }
-    }, 
-    {
-        "pk": 6, 
-        "model": "ysms.message", 
-        "fields": {
-            "group": 1, 
-            "sms_sent": null, 
-            "to_user": 2, 
-            "thread_id": 76286721, 
-            "from_user": 1, 
-            "message": "samvad  staff ye dil mange more", 
-            "message_id": 76286721
-        }
-    }, 
-    {
-        "pk": 7, 
-        "model": "ysms.message", 
-        "fields": {
-            "group": 1, 
-            "sms_sent": null, 
-            "to_user": 2, 
-            "thread_id": 76285626, 
-            "from_user": 1, 
-            "message": "samvad  staff nachooooooooooooooooooooooooooooooooooo", 
-            "message_id": 76285626
-        }
-    }, 
-    {
-        "pk": 8, 
-        "model": "ysms.message", 
-        "fields": {
-            "group": 1, 
-            "sms_sent": null, 
-            "to_user": 2, 
-            "thread_id": 76285117, 
-            "from_user": 1, 
-            "message": "samvad  staff bakwass", 
-            "message_id": 76285117
-        }
-    }, 
-    {
-        "pk": 9, 
-        "model": "ysms.message", 
-        "fields": {
-            "group": 1, 
-            "sms_sent": null, 
-            "to_user": 2, 
-            "thread_id": 76284953, 
-            "from_user": 1, 
-            "message": "samvad  staff bakwass", 
-            "message_id": 76284953
-        }
-    }, 
-    {
-        "pk": 10, 
-        "model": "ysms.message", 
-        "fields": {
-            "group": 1, 
-            "sms_sent": null, 
-            "to_user": 2, 
-            "thread_id": 76284806, 
-            "from_user": 1, 
-            "message": "samvad  staff bakwass", 
-            "message_id": 76284806
-        }
-    }, 
-    {
-        "pk": 11, 
-        "model": "ysms.message", 
-        "fields": {
-            "group": 1, 
-            "sms_sent": null, 
-            "to_user": 2, 
-            "thread_id": 76284710, 
-            "from_user": 1, 
-            "message": "samvad  staff bakwass", 
-            "message_id": 76284710
-        }
-    }, 
-    {
-        "pk": 12, 
-        "model": "ysms.message", 
-        "fields": {
-            "group": 1, 
-            "sms_sent": null, 
-            "to_user": 2, 
-            "thread_id": 76284587, 
-            "from_user": 1, 
-            "message": "samvad  staff bakwass", 
-            "message_id": 76284587
-        }
-    }, 
-    {
-        "pk": 13, 
-        "model": "ysms.message", 
-        "fields": {
-            "group": 1, 
-            "sms_sent": null, 
-            "to_user": 2, 
-            "thread_id": 75391728, 
-            "from_user": 1, 
-            "message": "Mind your language .I am not going to give you this months salary.", 
-            "message_id": 75392634
-        }
-    }, 
-    {
-        "pk": 14, 
-        "model": "ysms.message", 
-        "fields": {
-            "group": 1, 
-            "sms_sent": null, 
-            "to_user": 2, 
-            "thread_id": 75391728, 
-            "from_user": 1, 
-            "message": "Is it a workaholic or alcoholic ?", 
-            "message_id": 75391728
-        }
-    }, 
-    {
-        "pk": 15, 
-        "model": "ysms.message", 
-        "fields": {
-            "group": null, 
-            "sms_sent": null, 
-            "to_user": 2, 
-            "thread_id": 75391510, 
-            "from_user": 1, 
-            "message": "has created the [[group:115047]] group: for All workaholic people", 
-            "message_id": 75391510
-        }
-    }, 
-    {
-        "pk": 16, 
-        "model": "ysms.message", 
-        "fields": {
-            "group": null, 
-            "sms_sent": null, 
-            "to_user": 2, 
-            "thread_id": 73728481, 
-            "from_user": 1, 
-            "message": "oh sorry crore thanks dhabby.I would like  to give you 3 crore for a  valuable correction.", 
-            "message_id": 73728481
-        }
-    }, 
-    {
-        "pk": 17, 
-        "model": "ysms.message", 
-        "fields": {
-            "group": null, 
-            "sms_sent": null, 
-            "to_user": 2, 
-            "thread_id": 73728177, 
-            "from_user": 1, 
-            "message": "todays our turnover  is 27 corer", 
-            "message_id": 73728177
-        }
-    }, 
-    {
-        "pk": 18, 
-        "model": "ysms.message", 
-        "fields": {
-            "group": null, 
-            "sms_sent": null, 
-            "to_user": 2, 
-            "thread_id": 73728020, 
-            "from_user": 1, 
-            "message": "Hello Hi", 
-            "message_id": 73728020
-        }
-    }, 
-    {
-        "pk": 19, 
-        "model": "ysms.message", 
-        "fields": {
-            "group": null, 
-            "sms_sent": null, 
-            "to_user": 3, 
-            "thread_id": 79093880, 
-            "from_user": 4, 
-            "message": "hi cheap editor", 
-            "message_id": 80380854
-        }
-    }, 
-    {
-        "pk": 20, 
-        "model": "ysms.message", 
-        "fields": {
-            "group": null, 
-            "sms_sent": null, 
-            "to_user": 3, 
-            "thread_id": 80380089, 
-            "from_user": 4, 
-            "message": "Hi ardhi chaddi. chaddi pe gaddi mili ki nahi", 
-            "message_id": 80380764
-        }
-    }, 
-    {
-        "pk": 21, 
-        "model": "ysms.message", 
-        "fields": {
-            "group": null, 
-            "sms_sent": null, 
-            "to_user": 3, 
-            "thread_id": 80380743, 
-            "from_user": 4, 
-            "message": "Do listen \"ye jo halka halka surur hai\"", 
-            "message_id": 80380743
-        }
-    }, 
-    {
-        "pk": 22, 
-        "model": "ysms.message", 
-        "fields": {
-            "group": null, 
-            "sms_sent": null, 
-            "to_user": 3, 
-            "thread_id": 80379931, 
-            "from_user": 4, 
-            "message": "(Sr.Reviewer) has [[tag:686038]] the wogma.com network.", 
-            "message_id": 80379931
-        }
-    }, 
-    {
-        "pk": 23, 
-        "model": "ysms.message", 
-        "fields": {
-            "group": null, 
-            "sms_sent": null, 
-            "to_user": 4, 
-            "thread_id": 79093880, 
-            "from_user": 3, 
-            "message": "Howdy babdu?", 
-            "message_id": 80521006
-        }
-    }, 
-    {
-        "pk": 24, 
-        "model": "ysms.message", 
-        "fields": {
-            "group": null, 
-            "sms_sent": null, 
-            "to_user": 4, 
-            "thread_id": 80379567, 
-            "from_user": 3, 
-            "message": "has created the [[group:127086]] group: This group is for those people who can insult  anybody without any reason.", 
-            "message_id": 80379567
-        }
-    }, 
-    {
-        "pk": 25, 
-        "model": "ysms.message", 
-        "fields": {
-            "group": null, 
-            "sms_sent": null, 
-            "to_user": 4, 
-            "thread_id": 79093880, 
-            "from_user": 3, 
-            "message": "(editor in chief) has [[tag:686038]] the wogma.com network.", 
-            "message_id": 79093880
         }
     }, 
     {
