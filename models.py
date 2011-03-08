@@ -144,7 +144,7 @@ class MessageManager(models.Manager):
         del_messages.delete()
 
     def to_send_sms(self):
-        cnt = 0
+        count = 0
         statistics = defaultdict(int)
         for sms in self.all():
             if sms.sms_sent == None:
@@ -152,11 +152,11 @@ class MessageManager(models.Manager):
                 s.send(sms.to_user.mobile_no, sms.message)'''
                 sms.sms_sent = datetime.now()
                 sms.save()
-                cnt += 1
+                count += 1
                 statistics[sms.to_user.company] += 1
         for (company, cnt) in statistics.iteritems():
             Statistics.objects.update_sms_sent(company, cnt)
-        return cnt
+        return count
 
 
 class Message(models.Model):

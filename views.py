@@ -71,13 +71,11 @@ def receive_sms(request):
     content=re.sub("\s+" , " ", content.lower().strip())
     for (cmd_re, group_name) in sms_commands:
         sms = cmd_re.match(content)
-        print group_name,content,sms
         try:
             if sms:  
                 content = sms.group(1)
-                print content   
                 group = Group.objects.get(name=group_name)
-                print group.company.name
+                
         except Group.DoesNotExist:
             pass
         
