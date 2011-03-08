@@ -79,7 +79,7 @@ class TestAdvanced(TestCase):
          cnt = YUser.objects.fetch_yammer_msgs()
          
          
-    '''def test_clean_msgs(self):
+    def test_clean_msgs(self):
          now = datetime.now()
          week = timedelta(7)
          date = now - week
@@ -107,7 +107,7 @@ class TestAdvanced(TestCase):
          smriticnt=Statistics.objects.get(company=self.companysmriti)
          wogmacnt1=Statistics.objects.get(company=self.companywogma)
          self.assertEqual(self.statssmriti,smriticnt.sms_sent)
-         self.assertEqual(self.statswogma,wogmacnt1.sms_sent)'''
+         self.assertEqual(self.statswogma,wogmacnt1.sms_sent)
                 
     def test_index(self):
          '''self.client.login(username='samrudhasmriti', password='samrudha')
