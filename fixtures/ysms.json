@@ -134,11 +134,11 @@
         }
     }, 
     {
-        "pk": "4888dd78f66e3de3b8ffafc5db87f4da", 
+        "pk": "1fd4027d0afedfecbe8ce2af37135192", 
         "model": "sessions.session", 
         "fields": {
-            "expire_date": "2011-03-16 12:06:07", 
-            "session_data": "gAJ9cQFVCnRlc3Rjb29raWVxAlUGd29ya2VkcQNzLjhiMjgwN2I1ODAzYmQ1NTU4OWVjYmUzNzhk\nOTZiNzcz\n"
+            "expire_date": "2011-03-28 20:50:46", 
+            "session_data": "gAJ9cQEoVQ1yZXF1ZXN0X3Rva2VucQJVFlBYcWpWVzBZQjR3MHFZMWpzbkFOc3dxA1UUcmVxdWVz\ndF90b2tlbl9zZWNyZXRxBFUqSEEzeFNlOWRTY0Y3OUJsaVg3RmFoaEtSaUJDZXJRTlc3aFhiOUds\nVE13cQVVCHl1c2VyX3BrcQaKAQdVEl9hdXRoX3VzZXJfYmFja2VuZHEHVSlkamFuZ28uY29udHJp\nYi5hdXRoLmJhY2tlbmRzLk1vZGVsQmFja2VuZHEIVQ1fYXV0aF91c2VyX2lkcQmKAQJ1LjNkZjkw\nMjIzMWJiODllNmIwMzc0M2U2ZmMwNzNmZTA0\n"
         }
     }, 
     {
@@ -158,11 +158,53 @@
         }
     }, 
     {
+        "pk": "bc887e6270ab720b647cd42651e5ea6d", 
+        "model": "sessions.session", 
+        "fields": {
+            "expire_date": "2011-03-22 15:14:53", 
+            "session_data": "gAJ9cQEoVRJfYXV0aF91c2VyX2JhY2tlbmRxAlUpZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5k\ncy5Nb2RlbEJhY2tlbmRxA1UNX2F1dGhfdXNlcl9pZHEEigECdS5jYWJhZDg1MzU3Y2FhNDg0Yjky\nYjEzOTM3MWFmNjRhZA==\n"
+        }
+    }, 
+    {
+        "pk": "fd6ffb3d19b951a2fc97018909797c1e", 
+        "model": "sessions.session", 
+        "fields": {
+            "expire_date": "2011-03-28 21:28:43", 
+            "session_data": "gAJ9cQEoVQ1yZXF1ZXN0X3Rva2VucQJVFk5laU91TzE0S2kwRE9OdW9PM0pwS3dxA1UUcmVxdWVz\ndF90b2tlbl9zZWNyZXRxBFUqVkx4R2NBVHFoTjlVbEpWeDdOajRtdjRDdXhBdVNMVlJ1aEgxbGp5\nREcwcQVVCHl1c2VyX3BrcQaKAQlVEl9hdXRoX3VzZXJfYmFja2VuZHEHVSlkamFuZ28uY29udHJp\nYi5hdXRoLmJhY2tlbmRzLk1vZGVsQmFja2VuZHEIVQ1fYXV0aF91c2VyX2lkcQmKAQN1LjU5YjUy\nNTA2YTc3ZGY5NzA3MzJiODZjZTZmM2EzNDg5\n"
+        }
+    }, 
+    {
         "pk": 1, 
         "model": "sites.site", 
         "fields": {
             "domain": "example.com", 
             "name": "example.com"
+        }
+    }, 
+    {
+        "pk": 2, 
+        "model": "admin.logentry", 
+        "fields": {
+            "action_flag": 2, 
+            "action_time": "2011-03-14 20:36:12", 
+            "object_repr": "2000021279smriti.comamit122", 
+            "object_id": "3", 
+            "change_message": "Changed admins.", 
+            "user": 1, 
+            "content_type": 9
+        }
+    }, 
+    {
+        "pk": 1, 
+        "model": "admin.logentry", 
+        "fields": {
+            "action_flag": 2, 
+            "action_time": "2011-03-14 20:36:06", 
+            "object_repr": "2000021279wogma.comamit122", 
+            "object_id": "4", 
+            "change_message": "Changed admins.", 
+            "user": 1, 
+            "content_type": 9
         }
     }, 
     {
@@ -173,7 +215,6 @@
             "app_consumer_key": "T6LGU7H78PKngH8Hvs3Vg", 
             "app_consumer_secret": "Atx5iCrUats361HzaKHgzjxo2Rn1yHvufzuY9rVu3U", 
             "admins": [
-                1, 
                 2
             ], 
             "gupshup_user": "2000021279", 
@@ -188,7 +229,6 @@
             "app_consumer_key": "kwNvSphFUFc8HEInBNwm5A", 
             "app_consumer_secret": "aCVY75GUIwsXWoAZQUZnL64hmdm14WlfcgWck6YgHk", 
             "admins": [
-                1, 
                 3
             ], 
             "gupshup_user": "2000021279", 
@@ -230,20 +270,6 @@
         }
     }, 
     {
-        "pk": 2, 
-        "model": "ysms.yuser", 
-        "fields": {
-            "yammer_user_id": 3452034, 
-            "oauth_token_secret": "jZmysHlnXFzNtOsPLQhyLp6DOfsiTywKoj53d6NmAs", 
-            "company": 3, 
-            "disable_receives": false, 
-            "oauth_token": "3uc5swTVzXANvhHhqawFdw", 
-            "mobile_no": "917588234173", 
-            "max_message_id": 77586941, 
-            "fullname": "dhabbimirichi"
-        }
-    }, 
-    {
         "pk": 3, 
         "model": "ysms.yuser", 
         "fields": {
@@ -269,6 +295,48 @@
             "mobile_no": "917588234173", 
             "max_message_id": 80521006, 
             "fullname": "babdu reviewwala"
+        }
+    }, 
+    {
+        "pk": 5, 
+        "model": "ysms.yuser", 
+        "fields": {
+            "yammer_user_id": 3452034, 
+            "oauth_token_secret": "jZmysHlnXFzNtOsPLQhyLp6DOfsiTywKoj53d6NmAs", 
+            "company": 3, 
+            "disable_receives": false, 
+            "oauth_token": "3uc5swTVzXANvhHhqawFdw", 
+            "mobile_no": "917588234173", 
+            "max_message_id": 0, 
+            "fullname": "dhabbimirichi"
+        }
+    }, 
+    {
+        "pk": 8, 
+        "model": "ysms.yuser", 
+        "fields": {
+            "yammer_user_id": 3452000, 
+            "oauth_token_secret": "nSVCAnGe9arOdv5LP2lZ0tZv5HwS9SA7rZN8DIn5c", 
+            "company": 3, 
+            "disable_receives": false, 
+            "oauth_token": "t2vlcG7cfMS3ZLifsPL4w", 
+            "mobile_no": "912024251142", 
+            "max_message_id": 0, 
+            "fullname": "kulkarni"
+        }
+    }, 
+    {
+        "pk": 9, 
+        "model": "ysms.yuser", 
+        "fields": {
+            "yammer_user_id": 4193274, 
+            "oauth_token_secret": "9r1chEoIiamEROk9Ql5MVf5qLjbG5TDHG4UWCFd9AwU", 
+            "company": 4, 
+            "disable_receives": false, 
+            "oauth_token": "j4PYt3S9G99uzTd3od52g", 
+            "mobile_no": "912024251142", 
+            "max_message_id": 0, 
+            "fullname": "kulsam"
         }
     }, 
     {
@@ -659,7 +727,7 @@
             "is_active": true, 
             "is_superuser": true, 
             "is_staff": true, 
-            "last_login": "2011-03-02 13:39:58", 
+            "last_login": "2011-03-14 20:36:23", 
             "groups": [], 
             "user_permissions": [], 
             "password": "sha1$aa5bc$6abe66dbf7d63b9a6c887ed4e3109a46eaf8f3a4", 
@@ -677,7 +745,7 @@
             "is_active": true, 
             "is_superuser": false, 
             "is_staff": true, 
-            "last_login": "2011-03-02 12:04:37", 
+            "last_login": "2011-03-14 21:23:38", 
             "groups": [], 
             "user_permissions": [], 
             "password": "sha1$a4a38$d663621c54e78cde9d4fd5c16a3abd42cd346344", 
@@ -695,7 +763,7 @@
             "is_active": true, 
             "is_superuser": false, 
             "is_staff": true, 
-            "last_login": "2011-03-02 12:05:21", 
+            "last_login": "2011-03-14 21:26:40", 
             "groups": [], 
             "user_permissions": [], 
             "password": "sha1$bce16$f85d23d70d576d0121326d16f54f24ae8cffbb92", 
