@@ -12,16 +12,17 @@ from django.template import TemplateDoesNotExist
 class TestBasic(TestCase):
     fixtures = ['ysms.json',]
     def setUp(self):
-         group_id=115047
-         content='Test Message'
+         self.group_id=115047
+         self.content='Test Message'
+         self.content1='Test Message for group'
          company=Company.objects.get(name='smriti.com')
-         yuser=YUser.objects.get(fullname='samrudha',company=company)
-         yuser1=YUser.objects.get(fullname='dhabbimirichi',company=company)
-         yuser.post_message(content,group_id)
-         self.yuser=yuser  
-         self.yuser1=yuser1
-         self.group_id=group_id
-         self.message=content
+         self.yuser=YUser.objects.get(fullname='samrudha',company=company)
+         self.yuser1=YUser.objects.get(fullname='dhabbimirichi',company=company)
+         self.yuser2=YUser.objects.get(fullname='kulkarni',company=company)
+         self.yuser.post_message(self.content,None)
+         self.yuser.post_message(self.content1,self.group_id)
+         self.yuser1.post_message(self.content,None)
+         self.yuser1.post_message(self.content1,self.group_id)
          
     def tearDown(self):
          all_messages=Message.objects.all()
@@ -31,15 +32,41 @@ class TestBasic(TestCase):
     def test_fetch_msgs(self):
          count=1
          cnt = YUser.objects.fetch_yammer_msgs()
-         all_messages=Message.objects.all()
-         print all_messages
-         self.assertEqual(count,cnt)
-         for message in all_messages:
-             self.assertEqual(self.group_id,message.group.group_id)
-             self.assertEqual(self.yuser,message.from_user)
-             self.assertEqual(self.yuser1,message.to_user)
-             self.assertEqual(self.message,message.message)
-   
+         # Message is posted by samrudha without group 
+         message=Message.objects.get(from_user=self.yuser,to_user=self.yuser1,group=None)
+         self.assertEqual(None,message.group)
+         self.assertEqual(self.yuser,message.from_user)
+         self.assertEqual(self.yuser1,message.to_user)
+         self.assertEqual(self.content,message.message)
+         message=Message.objects.get(from_user=self.yuser,to_user=self.yuser2,group=None)
+         self.assertEqual(None,message.group)
+         self.assertEqual(self.yuser,message.from_user)
+         self.assertEqual(self.yuser2,message.to_user)
+         self.assertEqual(self.content,message.message)
+         # Message is posted by samrudha for a group 
+         group=Group.objects.get(group_id=self.group_id)
+         message=Message.objects.get(from_user=self.yuser,to_user=self.yuser1,group=group)
+         self.assertEqual(self.group_id,message.group.group_id)
+         self.assertEqual(self.yuser,message.from_user)
+         self.assertEqual(self.yuser1,message.to_user)
+         self.assertEqual(self.content1,message.message)
+         self.assertRaises(Message.DoesNotExist,
+            Message.objects.get,
+            from_user=self.yuser,to_user=self.yuser2,group=group
+        )
+         # Message is posted by dhabbimirichi for group
+         group=Group.objects.get(group_id=self.group_id)
+         message=Message.objects.get(from_user=self.yuser1,to_user=self.yuser,group=group)
+         self.assertEqual(self.group_id,message.group.group_id)
+         self.assertEqual(self.yuser1,message.from_user)
+         self.assertEqual(self.yuser,message.to_user)
+         self.assertEqual(self.content1,message.message)
+         # Message is posted by dhabbimirichi without a group 
+         self.assertRaises(Message.DoesNotExist,
+            Message.objects.get,
+            from_user=self.yuser1,to_user=self.yuser,group=None
+        )
+         
          
 class Testreceive_and_send(TestCase):
     fixtures = ['ysms.json',]
@@ -47,10 +74,12 @@ class Testreceive_and_send(TestCase):
         self.companysmriti=Company.objects.get(name='smriti.com')
         self.text='Thank you, your message has been posted'
         self.companywogma=Company.objects.get(name='wogma.com')
-        response=self.client.get('/ysms/receive_sms/?msisdn=917588234173&content=samvad staff 7 khoon maff theatre me patta saaf')
-        response1=self.client.get('/ysms/receive_sms/?msisdn=919922900383&content=samvad staff 7 khoon maff theatre me patta saaf') 
+        response=self.client.get('/ysms/receive_sms/?msisdn=917588234173&content=samvad smriti 7 khoon maff theatre me patta saaf')
+        response1=self.client.get('/ysms/receive_sms/?msisdn=917588234173&content=samvad staff 7 khoon maff theatre me patta saaf')
+        response2=self.client.get('/ysms/receive_sms/?msisdn=919922900383&content=samvad staff 7 khoon maff theatre me patta saaf') 
         self.assertContains(response, self.text,status_code=200,) 
-        self.assertContains(response1, self.text,status_code=200,)
+        self.assertContains(response1, self.text,status_code=200,) 
+        self.assertContains(response2, self.text,status_code=200,)
         smriticnt=Statistics.objects.get(company=self.companysmriti)
         self.assertRaises(Statistics.DoesNotExist,
             Statistics.objects.get,

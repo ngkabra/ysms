@@ -134,11 +134,19 @@
         }
     }, 
     {
-        "pk": "1fd4027d0afedfecbe8ce2af37135192", 
+        "pk": "2828d29a81ed60d09049745c145946ed", 
         "model": "sessions.session", 
         "fields": {
-            "expire_date": "2011-03-28 20:50:46", 
-            "session_data": "gAJ9cQEoVQ1yZXF1ZXN0X3Rva2VucQJVFlBYcWpWVzBZQjR3MHFZMWpzbkFOc3dxA1UUcmVxdWVz\ndF90b2tlbl9zZWNyZXRxBFUqSEEzeFNlOWRTY0Y3OUJsaVg3RmFoaEtSaUJDZXJRTlc3aFhiOUds\nVE13cQVVCHl1c2VyX3BrcQaKAQdVEl9hdXRoX3VzZXJfYmFja2VuZHEHVSlkamFuZ28uY29udHJp\nYi5hdXRoLmJhY2tlbmRzLk1vZGVsQmFja2VuZHEIVQ1fYXV0aF91c2VyX2lkcQmKAQJ1LjNkZjkw\nMjIzMWJiODllNmIwMzc0M2U2ZmMwNzNmZTA0\n"
+            "expire_date": "2011-03-29 11:08:41", 
+            "session_data": "gAJ9cQFVCnRlc3Rjb29raWVxAlUGd29ya2VkcQNzLjhiMjgwN2I1ODAzYmQ1NTU4OWVjYmUzNzhk\nOTZiNzcz\n"
+        }
+    }, 
+    {
+        "pk": "523b83eaacbb504b7c66b5b3b655e021", 
+        "model": "sessions.session", 
+        "fields": {
+            "expire_date": "2011-03-31 23:41:51", 
+            "session_data": "gAJ9cQEoVRJfYXV0aF91c2VyX2JhY2tlbmRxAlUpZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5k\ncy5Nb2RlbEJhY2tlbmRxA1UNX2F1dGhfdXNlcl9pZHEEigEBdS42YjI1NDc3MjAxZGYwYTQ2MTgw\nMmY1NWNmNjNhNmEwZQ==\n"
         }
     }, 
     {
@@ -166,19 +174,102 @@
         }
     }, 
     {
-        "pk": "fd6ffb3d19b951a2fc97018909797c1e", 
-        "model": "sessions.session", 
-        "fields": {
-            "expire_date": "2011-03-28 21:28:43", 
-            "session_data": "gAJ9cQEoVQ1yZXF1ZXN0X3Rva2VucQJVFk5laU91TzE0S2kwRE9OdW9PM0pwS3dxA1UUcmVxdWVz\ndF90b2tlbl9zZWNyZXRxBFUqVkx4R2NBVHFoTjlVbEpWeDdOajRtdjRDdXhBdVNMVlJ1aEgxbGp5\nREcwcQVVCHl1c2VyX3BrcQaKAQlVEl9hdXRoX3VzZXJfYmFja2VuZHEHVSlkamFuZ28uY29udHJp\nYi5hdXRoLmJhY2tlbmRzLk1vZGVsQmFja2VuZHEIVQ1fYXV0aF91c2VyX2lkcQmKAQN1LjU5YjUy\nNTA2YTc3ZGY5NzA3MzJiODZjZTZmM2EzNDg5\n"
-        }
-    }, 
-    {
         "pk": 1, 
         "model": "sites.site", 
         "fields": {
             "domain": "example.com", 
             "name": "example.com"
+        }
+    }, 
+    {
+        "pk": 9, 
+        "model": "admin.logentry", 
+        "fields": {
+            "action_flag": 2, 
+            "action_time": "2011-03-17 23:50:21", 
+            "object_repr": "samvad wogmawogma", 
+            "object_id": "4", 
+            "change_message": "Changed keyword and name.", 
+            "user": 1, 
+            "content_type": 10
+        }
+    }, 
+    {
+        "pk": 8, 
+        "model": "admin.logentry", 
+        "fields": {
+            "action_flag": 2, 
+            "action_time": "2011-03-17 23:49:56", 
+            "object_repr": "samvad smritismriti", 
+            "object_id": "3", 
+            "change_message": "Changed keyword and name.", 
+            "user": 1, 
+            "content_type": 10
+        }
+    }, 
+    {
+        "pk": 7, 
+        "model": "admin.logentry", 
+        "fields": {
+            "action_flag": 2, 
+            "action_time": "2011-03-17 23:48:59", 
+            "object_repr": "samvad allall", 
+            "object_id": "4", 
+            "change_message": "Changed keyword and name.", 
+            "user": 1, 
+            "content_type": 10
+        }
+    }, 
+    {
+        "pk": 6, 
+        "model": "admin.logentry", 
+        "fields": {
+            "action_flag": 1, 
+            "action_time": "2011-03-17 23:48:40", 
+            "object_repr": "allsamvad all", 
+            "object_id": "4", 
+            "change_message": "", 
+            "user": 1, 
+            "content_type": 10
+        }
+    }, 
+    {
+        "pk": 5, 
+        "model": "admin.logentry", 
+        "fields": {
+            "action_flag": 2, 
+            "action_time": "2011-03-17 23:45:35", 
+            "object_repr": "samvad allall", 
+            "object_id": "3", 
+            "change_message": "Changed company.", 
+            "user": 1, 
+            "content_type": 10
+        }
+    }, 
+    {
+        "pk": 4, 
+        "model": "admin.logentry", 
+        "fields": {
+            "action_flag": 2, 
+            "action_time": "2011-03-17 23:43:05", 
+            "object_repr": "samvad allall", 
+            "object_id": "3", 
+            "change_message": "Changed keyword and name.", 
+            "user": 1, 
+            "content_type": 10
+        }
+    }, 
+    {
+        "pk": 3, 
+        "model": "admin.logentry", 
+        "fields": {
+            "action_flag": 1, 
+            "action_time": "2011-03-17 23:42:45", 
+            "object_repr": "allsamvad all", 
+            "object_id": "3", 
+            "change_message": "", 
+            "user": 1, 
+            "content_type": 10
         }
     }, 
     {
@@ -253,6 +344,26 @@
             "group_id": 127086, 
             "name": "bakwaas movies", 
             "keyword": "samvad bakwaas movies"
+        }
+    }, 
+    {
+        "pk": 3, 
+        "model": "ysms.group", 
+        "fields": {
+            "company": 3, 
+            "group_id": 0, 
+            "name": "smriti", 
+            "keyword": "samvad smriti"
+        }
+    }, 
+    {
+        "pk": 4, 
+        "model": "ysms.group", 
+        "fields": {
+            "company": 4, 
+            "group_id": 0, 
+            "name": "wogma", 
+            "keyword": "samvad wogma"
         }
     }, 
     {
@@ -727,7 +838,7 @@
             "is_active": true, 
             "is_superuser": true, 
             "is_staff": true, 
-            "last_login": "2011-03-14 20:36:23", 
+            "last_login": "2011-03-17 23:41:51", 
             "groups": [], 
             "user_permissions": [], 
             "password": "sha1$aa5bc$6abe66dbf7d63b9a6c887ed4e3109a46eaf8f3a4", 

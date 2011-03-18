@@ -16,6 +16,8 @@ from django.http import Http404
 
 sms_commands =[(re.compile(r'samvad staff (.*$)'), 'staff'),
                (re.compile(r'samvad bakwaas movies (.*$)'), 'bakwaas movies'),
+               (re.compile(r'samvad smriti (.*$)'), 'smriti'),
+               (re.compile(r'samvad wogma (.*$)'), 'wogma'),
                ]
 
 @login_required

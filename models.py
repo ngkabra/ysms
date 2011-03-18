@@ -30,8 +30,8 @@ class Company(models.Model):
 
 class Group(models.Model):
 
-    group_id = models.IntegerField(default=0)
-    company =  models.ForeignKey(Company,blank=True)
+    group_id = models.IntegerField(null=True)
+    company =  models.ForeignKey(Company,blank=True,null=True)
     keyword = models.CharField(max_length=140)
     name = models.CharField(max_length=140)
 
@@ -94,7 +94,7 @@ class YUser(models.Model):
         return cnt
 
     def post_message(self, content, group_id):
-        self.yammer_api().messages.post(content, group_id)
+        self.yammer_api().messages.post(content, group_id)    
 
     def get_all_messages(self,all_messages,cnt):
         for message in all_messages:
@@ -220,7 +220,10 @@ class SentMessage(models.Model):
         return super(SentMessage, self).save()
 
     def post_message(self, message):
-        self.yuser.post_message(message, self.group.group_id)
+        if  self.group.group_id == 0:
+            self.yuser.post_message(message, None )
+        else:    
+            self.yuser.post_message(message, self.group.group_id)   
         self.sent_time = datetime.now()
         self.save()
 
