@@ -89,7 +89,7 @@ def receive_sms(request):
             sent_message=SentMessage(yuser=yuser,message=content,group=group)
             sent_message.save()
             Statistics.objects.update_sms_received(yuser.company) 
-        
+            
         except YUser.DoesNotExist:
             return HttpResponse('There was some error')
         # send this message to yammer

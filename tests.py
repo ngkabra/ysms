@@ -27,7 +27,7 @@ class TestBasic(TestCase):
     def tearDown(self):
          all_messages=Message.objects.all()
          for message in all_messages:
-             message.from_user.yammer_api().messages.delete(message.message_id)    
+             message.from_user.yammer_api().messages.delete(message.message_id)   
      
     def test_fetch_msgs(self):
          count=1
@@ -71,7 +71,13 @@ class TestBasic(TestCase):
 class Testreceive_and_send(TestCase):
     fixtures = ['ysms.json',]
     def test_receive_send(self):
+        self.group_id=115047
+        self.group_smriti=0
+        self.yammer_mes='7 khoon maff theatre me patta saaf'
         self.companysmriti=Company.objects.get(name='smriti.com')
+        self.yuser=YUser.objects.get(fullname='samrudha',company=self.companysmriti)
+        self.yuser1=YUser.objects.get(fullname='dhabbimirichi',company=self.companysmriti)
+        self.yuser2=YUser.objects.get(fullname='kulkarni',company=self.companysmriti)
         self.text='Thank you, your message has been posted'
         self.companywogma=Company.objects.get(name='wogma.com')
         response=self.client.get('/ysms/receive_sms/?msisdn=917588234173&content=samvad smriti 7 khoon maff theatre me patta saaf')
@@ -85,26 +91,66 @@ class Testreceive_and_send(TestCase):
             Statistics.objects.get,
             company=self.companywogma
         )
-        self.assertEqual(2,smriticnt.sms_received)
+        self.assertEqual(3,smriticnt.sms_received)
         self.fetch_msgs()  
         cnt=Message.objects.to_send_sms()
-        self.assertEqual(2,cnt)  
+        self.assertEqual(3,cnt)  
         smriticnt=Statistics.objects.get(company=self.companysmriti)
         self.assertRaises(Statistics.DoesNotExist,
             Statistics.objects.get,
             company=self.companywogma
         )
-        self.assertEqual(2,smriticnt.sms_sent)
+        self.assertEqual(3,smriticnt.sms_sent)
         self.sent_messages_check()
     
     def sent_messages_check(self):
-        
         all_messages=SentMessage.objects.count()
-        self.assertEqual(2,all_messages)
-             
+        self.assertEqual(3,all_messages)
+        group=Group.objects.get(group_id=self.group_smriti,company=self.companysmriti)
+        message=SentMessage.objects.get(yuser=self.yuser1,group=group)
+        self.assertEqual(message.yuser,self.yuser1)
+        self.assertEqual(message.message,self.yammer_mes)
+        self.assertEqual(message.group,group)
+        group=Group.objects.get(group_id=self.group_id,company=self.companysmriti)
+        message=SentMessage.objects.get(yuser=self.yuser1,group=group)
+        self.assertEqual(message.yuser,self.yuser1)
+        self.assertEqual(message.message,self.yammer_mes)
+        self.assertEqual(message.group,group)
+        message=SentMessage.objects.get(yuser=self.yuser,group=group)
+        self.assertEqual(message.yuser,self.yuser)
+        self.assertEqual(message.message,self.yammer_mes)
+        self.assertEqual(message.group,group)
+              
     def fetch_msgs(self):
          cnt = YUser.objects.fetch_yammer_msgs()  
-    
+         message=Message.objects.get(from_user=self.yuser1,to_user=self.yuser2,group=None)
+         self.assertEqual(None,message.group)
+         self.assertEqual(self.yuser1,message.from_user)
+         self.assertEqual(self.yuser2,message.to_user)
+         self.assertEqual(self.yammer_mes,message.message)
+         self.assertRaises(Message.DoesNotExist,
+            Message.objects.get,
+            from_user=self.yuser1,to_user=self.yuser,group=None
+        )
+         group=Group.objects.get(group_id=self.group_id,company=self.companysmriti)
+         message=Message.objects.get(from_user=self.yuser1,to_user=self.yuser,group=group)
+         self.assertEqual(group,message.group)
+         self.assertEqual(self.yuser1,message.from_user)
+         self.assertEqual(self.yuser,message.to_user)
+         self.assertEqual(self.yammer_mes,message.message)
+         self.assertRaises(Message.DoesNotExist,
+            Message.objects.get,
+             from_user=self.yuser1,to_user=self.yuser2,group=group
+        )
+         message=Message.objects.get(from_user=self.yuser,to_user=self.yuser1,group=group)
+         self.assertEqual(group,message.group)
+         self.assertEqual(self.yuser,message.from_user)
+         self.assertEqual(self.yuser1,message.to_user)
+         self.assertEqual(self.yammer_mes,message.message)
+         self.assertRaises(Message.DoesNotExist,
+            Message.objects.get,
+             from_user=self.yuser,to_user=self.yuser2,group=group
+        )
     def tearDown(self):
          all_messages=Message.objects.all()
          for message in all_messages:
@@ -126,11 +172,11 @@ class TestAdvanced(TestCase):
          self.yusersmriti1=yusersmriti1
          self.yuserwogma=yuserwogma
          self.yuserwogma1=yuserwogma1  
-         self.sms_pending=4
+         self.sms_pending=12
          self.post_pending=0
-         self.statssmriti=2
-         self.statswogma=2
-         self.count=4
+         self.statssmriti=5
+         self.statswogma=6
+         self.count=11
          self.text='Thank you, your message has been posted'
          index=1
          all_user=YUser.objects.all()
@@ -169,8 +215,8 @@ class TestAdvanced(TestCase):
          self.assertContains(response3, self.text,status_code=200,)
          smriticnt=Statistics.objects.get(company=self.companysmriti)
          wogmacnt=Statistics.objects.get(company=self.companywogma)
-         self.assertEqual(self.statssmriti,smriticnt.sms_received)
-         self.assertEqual(self.statswogma,wogmacnt.sms_received)
+         self.assertEqual(2,smriticnt.sms_received)
+         self.assertEqual(2,wogmacnt.sms_received)
          
              
     def test_sms_msgs(self):
@@ -217,4 +263,6 @@ class TestAdvanced(TestCase):
          self.assertRaises(TemplateDoesNotExist,self.client.get,'/ysms/delete-user/5/')
          self.client.logout() 
          #test_delete user without login
-         
+         self.client.login(username='samru', password='samrudha')
+         self.assertRaises(TemplateDoesNotExist,self.client.get,'/ysms/delete-user/5/')
+         self.client.logout() 

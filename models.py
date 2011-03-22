@@ -45,6 +45,7 @@ class YUserManager(models.Manager):
         cnt=0
         for yuser in self.exclude(disable_receives=True):
             cnt = yuser.fetch_yammer_msgs(cnt)
+            
         return cnt
 
     def delete_user(self, yuserpk):
@@ -94,7 +95,9 @@ class YUser(models.Model):
         return cnt
 
     def post_message(self, content, group_id):
-        self.yammer_api().messages.post(content, group_id)    
+        print content
+        #import pdb; pdb.set_trace()
+        self.yammer_api().messages.post(content,group_id)    
 
     def get_all_messages(self,all_messages,cnt):
         for message in all_messages:
@@ -206,7 +209,7 @@ class SentMessageManager(models.Manager):
 class SentMessage(models.Model):
 
     yuser = models.ForeignKey(YUser)
-    group = models.ForeignKey(Group, blank=True)
+    group = models.ForeignKey(Group, blank=True,null=True)
     message = models.CharField(max_length=140)
     received_time = models.DateTimeField(null=True, blank=True,
             editable=False)

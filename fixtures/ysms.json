@@ -182,6 +182,32 @@
         }
     }, 
     {
+        "pk": 11, 
+        "model": "admin.logentry", 
+        "fields": {
+            "action_flag": 1, 
+            "action_time": "2011-03-22 15:52:43", 
+            "object_repr": "samru", 
+            "object_id": "4", 
+            "change_message": "", 
+            "user": 1, 
+            "content_type": 3
+        }
+    }, 
+    {
+        "pk": 10, 
+        "model": "admin.logentry", 
+        "fields": {
+            "action_flag": 2, 
+            "action_time": "2011-03-18 12:41:35", 
+            "object_repr": "samvad smritismriti", 
+            "object_id": "3", 
+            "change_message": "No fields changed.", 
+            "user": 1, 
+            "content_type": 10
+        }
+    }, 
+    {
         "pk": 9, 
         "model": "admin.logentry", 
         "fields": {
@@ -880,6 +906,24 @@
             "password": "sha1$bce16$f85d23d70d576d0121326d16f54f24ae8cffbb92", 
             "email": "", 
             "date_joined": "2011-02-28 17:42:32"
+        }
+    }, 
+    {
+        "pk": 4, 
+        "model": "auth.user", 
+        "fields": {
+            "username": "samru", 
+            "first_name": "", 
+            "last_name": "", 
+            "is_active": true, 
+            "is_superuser": false, 
+            "is_staff": false, 
+            "last_login": "2011-03-22 15:52:43", 
+            "groups": [], 
+            "user_permissions": [], 
+            "password": "sha1$3944f$b043196033c6bacc8f0c4f5139ef33f939fd74a2", 
+            "email": "", 
+            "date_joined": "2011-03-22 15:52:43"
         }
     }
 ]
