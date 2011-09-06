@@ -1,6 +1,5 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta  http-equiv="Content-type" content="text/html; charset=utf-8" />
 </head>
@@ -8,6 +7,7 @@
 
   {% if user_msg %}
     <p class="message">Message: {{user_msg}}</p>
+   
   {% endif %}
   <ul>
     {% for yuser in yusers %}
@@ -25,5 +25,6 @@
     <li><a href="{% url ysms-post-msgs-to-yammer %}">Post pending messages to Yammer</a> ({{post_pending}} are pending)</li>
   {% endif %}
   </ul>
+  <li><a href="{% url ysms-logout %}">Logout</a></li>
 </body>
 </html>

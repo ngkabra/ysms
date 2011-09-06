@@ -232,6 +232,5 @@ class Yammer(object):
                 raise Exception(json_obj['response']['message'])
             return json_obj
         except ValueError:
-            print resp, content
-
+            pass
 

@@ -1,0 +1,929 @@
+[
+    {
+        "pk": 9, 
+        "model": "contenttypes.contenttype", 
+        "fields": {
+            "model": "company", 
+            "name": "company", 
+            "app_label": "ysms"
+        }
+    }, 
+    {
+        "pk": 5, 
+        "model": "contenttypes.contenttype", 
+        "fields": {
+            "model": "contenttype", 
+            "name": "content type", 
+            "app_label": "contenttypes"
+        }
+    }, 
+    {
+        "pk": 2, 
+        "model": "contenttypes.contenttype", 
+        "fields": {
+            "model": "group", 
+            "name": "group", 
+            "app_label": "auth"
+        }
+    }, 
+    {
+        "pk": 10, 
+        "model": "contenttypes.contenttype", 
+        "fields": {
+            "model": "group", 
+            "name": "group", 
+            "app_label": "ysms"
+        }
+    }, 
+    {
+        "pk": 8, 
+        "model": "contenttypes.contenttype", 
+        "fields": {
+            "model": "logentry", 
+            "name": "log entry", 
+            "app_label": "admin"
+        }
+    }, 
+    {
+        "pk": 12, 
+        "model": "contenttypes.contenttype", 
+        "fields": {
+            "model": "message", 
+            "name": "message", 
+            "app_label": "ysms"
+        }
+    }, 
+    {
+        "pk": 4, 
+        "model": "contenttypes.contenttype", 
+        "fields": {
+            "model": "message", 
+            "name": "message", 
+            "app_label": "auth"
+        }
+    }, 
+    {
+        "pk": 1, 
+        "model": "contenttypes.contenttype", 
+        "fields": {
+            "model": "permission", 
+            "name": "permission", 
+            "app_label": "auth"
+        }
+    }, 
+    {
+        "pk": 13, 
+        "model": "contenttypes.contenttype", 
+        "fields": {
+            "model": "sentmessage", 
+            "name": "sent message", 
+            "app_label": "ysms"
+        }
+    }, 
+    {
+        "pk": 6, 
+        "model": "contenttypes.contenttype", 
+        "fields": {
+            "model": "session", 
+            "name": "session", 
+            "app_label": "sessions"
+        }
+    }, 
+    {
+        "pk": 7, 
+        "model": "contenttypes.contenttype", 
+        "fields": {
+            "model": "site", 
+            "name": "site", 
+            "app_label": "sites"
+        }
+    }, 
+    {
+        "pk": 14, 
+        "model": "contenttypes.contenttype", 
+        "fields": {
+            "model": "statistics", 
+            "name": "statistics", 
+            "app_label": "ysms"
+        }
+    }, 
+    {
+        "pk": 3, 
+        "model": "contenttypes.contenttype", 
+        "fields": {
+            "model": "user", 
+            "name": "user", 
+            "app_label": "auth"
+        }
+    }, 
+    {
+        "pk": 11, 
+        "model": "contenttypes.contenttype", 
+        "fields": {
+            "model": "yuser", 
+            "name": "y user", 
+            "app_label": "ysms"
+        }
+    }, 
+    {
+        "pk": "15b59be82e004052ee1ec0bd3efeb9c2", 
+        "model": "sessions.session", 
+        "fields": {
+            "expire_date": "2011-03-14 18:02:17", 
+            "session_data": "gAJ9cQEoVRJfYXV0aF91c2VyX2JhY2tlbmRxAlUpZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5k\ncy5Nb2RlbEJhY2tlbmRxA1UNX2F1dGhfdXNlcl9pZHEEigEBdS42YjI1NDc3MjAxZGYwYTQ2MTgw\nMmY1NWNmNjNhNmEwZQ==\n"
+        }
+    }, 
+    {
+        "pk": "2828d29a81ed60d09049745c145946ed", 
+        "model": "sessions.session", 
+        "fields": {
+            "expire_date": "2011-03-29 11:08:41", 
+            "session_data": "gAJ9cQFVCnRlc3Rjb29raWVxAlUGd29ya2VkcQNzLjhiMjgwN2I1ODAzYmQ1NTU4OWVjYmUzNzhk\nOTZiNzcz\n"
+        }
+    }, 
+    {
+        "pk": "523b83eaacbb504b7c66b5b3b655e021", 
+        "model": "sessions.session", 
+        "fields": {
+            "expire_date": "2011-03-31 23:41:51", 
+            "session_data": "gAJ9cQEoVRJfYXV0aF91c2VyX2JhY2tlbmRxAlUpZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5k\ncy5Nb2RlbEJhY2tlbmRxA1UNX2F1dGhfdXNlcl9pZHEEigEBdS42YjI1NDc3MjAxZGYwYTQ2MTgw\nMmY1NWNmNjNhNmEwZQ==\n"
+        }
+    }, 
+    {
+        "pk": "6fa129cc087bf685b70863fda4790f57", 
+        "model": "sessions.session", 
+        "fields": {
+            "expire_date": "2011-03-16 11:57:20", 
+            "session_data": "gAJ9cQEoVRJfYXV0aF91c2VyX2JhY2tlbmRxAlUpZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5k\ncy5Nb2RlbEJhY2tlbmRxA1UNX2F1dGhfdXNlcl9pZHEEigEDdS5iOTJlN2Y4NDJhODEzNzgzM2Qz\nNzQ4OTVkMjdmNTVmOA==\n"
+        }
+    }, 
+    {
+        "pk": "85bb27587cd559715fb282547356cd8b", 
+        "model": "sessions.session", 
+        "fields": {
+            "expire_date": "2011-03-16 13:39:58", 
+            "session_data": "gAJ9cQEoVRJfYXV0aF91c2VyX2JhY2tlbmRxAlUpZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5k\ncy5Nb2RlbEJhY2tlbmRxA1UNX2F1dGhfdXNlcl9pZHEEigEBdS42YjI1NDc3MjAxZGYwYTQ2MTgw\nMmY1NWNmNjNhNmEwZQ==\n"
+        }
+    }, 
+    {
+        "pk": "bc887e6270ab720b647cd42651e5ea6d", 
+        "model": "sessions.session", 
+        "fields": {
+            "expire_date": "2011-03-22 15:14:53", 
+            "session_data": "gAJ9cQEoVRJfYXV0aF91c2VyX2JhY2tlbmRxAlUpZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5k\ncy5Nb2RlbEJhY2tlbmRxA1UNX2F1dGhfdXNlcl9pZHEEigECdS5jYWJhZDg1MzU3Y2FhNDg0Yjky\nYjEzOTM3MWFmNjRhZA==\n"
+        }
+    }, 
+    {
+        "pk": 1, 
+        "model": "sites.site", 
+        "fields": {
+            "domain": "example.com", 
+            "name": "example.com"
+        }
+    }, 
+    {
+        "pk": 11, 
+        "model": "admin.logentry", 
+        "fields": {
+            "action_flag": 1, 
+            "action_time": "2011-03-22 15:52:43", 
+            "object_repr": "samru", 
+            "object_id": "4", 
+            "change_message": "", 
+            "user": 1, 
+            "content_type": 3
+        }
+    }, 
+    {
+        "pk": 10, 
+        "model": "admin.logentry", 
+        "fields": {
+            "action_flag": 2, 
+            "action_time": "2011-03-18 12:41:35", 
+            "object_repr": "samvad smritismriti", 
+            "object_id": "3", 
+            "change_message": "No fields changed.", 
+            "user": 1, 
+            "content_type": 10
+        }
+    }, 
+    {
+        "pk": 9, 
+        "model": "admin.logentry", 
+        "fields": {
+            "action_flag": 2, 
+            "action_time": "2011-03-17 23:50:21", 
+            "object_repr": "samvad wogmawogma", 
+            "object_id": "4", 
+            "change_message": "Changed keyword and name.", 
+            "user": 1, 
+            "content_type": 10
+        }
+    }, 
+    {
+        "pk": 8, 
+        "model": "admin.logentry", 
+        "fields": {
+            "action_flag": 2, 
+            "action_time": "2011-03-17 23:49:56", 
+            "object_repr": "samvad smritismriti", 
+            "object_id": "3", 
+            "change_message": "Changed keyword and name.", 
+            "user": 1, 
+            "content_type": 10
+        }
+    }, 
+    {
+        "pk": 7, 
+        "model": "admin.logentry", 
+        "fields": {
+            "action_flag": 2, 
+            "action_time": "2011-03-17 23:48:59", 
+            "object_repr": "samvad allall", 
+            "object_id": "4", 
+            "change_message": "Changed keyword and name.", 
+            "user": 1, 
+            "content_type": 10
+        }
+    }, 
+    {
+        "pk": 6, 
+        "model": "admin.logentry", 
+        "fields": {
+            "action_flag": 1, 
+            "action_time": "2011-03-17 23:48:40", 
+            "object_repr": "allsamvad all", 
+            "object_id": "4", 
+            "change_message": "", 
+            "user": 1, 
+            "content_type": 10
+        }
+    }, 
+    {
+        "pk": 5, 
+        "model": "admin.logentry", 
+        "fields": {
+            "action_flag": 2, 
+            "action_time": "2011-03-17 23:45:35", 
+            "object_repr": "samvad allall", 
+            "object_id": "3", 
+            "change_message": "Changed company.", 
+            "user": 1, 
+            "content_type": 10
+        }
+    }, 
+    {
+        "pk": 4, 
+        "model": "admin.logentry", 
+        "fields": {
+            "action_flag": 2, 
+            "action_time": "2011-03-17 23:43:05", 
+            "object_repr": "samvad allall", 
+            "object_id": "3", 
+            "change_message": "Changed keyword and name.", 
+            "user": 1, 
+            "content_type": 10
+        }
+    }, 
+    {
+        "pk": 3, 
+        "model": "admin.logentry", 
+        "fields": {
+            "action_flag": 1, 
+            "action_time": "2011-03-17 23:42:45", 
+            "object_repr": "allsamvad all", 
+            "object_id": "3", 
+            "change_message": "", 
+            "user": 1, 
+            "content_type": 10
+        }
+    }, 
+    {
+        "pk": 2, 
+        "model": "admin.logentry", 
+        "fields": {
+            "action_flag": 2, 
+            "action_time": "2011-03-14 20:36:12", 
+            "object_repr": "2000021279smriti.comamit122", 
+            "object_id": "3", 
+            "change_message": "Changed admins.", 
+            "user": 1, 
+            "content_type": 9
+        }
+    }, 
+    {
+        "pk": 1, 
+        "model": "admin.logentry", 
+        "fields": {
+            "action_flag": 2, 
+            "action_time": "2011-03-14 20:36:06", 
+            "object_repr": "2000021279wogma.comamit122", 
+            "object_id": "4", 
+            "change_message": "Changed admins.", 
+            "user": 1, 
+            "content_type": 9
+        }
+    }, 
+    {
+        "pk": 3, 
+        "model": "ysms.company", 
+        "fields": {
+            "name": "smriti.com", 
+            "app_consumer_key": "T6LGU7H78PKngH8Hvs3Vg", 
+            "app_consumer_secret": "Atx5iCrUats361HzaKHgzjxo2Rn1yHvufzuY9rVu3U", 
+            "admins": [
+                2
+            ], 
+            "gupshup_user": "2000021279", 
+            "gupshup_password": "amit122"
+        }
+    }, 
+    {
+        "pk": 4, 
+        "model": "ysms.company", 
+        "fields": {
+            "name": "wogma.com", 
+            "app_consumer_key": "kwNvSphFUFc8HEInBNwm5A", 
+            "app_consumer_secret": "aCVY75GUIwsXWoAZQUZnL64hmdm14WlfcgWck6YgHk", 
+            "admins": [
+                3
+            ], 
+            "gupshup_user": "2000021279", 
+            "gupshup_password": "amit122"
+        }
+    }, 
+    {
+        "pk": 1, 
+        "model": "ysms.group", 
+        "fields": {
+            "company": 3, 
+            "group_id": 115047, 
+            "name": "staff", 
+            "keyword": "samvad staff"
+        }
+    }, 
+    {
+        "pk": 2, 
+        "model": "ysms.group", 
+        "fields": {
+            "company": 4, 
+            "group_id": 127086, 
+            "name": "bakwaas movies", 
+            "keyword": "samvad bakwaas movies"
+        }
+    }, 
+    {
+        "pk": 3, 
+        "model": "ysms.group", 
+        "fields": {
+            "company": 3, 
+            "group_id": 0, 
+            "name": "smriti", 
+            "keyword": "samvad smriti"
+        }
+    }, 
+    {
+        "pk": 4, 
+        "model": "ysms.group", 
+        "fields": {
+            "company": 4, 
+            "group_id": 0, 
+            "name": "wogma", 
+            "keyword": "samvad wogma"
+        }
+    }, 
+    {
+        "pk": 1, 
+        "model": "ysms.yuser", 
+        "fields": {
+            "yammer_user_id": 3451851, 
+            "oauth_token_secret": "qXw2I2wcUmqvtnZCq7Y0Nq41l65W3aZpLO8Hxrk", 
+            "company": 3, 
+            "disable_receives": false, 
+            "oauth_token": "tdxXp0puNXO67JCG6zEQ", 
+            "mobile_no": "919922900383", 
+            "max_message_id": 77586941, 
+            "fullname": "samrudha"
+        }
+    }, 
+    {
+        "pk": 3, 
+        "model": "ysms.yuser", 
+        "fields": {
+            "yammer_user_id": 4082089, 
+            "oauth_token_secret": "P3xjr7iAicpbL3vHj3CDPUt2TfM5jeyQwWXLHe8QSo", 
+            "company": 4, 
+            "disable_receives": false, 
+            "oauth_token": "PQ1dBweXMV1t1PYTj3w", 
+            "mobile_no": "919922900383", 
+            "max_message_id": 80521006, 
+            "fullname": "samrudha"
+        }
+    }, 
+    {
+        "pk": 4, 
+        "model": "ysms.yuser", 
+        "fields": {
+            "yammer_user_id": 4193256, 
+            "oauth_token_secret": "7c72hPStOI8bkKkESzLNDCeJSiutLaJ3kLSkPc4iY", 
+            "company": 4, 
+            "disable_receives": false, 
+            "oauth_token": "ErSWYM932e3BLx4ppWMXQ", 
+            "mobile_no": "917588234173", 
+            "max_message_id": 80521006, 
+            "fullname": "babdu reviewwala"
+        }
+    }, 
+    {
+        "pk": 5, 
+        "model": "ysms.yuser", 
+        "fields": {
+            "yammer_user_id": 3452034, 
+            "oauth_token_secret": "jZmysHlnXFzNtOsPLQhyLp6DOfsiTywKoj53d6NmAs", 
+            "company": 3, 
+            "disable_receives": false, 
+            "oauth_token": "3uc5swTVzXANvhHhqawFdw", 
+            "mobile_no": "917588234173", 
+            "max_message_id": 0, 
+            "fullname": "dhabbimirichi"
+        }
+    }, 
+    {
+        "pk": 8, 
+        "model": "ysms.yuser", 
+        "fields": {
+            "yammer_user_id": 3452000, 
+            "oauth_token_secret": "nSVCAnGe9arOdv5LP2lZ0tZv5HwS9SA7rZN8DIn5c", 
+            "company": 3, 
+            "disable_receives": false, 
+            "oauth_token": "t2vlcG7cfMS3ZLifsPL4w", 
+            "mobile_no": "912024251142", 
+            "max_message_id": 0, 
+            "fullname": "kulkarni"
+        }
+    }, 
+    {
+        "pk": 9, 
+        "model": "ysms.yuser", 
+        "fields": {
+            "yammer_user_id": 4193274, 
+            "oauth_token_secret": "9r1chEoIiamEROk9Ql5MVf5qLjbG5TDHG4UWCFd9AwU", 
+            "company": 4, 
+            "disable_receives": false, 
+            "oauth_token": "j4PYt3S9G99uzTd3od52g", 
+            "mobile_no": "912024251142", 
+            "max_message_id": 0, 
+            "fullname": "kulsam"
+        }
+    }, 
+    {
+        "pk": 22, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "add_logentry", 
+            "name": "Can add log entry", 
+            "content_type": 8
+        }
+    }, 
+    {
+        "pk": 23, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "change_logentry", 
+            "name": "Can change log entry", 
+            "content_type": 8
+        }
+    }, 
+    {
+        "pk": 24, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "delete_logentry", 
+            "name": "Can delete log entry", 
+            "content_type": 8
+        }
+    }, 
+    {
+        "pk": 4, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "add_group", 
+            "name": "Can add group", 
+            "content_type": 2
+        }
+    }, 
+    {
+        "pk": 5, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "change_group", 
+            "name": "Can change group", 
+            "content_type": 2
+        }
+    }, 
+    {
+        "pk": 6, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "delete_group", 
+            "name": "Can delete group", 
+            "content_type": 2
+        }
+    }, 
+    {
+        "pk": 10, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "add_message", 
+            "name": "Can add message", 
+            "content_type": 4
+        }
+    }, 
+    {
+        "pk": 11, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "change_message", 
+            "name": "Can change message", 
+            "content_type": 4
+        }
+    }, 
+    {
+        "pk": 12, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "delete_message", 
+            "name": "Can delete message", 
+            "content_type": 4
+        }
+    }, 
+    {
+        "pk": 1, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "add_permission", 
+            "name": "Can add permission", 
+            "content_type": 1
+        }
+    }, 
+    {
+        "pk": 2, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "change_permission", 
+            "name": "Can change permission", 
+            "content_type": 1
+        }
+    }, 
+    {
+        "pk": 3, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "delete_permission", 
+            "name": "Can delete permission", 
+            "content_type": 1
+        }
+    }, 
+    {
+        "pk": 7, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "add_user", 
+            "name": "Can add user", 
+            "content_type": 3
+        }
+    }, 
+    {
+        "pk": 8, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "change_user", 
+            "name": "Can change user", 
+            "content_type": 3
+        }
+    }, 
+    {
+        "pk": 9, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "delete_user", 
+            "name": "Can delete user", 
+            "content_type": 3
+        }
+    }, 
+    {
+        "pk": 13, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "add_contenttype", 
+            "name": "Can add content type", 
+            "content_type": 5
+        }
+    }, 
+    {
+        "pk": 14, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "change_contenttype", 
+            "name": "Can change content type", 
+            "content_type": 5
+        }
+    }, 
+    {
+        "pk": 15, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "delete_contenttype", 
+            "name": "Can delete content type", 
+            "content_type": 5
+        }
+    }, 
+    {
+        "pk": 16, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "add_session", 
+            "name": "Can add session", 
+            "content_type": 6
+        }
+    }, 
+    {
+        "pk": 17, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "change_session", 
+            "name": "Can change session", 
+            "content_type": 6
+        }
+    }, 
+    {
+        "pk": 18, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "delete_session", 
+            "name": "Can delete session", 
+            "content_type": 6
+        }
+    }, 
+    {
+        "pk": 19, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "add_site", 
+            "name": "Can add site", 
+            "content_type": 7
+        }
+    }, 
+    {
+        "pk": 20, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "change_site", 
+            "name": "Can change site", 
+            "content_type": 7
+        }
+    }, 
+    {
+        "pk": 21, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "delete_site", 
+            "name": "Can delete site", 
+            "content_type": 7
+        }
+    }, 
+    {
+        "pk": 25, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "add_company", 
+            "name": "Can add company", 
+            "content_type": 9
+        }
+    }, 
+    {
+        "pk": 26, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "change_company", 
+            "name": "Can change company", 
+            "content_type": 9
+        }
+    }, 
+    {
+        "pk": 27, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "delete_company", 
+            "name": "Can delete company", 
+            "content_type": 9
+        }
+    }, 
+    {
+        "pk": 28, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "add_group", 
+            "name": "Can add group", 
+            "content_type": 10
+        }
+    }, 
+    {
+        "pk": 29, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "change_group", 
+            "name": "Can change group", 
+            "content_type": 10
+        }
+    }, 
+    {
+        "pk": 30, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "delete_group", 
+            "name": "Can delete group", 
+            "content_type": 10
+        }
+    }, 
+    {
+        "pk": 34, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "add_message", 
+            "name": "Can add message", 
+            "content_type": 12
+        }
+    }, 
+    {
+        "pk": 35, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "change_message", 
+            "name": "Can change message", 
+            "content_type": 12
+        }
+    }, 
+    {
+        "pk": 36, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "delete_message", 
+            "name": "Can delete message", 
+            "content_type": 12
+        }
+    }, 
+    {
+        "pk": 37, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "add_sentmessage", 
+            "name": "Can add sent message", 
+            "content_type": 13
+        }
+    }, 
+    {
+        "pk": 38, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "change_sentmessage", 
+            "name": "Can change sent message", 
+            "content_type": 13
+        }
+    }, 
+    {
+        "pk": 39, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "delete_sentmessage", 
+            "name": "Can delete sent message", 
+            "content_type": 13
+        }
+    }, 
+    {
+        "pk": 40, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "add_statistics", 
+            "name": "Can add statistics", 
+            "content_type": 14
+        }
+    }, 
+    {
+        "pk": 41, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "change_statistics", 
+            "name": "Can change statistics", 
+            "content_type": 14
+        }
+    }, 
+    {
+        "pk": 42, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "delete_statistics", 
+            "name": "Can delete statistics", 
+            "content_type": 14
+        }
+    }, 
+    {
+        "pk": 31, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "add_yuser", 
+            "name": "Can add y user", 
+            "content_type": 11
+        }
+    }, 
+    {
+        "pk": 32, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "change_yuser", 
+            "name": "Can change y user", 
+            "content_type": 11
+        }
+    }, 
+    {
+        "pk": 33, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "delete_yuser", 
+            "name": "Can delete y user", 
+            "content_type": 11
+        }
+    }, 
+    {
+        "pk": 1, 
+        "model": "auth.user", 
+        "fields": {
+            "username": "samrudha", 
+            "first_name": "", 
+            "last_name": "", 
+            "is_active": true, 
+            "is_superuser": true, 
+            "is_staff": true, 
+            "last_login": "2011-03-17 23:41:51", 
+            "groups": [], 
+            "user_permissions": [], 
+            "password": "sha1$aa5bc$6abe66dbf7d63b9a6c887ed4e3109a46eaf8f3a4", 
+            "email": "samru@damru.com", 
+            "date_joined": "2011-02-28 17:35:12"
+        }
+    }, 
+    {
+        "pk": 2, 
+        "model": "auth.user", 
+        "fields": {
+            "username": "samrudhasmriti", 
+            "first_name": "", 
+            "last_name": "", 
+            "is_active": true, 
+            "is_superuser": false, 
+            "is_staff": true, 
+            "last_login": "2011-03-14 21:23:38", 
+            "groups": [], 
+            "user_permissions": [], 
+            "password": "sha1$a4a38$d663621c54e78cde9d4fd5c16a3abd42cd346344", 
+            "email": "", 
+            "date_joined": "2011-02-28 17:42:08"
+        }
+    }, 
+    {
+        "pk": 3, 
+        "model": "auth.user", 
+        "fields": {
+            "username": "samrudhawogma", 
+            "first_name": "", 
+            "last_name": "", 
+            "is_active": true, 
+            "is_superuser": false, 
+            "is_staff": true, 
+            "last_login": "2011-03-14 21:26:40", 
+            "groups": [], 
+            "user_permissions": [], 
+            "password": "sha1$bce16$f85d23d70d576d0121326d16f54f24ae8cffbb92", 
+            "email": "", 
+            "date_joined": "2011-02-28 17:42:32"
+        }
+    }, 
+    {
+        "pk": 4, 
+        "model": "auth.user", 
+        "fields": {
+            "username": "samru", 
+            "first_name": "", 
+            "last_name": "", 
+            "is_active": true, 
+            "is_superuser": false, 
+            "is_staff": false, 
+            "last_login": "2011-03-22 15:52:43", 
+            "groups": [], 
+            "user_permissions": [], 
+            "password": "sha1$3944f$b043196033c6bacc8f0c4f5139ef33f939fd74a2", 
+            "email": "", 
+            "date_joined": "2011-03-22 15:52:43"
+        }
+    }
+]
