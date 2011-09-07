@@ -1,6 +1,6 @@
 import urllib
 import urllib2
-from django.conf import settings
+
 class Error(Exception):
     pass
 
@@ -16,39 +16,38 @@ class SmsGupshupError(Error):
     def __unicode__(self):
         return '[%s] %s' % (self.errorcode, self.errormessage)
 
+
 class SmsGupshupFailure(SmsGupshupError):
-    '''same as SmsGupshupError, but it's a temporary failure
-    '''
+    '''same as SmsGupshupError, but it's a temporary failure'''
     pass
 
 
-class SmsGupshupSender():
-    # SMS Gupshup configuration
-    username=None
-    password=None
+class SmsGupshupSender(object):
     version = '1.0'
     url='http://enterprise.smsgupshup.com/GatewayAPI/rest'
 
     def __init__(self,
                  username=None,
-                 password=None):
-        if username: self.username = username 
-        if password: self.password = password
+                 password=None,
+                 debug=False):
+        self.username = username 
+        self.password = password
+        self.debug = debug
 
     def send(self, number, message):
         '''
         Sends message to number.
 
-        Don't use this method directly. 
-        Instead, use the 'send' method which in turn calls this
-
         raises sms.Error(errorcode, errormessage) 
         >>> import sms
-        >>> s = sms.Sender.defaultSender()
-        >>> msg = 'Using you as a guinea pig for testing BharatHealth sms service. Reply "ok" to 98220 20096 (Navin) if you receive this. thanks -Navin Kabra/Amit Paranjape'
-        >>> s.send('9822020096', msg)
+        >>> s = sms.SmsGupshupSender(username='xxx', password='xxx')
+        >>> s.send('98xxx xxxxx', msg)
         >>>
         '''
+        if self.debug:
+            print '%s: %s' % (number, message)
+            return
+
         params = {'method': 'sendMessage',
                   'send_to': number,
                   'msg': message,
